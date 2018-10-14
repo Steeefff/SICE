@@ -68,6 +68,7 @@ CREATE TABLE `genero` (
 
 LOCK TABLES `genero` WRITE;
 /*!40000 ALTER TABLE `genero` DISABLE KEYS */;
+INSERT INTO `genero` VALUES (1,'Masculino','Esto es un hombre'),(2,'Femenino','Esto es una mujer'),(3,'Otro','');
 /*!40000 ALTER TABLE `genero` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -122,6 +123,7 @@ CREATE TABLE `idiomas` (
 
 LOCK TABLES `idiomas` WRITE;
 /*!40000 ALTER TABLE `idiomas` DISABLE KEYS */;
+INSERT INTO `idiomas` VALUES (1,'Inglés'),(2,'Portugües');
 /*!40000 ALTER TABLE `idiomas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -170,14 +172,18 @@ CREATE TABLE `personas` (
   `telefono` int(8) DEFAULT NULL,
   `genero` int(11) DEFAULT NULL,
   `direccion` varchar(500) DEFAULT NULL,
-  `fechaNacimiento` datetime DEFAULT NULL,
+  `fechaNacimiento` varchar(45) DEFAULT NULL,
   `correo` varchar(45) DEFAULT NULL,
   `contraseña` varchar(45) DEFAULT NULL,
-  `idTipoPersona` int(11) NOT NULL,
+  `idTipoPersona` int(11) DEFAULT NULL,
+  `idioma` int(11) DEFAULT NULL,
+  `Habilitado` int(1) DEFAULT '1' COMMENT '1 - Activo\n0 - Inactivo',
   PRIMARY KEY (`cedula`),
   KEY `FK_PER_TIPER_idx` (`idTipoPersona`),
   KEY `FK_PER_GEN_idx` (`genero`),
+  KEY `FK_PER_IDI_idx` (`idioma`),
   CONSTRAINT `FK_PER_GEN` FOREIGN KEY (`genero`) REFERENCES `genero` (`idGenero`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_PER_IDI` FOREIGN KEY (`idioma`) REFERENCES `idiomas` (`idIdioma`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_PER_TIPER` FOREIGN KEY (`idTipoPersona`) REFERENCES `tipopersonas` (`idTipoPersonas`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -188,6 +194,7 @@ CREATE TABLE `personas` (
 
 LOCK TABLES `personas` WRITE;
 /*!40000 ALTER TABLE `personas` DISABLE KEYS */;
+INSERT INTO `personas` VALUES (402190497,'Stefanny','Villalobos','Uva',87453715,2,'San Rafael de Alajuela','15/06/1993','fany-9315@hotmail.com','',2,1,1),(402190598,'Anita','Villalobos','Jimenez',67453214,1,'San Antonio de Belen ','dd/MM/yyyy','anita@anita.com',NULL,2,1,1),(409280487,'Camila','Gonsalez','Jimenez',84758697,1,'wdhfjl','dd/MM/yyyy','camila@camila.com',NULL,2,1,1);
 /*!40000 ALTER TABLE `personas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -211,6 +218,7 @@ CREATE TABLE `tipopersonas` (
 
 LOCK TABLES `tipopersonas` WRITE;
 /*!40000 ALTER TABLE `tipopersonas` DISABLE KEYS */;
+INSERT INTO `tipopersonas` VALUES (1,'Estudiante'),(2,'Profesor'),(3,'Adminidstrativo'),(4,'Gerente');
 /*!40000 ALTER TABLE `tipopersonas` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -223,4 +231,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-08 22:50:54
+-- Dump completed on 2018-10-13 18:19:08
