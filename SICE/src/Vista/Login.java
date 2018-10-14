@@ -19,6 +19,7 @@ public class Login extends javax.swing.JFrame {
 
     Ventana_Principal principal;
     
+    
     public Login() {
         initComponents();      
         setLocationRelativeTo(null);
@@ -325,6 +326,8 @@ public class Login extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                // new Login().setVisible(true);
+               Login login = new Login();
+               login.setVisible(true);
             }
         });
     }

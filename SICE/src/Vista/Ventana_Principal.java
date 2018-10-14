@@ -1,5 +1,6 @@
 package Vista;
 
+import controlador.CAgregarProfesor;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 
@@ -35,6 +36,8 @@ public class Ventana_Principal extends javax.swing.JFrame {
         this.setTitle("SICE - Principal");
         Image icon = new ImageIcon(getClass().getResource("/Imagenes/sice_1.jpeg")).getImage();
         setIconImage(icon);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+
     }
 
     @SuppressWarnings("unchecked")
@@ -483,8 +486,7 @@ public class Ventana_Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMantenimientoEstudiantesActionPerformed
 
     private void btnIngresarProfesorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarProfesorActionPerformed
-        agregarProfesor = new Agregar_Profesor();
-        agregarProfesor.setVisible(true);
+        CAgregarProfesor ag = new CAgregarProfesor();
     }//GEN-LAST:event_btnIngresarProfesorActionPerformed
 
     private void btnAgregarGrupoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarGrupoActionPerformed
