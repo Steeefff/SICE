@@ -97,7 +97,7 @@ public class PersonasDAO {
     
     /////////////////////////////////////////////////// EDITAR PROFESOR///////////////////////////////////////////////////////////
     //UPDATE `sice`.`personas` SET `cedula`='4021904497', `nombre`='StFefanny', `apellido1`='VillaloFbos', `apellido2`='UFva', `telefono`='874453715', `genero`='1', `direccion`='San RafaFel de Alajuela', `fechaNacimiento`='15/06/9995', `correo`='fany-0315@hotmail.com', `contraseña`='',`idTipoPersona`='1', `idioma`='2' WHERE `cedula`='402190497';
-
+    
     /////////////////////////////////////////////////////BUSCAR////////////////////////////////////////////////////////////////
     
     ////////////////////////////////DESHABILITAR ES COMO UN UPDATE///////////////////////////////////////////////////7

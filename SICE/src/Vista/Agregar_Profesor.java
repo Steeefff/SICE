@@ -1,7 +1,10 @@
 package Vista;
 
+import Datos.PersonasDAO;
+import Modelos.Personas;
 import java.awt.Image;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  @author Grupo #30 Ingeniería 2018-2019 
@@ -387,12 +390,41 @@ public class Agregar_Profesor extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        // TODO add your handling code here:
+        if(txtCedula.getText().length() == 0){
+            JOptionPane.showConfirmDialog(rootPane, "Debes ingresar una cedula del profesor");
+            txtCedula.requestFocus();
+            return;
+        }
+        if(txtNombre.getText().length() == 0){
+            JOptionPane.showConfirmDialog(rootPane, "Debes ingresar el nombre del profesor");
+            txtNombre.requestFocus();
+            return;
+        }
+        if(txtApellido1.getText().length() == 0){
+            JOptionPane.showConfirmDialog(rootPane, "Debes ingresar el apellido 1 del profesor");
+            txtApellido1.requestFocus();
+            return;
+        }
+        if(txtApellido2.getText().length() == 0){
+            JOptionPane.showConfirmDialog(rootPane, "Debes ingresar el apellido 2 del profesor");
+            txtApellido2.requestFocus();
+            return;
+        }
+        if(txtCorreo.getText().length() == 0){
+            JOptionPane.showConfirmDialog(rootPane, "Debes ingresar un correo del profesor");
+            txtCorreo.requestFocus();
+            return;
+        }
+        if(txtTelefono.getText().length() == 0){
+            JOptionPane.showConfirmDialog(rootPane, "Debes ingresar un telefono del profesor");
+            txtTelefono.requestFocus();
+            return;
+        }
+        
+        
     }//GEN-LAST:event_btnGuardarActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

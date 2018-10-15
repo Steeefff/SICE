@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package controlador;
 
 import Datos.GenerosDAO;
@@ -106,6 +102,7 @@ public class CAgregarProfesor implements ActionListener,KeyListener{
             //despues mandamos la persona al metodo que lo inserta en la base de datos 
             
             String respuestaRegistro = MAgreProf.insertarPersona(p);
+            
             if(respuestaRegistro!=null){
                 JOptionPane.showMessageDialog(null, respuestaRegistro);
                 Limpiar();
@@ -130,7 +127,4 @@ public class CAgregarProfesor implements ActionListener,KeyListener{
     public void keyReleased(KeyEvent ke) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    
-      
 }
