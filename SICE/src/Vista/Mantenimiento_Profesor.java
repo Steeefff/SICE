@@ -15,10 +15,7 @@ import javax.swing.ImageIcon;
  * Dueño del producto: Yensy Soto, Centro Cultural Corporación Costa Rica
  */
 public class Mantenimiento_Profesor extends javax.swing.JFrame {
-
-    /**
-     * Creates new form Matricula_Estudiante
-     */
+    
     Modificar_Profesor modificarProfesor;
     Ventana_Principal ventanaPrincipal;
     
@@ -44,8 +41,8 @@ public class Mantenimiento_Profesor extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jTextField1 = new javax.swing.JTextField();
+        tablaProfesores = new javax.swing.JTable();
+        txtBuscar = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         btnBuscarID = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
@@ -76,8 +73,8 @@ public class Mantenimiento_Profesor extends javax.swing.JFrame {
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
         jPanel5.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204)));
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaProfesores.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        tablaProfesores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null, null, null, null},
@@ -95,8 +92,8 @@ public class Mantenimiento_Profesor extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
-        jTable1.getAccessibleContext().setAccessibleName("");
+        jScrollPane1.setViewportView(tablaProfesores);
+        tablaProfesores.getAccessibleContext().setAccessibleName("");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -121,7 +118,7 @@ public class Mantenimiento_Profesor extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField1)
+                    .addComponent(txtBuscar)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(btnBuscarID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -132,7 +129,7 @@ public class Mantenimiento_Profesor extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscarID))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
@@ -141,10 +138,8 @@ public class Mantenimiento_Profesor extends javax.swing.JFrame {
         );
 
         jPanel6.setBackground(new java.awt.Color(0, 133, 202));
-        jPanel6.setBorder(null);
 
         jPanel7.setBackground(new java.awt.Color(232, 17, 41));
-        jPanel7.setBorder(null);
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -277,10 +272,8 @@ public class Mantenimiento_Profesor extends javax.swing.JFrame {
         );
 
         jPanel3.setBackground(new java.awt.Color(0, 133, 202));
-        jPanel3.setBorder(null);
 
         jPanel4.setBackground(new java.awt.Color(232, 17, 41));
-        jPanel4.setBorder(null);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -467,7 +460,7 @@ public class Mantenimiento_Profesor extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
+    public javax.swing.JTable tablaProfesores;
+    private javax.swing.JTextField txtBuscar;
     // End of variables declaration//GEN-END:variables
 }

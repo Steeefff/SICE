@@ -21,7 +21,7 @@ public class Conexion {
         Connection con = null;
         try{
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            con=DriverManager.getConnection("jdbc:mysql://localhost:3306/sice","root","root"); //tiene que llamarse igual a la instancia de mi server(Mysql)
+            con=DriverManager.getConnection("jdbc:mysql://localhost:3306/sice","root",""); //tiene que llamarse igual a la instancia de mi server(Mysql)
             System.out.println("CONECTADO");
         }catch(Exception e){
             e.printStackTrace();

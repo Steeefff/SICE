@@ -21,7 +21,28 @@ public class IdiomasDAO {
    
         conexion=new Conexion();
     }   
-    
+    public String insertarPersona (Idiomas i){
+       String respuestaRegistro=null;
+        try{
+            Connection accesoDB = conexion.getConexion();
+            PreparedStatement ps = accesoDB.prepareStatement("INSERT INTO `idiomas`(`idIdioma`, `nombre`) "
+                    + "VALUES (?);"
+            );
+            ps.setString(1, i.getNombre()); 
+ 
+           
+            int numFAfectadas = ps.executeUpdate(); //toma el numero de filas afectadas
+           
+            if(numFAfectadas>0){
+                respuestaRegistro="Idioma insertado con Exito! ";
+            }
+            
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        
+        return respuestaRegistro;
+   }
     
     public ArrayList<Idiomas> listarIdiomas(){          //metodo listar
        

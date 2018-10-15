@@ -9,6 +9,8 @@ import Modelos.Generos;
 import Modelos.Idiomas;
 import Modelos.Personas;
 import Vista.Agregar_Profesor;
+import Vista.Mantenimiento_Profesor;
+import Vista.Modificar_Profesor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -24,6 +26,8 @@ import javax.swing.JOptionPane;
 public class CAgregarProfesor implements ActionListener,KeyListener{
     
     Agregar_Profesor VAgreProf;
+    Mantenimiento_Profesor VMantProf;
+    Modificar_Profesor VModifProf;
     PersonasDAO MAgreProf;
     GenerosDAO gd;
     IdiomasDAO id;
@@ -35,19 +39,36 @@ public class CAgregarProfesor implements ActionListener,KeyListener{
         id = new IdiomasDAO();
         this.VAgreProf = VAgreProf;
         this.MAgreProf = MAgreProf;
+        VAgreProf.txtCedula.addActionListener(this);
+        VAgreProf.txtNombre.addActionListener(this);
         VAgreProf.txtApellido1.addActionListener(this);
         VAgreProf.txtApellido2.addActionListener(this);
-        VAgreProf.txtCedula.addActionListener(this);
         VAgreProf.txtCorreo.addActionListener(this);
         VAgreProf.txtDireccion.addActionListener(this);
         VAgreProf.comboGenero.addActionListener(this);
-        VAgreProf.txtNombre.addActionListener(this);
         VAgreProf.txtTelefono.addActionListener(this);
+        VAgreProf.comboIdiomas.addActionListener(this);
+        //VAgreProf.comboFechaNacimiento.addActionListener(this);
         VAgreProf.btnGuardar.addActionListener(this);
         VAgreProf.btnVolver.addActionListener(this);
-        //VAgreProf.comboFechaNacimiento.addActionListener(this);
-        VAgreProf.comboIdiomas.addActionListener(this);
         
+        /////////MANTENIMIENTO
+        VMantProf = new Mantenimiento_Profesor();
+        //VMantProf.tablaProfesores.addMouseListener(this);
+        
+        ////////MODIFICA
+        VModifProf = new Modificar_Profesor();
+        VModifProf.txtCedula.addActionListener(this);
+        VModifProf.txtNombre.addActionListener(this);
+        VModifProf.txtApellido1.addActionListener(this);
+        VModifProf.txtApellido2.addActionListener(this);
+        VModifProf.txtCorreo.addActionListener(this);
+        VModifProf.txtDireccion.addActionListener(this);
+        VModifProf.comboGenero.addActionListener(this);
+        VModifProf.txtTelefono.addActionListener(this);
+        VModifProf.comboIdiomas.addActionListener(this);
+        
+
         //Cargar generos
         /*ArrayList<Generos> listaG = gd.listarGeneros();
         for(int i=0;i<listaG.size();i++){
@@ -59,10 +80,39 @@ public class CAgregarProfesor implements ActionListener,KeyListener{
         for(int i=0;i<listaG.size();i++){
             VAgreProf.comboIdiomas.addItem(new ComboItem(key, value));
         }*/
-        
-        
     }
- 
+    public void Validar(){
+        if(VAgreProf.txtCedula.getText().length() == 0){
+            JOptionPane.showConfirmDialog(VAgreProf, "Debes ingresar una cedula del profesor");
+            VAgreProf.txtCedula.requestFocus();
+            return;
+        }
+        if(VAgreProf.txtNombre.getText().length() == 0){
+            JOptionPane.showConfirmDialog(VAgreProf, "Debes ingresar el nombre del profesor");
+            VAgreProf.txtNombre.requestFocus();
+            return;
+        }
+        if(VAgreProf.txtApellido1.getText().length() == 0){
+            JOptionPane.showConfirmDialog(VAgreProf, "Debes ingresar el apellido 1 del profesor");
+            VAgreProf.txtApellido1.requestFocus();
+            return;
+        }
+        if(VAgreProf.txtApellido2.getText().length() == 0){
+            JOptionPane.showConfirmDialog(VAgreProf, "Debes ingresar el apellido 2 del profesor");
+            VAgreProf.txtApellido2.requestFocus();
+            return;
+        }
+        if(VAgreProf.txtCorreo.getText().length() == 0){
+            JOptionPane.showConfirmDialog(VAgreProf, "Debes ingresar un correo del profesor");
+            VAgreProf.txtCorreo.requestFocus();
+            return;
+        }
+        if(VAgreProf.txtTelefono.getText().length() == 0){
+            JOptionPane.showConfirmDialog(VAgreProf, "Debes ingresar un telefono del profesor");
+            VAgreProf.txtTelefono.requestFocus();
+            return;
+        }
+    }
     
     public void Limpiar(){
         VAgreProf.txtApellido1.setText("");
@@ -75,17 +125,18 @@ public class CAgregarProfesor implements ActionListener,KeyListener{
         VAgreProf.txtTelefono.setText("");
         VAgreProf.comboFechaNacimiento.setDate(new Date());
         VAgreProf.comboIdiomas.setSelectedIndex(0);
-         
      }
    
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-            ///////////////////////////////////////////////////BOTON GUARDAR////////////////////////////////////////////////
-    
-         if(ae.getSource() == VAgreProf.btnGuardar){
-             System.err.println("CLcika");
-             //cargandole los datos ingresados de la vista a la persona
+///////////////////////////////////////////////////BOTON GUARDAR////////////////////////////////////////////////
+        
+        Validar();
+        if(ae.getSource() == VAgreProf.btnGuardar){
+            
+            System.err.println("CLcika");
+            //cargandole los datos ingresados de la vista a la persona
             Personas p= new Personas();
             p.setCedula(Integer.parseInt(VAgreProf.txtCedula.getText()));
             p.setApellido1(VAgreProf.txtApellido1.getText());
@@ -111,6 +162,38 @@ public class CAgregarProfesor implements ActionListener,KeyListener{
                 JOptionPane.showMessageDialog(null, "Registro Erróneo");
             }
         }
+        
+        if(ae.getSource() == VModifProf.btnGuardar){
+            
+            System.err.println("CLcika");
+            //cargandole los datos ingresados de la vista a la persona
+            Personas p= new Personas();
+            p.setCedula(Integer.parseInt(VModifProf.txtCedula.getText()));
+            p.setApellido1(VModifProf.txtApellido1.getText());
+            p.setApellido2(VModifProf.txtApellido2.getText());
+            p.setCorreo(VModifProf.txtCorreo.getText());
+            p.setDireccion(VModifProf.txtDireccion.getText());
+            p.setGenero(VModifProf.comboGenero.getSelectedIndex());
+            p.setNombre(VModifProf.txtNombre.getText());
+            p.setTelefono(Integer.parseInt(VModifProf.txtTelefono.getText()));
+            p.setFechaNacimiento(VModifProf.comboFechaNacimiento.getDateFormatString());
+            p.setIdioma(VModifProf.comboIdiomas.getSelectedIndex());
+            p.setIdTipoPersona(2);//Se pone 2 porque es profesor
+            
+            //despues mandamos la persona al metodo que lo inserta en la base de datos 
+            
+            String respuestaRegistro = MAgreProf.insertarPersona(p);
+            
+            if(respuestaRegistro!=null){
+                JOptionPane.showMessageDialog(null, respuestaRegistro);
+                Limpiar();
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Registro Erróneo");
+            }
+        }
+        
+        
     }
 
     @Override
