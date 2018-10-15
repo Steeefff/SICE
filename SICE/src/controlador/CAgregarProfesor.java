@@ -182,7 +182,7 @@ public class CAgregarProfesor implements ActionListener,KeyListener{
             
             //despues mandamos la persona al metodo que lo inserta en la base de datos 
             
-            String respuestaRegistro = MAgreProf.insertarPersona(p);
+            String respuestaRegistro = MAgreProf.editarPersona(p);//ESTE ES EL DAO
             
             if(respuestaRegistro!=null){
                 JOptionPane.showMessageDialog(null, respuestaRegistro);

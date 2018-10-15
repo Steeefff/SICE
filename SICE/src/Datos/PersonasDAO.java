@@ -97,6 +97,41 @@ public class PersonasDAO {
     
     /////////////////////////////////////////////////// EDITAR PROFESOR///////////////////////////////////////////////////////////
     //UPDATE `sice`.`personas` SET `cedula`='4021904497', `nombre`='StFefanny', `apellido1`='VillaloFbos', `apellido2`='UFva', `telefono`='874453715', `genero`='1', `direccion`='San RafaFel de Alajuela', `fechaNacimiento`='15/06/9995', `correo`='fany-0315@hotmail.com', `contraseña`='',`idTipoPersona`='1', `idioma`='2' WHERE `cedula`='402190497';
+   
+    public String editarPersona (Personas p){
+       String respuestaRegistro=null;
+        try{
+            Connection accesoDB = conexion.getConexion();
+            PreparedStatement ps = accesoDB.prepareStatement(
+            "UPDATE INTO `sice`.`personas` nombre=?,apellido1=?,apellido2=?,telefono=?,genero=?,direccion=?,"
+            + "fechaNacimiento=?,correo=?,contraseña=?,idTipoPersona=?,idioma=? WHERE cedula=?"
+            
+            );
+            ps.setInt(1, p.getCedula()); 
+            ps.setString(2, p.getNombre());
+            ps.setString(3, p.getApellido1());
+            ps.setString(4, p.getApellido2());
+            ps.setInt(5, p.getTelefono());
+            ps.setInt(6, p.getGenero());
+            ps.setString(7, p.getDireccion());
+            ps.setString(8, p.getFechaNacimiento());
+            ps.setString(9, p.getCorreo());
+            ps.setString(10, p.getContraseña());
+            ps.setInt(11, p.getIdTipoPersona());
+            ps.setInt(12, p.getIdioma());
+           
+            int numFAfectadas = ps.executeUpdate(); //toma el numero de filas afectadas
+           
+            if(numFAfectadas>0){
+                respuestaRegistro="Profesor Insertado con Exito! ";
+            }
+            
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        
+        return respuestaRegistro;
+   }
     
     /////////////////////////////////////////////////////BUSCAR////////////////////////////////////////////////////////////////
     
