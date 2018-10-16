@@ -1,7 +1,11 @@
 package Vista;
 
+import Datos.PersonasDAO;
+import Modelos.Personas;
 import java.awt.Image;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * @author Grupo #30 Ingeniería 2018-2019 
@@ -27,6 +31,7 @@ public class Mantenimiento_Profesor extends javax.swing.JFrame {
         Image icon = new ImageIcon(getClass().getResource("/Imagenes/sice_1.jpeg")).getImage();
         setIconImage(icon);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        mostrar();
     }
 
     /**
@@ -402,6 +407,29 @@ public class Mantenimiento_Profesor extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnBuscarIDActionPerformed
 
+
+    void mostrar(){
+        PersonasDAO dao = new PersonasDAO();
+        DefaultTableModel modelo = (DefaultTableModel) tablaProfesores.getModel();
+        ArrayList<Personas>lista = dao.listarPersonas();
+        Object[] fila = new Object[modelo.getColumnCount()];
+        
+        for(int i=0; i<lista.size(); i++){
+            fila[0] = lista.get(i).getCedula();
+            fila[1] = lista.get(i).getNombre();
+            fila[2] = lista.get(i).getApellido1();
+            fila[3] = lista.get(i).getApellido2();
+            fila[4] = lista.get(i).getFechaNacimiento();
+            fila[5] = lista.get(i).getGenero();
+            fila[6] = lista.get(i).getTelefono();
+            fila[7] = lista.get(i).getCorreo();
+            fila[8] = lista.get(i).getDireccion();
+            fila[9] = lista.get(i).getIdioma();
+            fila[10] = lista.get(i).getHabilitado();
+            modelo.addRow(fila);
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */

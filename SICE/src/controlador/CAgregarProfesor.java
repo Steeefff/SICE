@@ -131,8 +131,7 @@ public class CAgregarProfesor implements ActionListener,KeyListener{
     @Override
     public void actionPerformed(ActionEvent ae) {
 ///////////////////////////////////////////////////BOTON GUARDAR////////////////////////////////////////////////
-        
-        Validar();
+
         if(ae.getSource() == VAgreProf.btnGuardar){
             
             System.err.println("CLcika");
@@ -191,9 +190,7 @@ public class CAgregarProfesor implements ActionListener,KeyListener{
             else{
                 JOptionPane.showMessageDialog(null, "Registro Erróneo");
             }
-        }
-        
-        
+        }        
     }
 
     @Override

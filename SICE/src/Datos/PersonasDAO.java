@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -64,7 +65,7 @@ public class PersonasDAO {
    
     public ArrayList<Personas> listarPersonas(){          //metodo listar
        
-         ArrayList listarPersonas = new ArrayList();
+        ArrayList listarPersonas = new ArrayList();
         Personas tmp; //
         try{
             Connection acceDB = conexion.getConexion();
@@ -85,6 +86,8 @@ public class PersonasDAO {
                 tmp.setContraseña(rs.getString(10));
                 tmp.setIdTipoPersona(rs.getInt(11));
                 tmp.setIdioma(rs.getInt(12));
+                tmp.setHabilitado(rs.getInt(13));
+                
               listarPersonas.add(tmp);
             }
             
@@ -103,10 +106,9 @@ public class PersonasDAO {
         try{
             Connection accesoDB = conexion.getConexion();
             PreparedStatement ps = accesoDB.prepareStatement(
-            "UPDATE INTO `sice`.`personas` nombre=?,apellido1=?,apellido2=?,telefono=?,genero=?,direccion=?,"
-            + "fechaNacimiento=?,correo=?,contraseña=?,idTipoPersona=?,idioma=? WHERE cedula=?"
+            "UPDATE INTO personas set nombre=?,apellido1=?,apellido2=?,telefono=?,genero=?,direccion=?,"
+            + "fechaNacimiento=?,correo=?,contraseña=?,idTipoPersona=?,idioma=? WHERE cedula=?");
             
-            );
             ps.setInt(1, p.getCedula()); 
             ps.setString(2, p.getNombre());
             ps.setString(3, p.getApellido1());
@@ -132,8 +134,11 @@ public class PersonasDAO {
         
         return respuestaRegistro;
    }
+    /////////////////////////////////////////////////MOSTRAR////////////////////////////////////////////////////////////////
+    
     
     /////////////////////////////////////////////////////BUSCAR////////////////////////////////////////////////////////////////
+    
     
     ////////////////////////////////DESHABILITAR ES COMO UN UPDATE///////////////////////////////////////////////////7
 }

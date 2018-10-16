@@ -403,6 +403,7 @@ public class Modificar_Profesor extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnBuscarActionPerformed
 
+    
     /**
      * @param args the command line arguments
      */
