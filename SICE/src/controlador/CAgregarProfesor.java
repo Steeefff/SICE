@@ -1,4 +1,3 @@
-
 package controlador;
 
 import Datos.GenerosDAO;
@@ -20,8 +19,15 @@ import java.util.Date;
 import javax.swing.JOptionPane;
 
 /**
- *
- * @author fany-
+ @author Grupo #30 Ingeniería 2018-2019 
+ * David Rodríguez Zamora
+ * Katherine Jiménez Soto
+ * Melany Monge Montero
+ * Stefanny Villalobos Uva
+ * Proyecto de Ingeniería - Universidad Nacional de Costa Rica
+ * Sistema Interno de Control de Estudiantes, SICE
+ * Profesor: Rafael Alvarado Arley
+ * Dueño del producto: Yensy Soto, Centro Cultural Corporación Costa Rica
  */
 public class CAgregarProfesor implements ActionListener,KeyListener{
     
@@ -131,11 +137,12 @@ public class CAgregarProfesor implements ActionListener,KeyListener{
     @Override
     public void actionPerformed(ActionEvent ae) {
 ///////////////////////////////////////////////////BOTON GUARDAR////////////////////////////////////////////////
-
+        
+        //Validar();
+       
         if(ae.getSource() == VAgreProf.btnGuardar){
-            
-            System.err.println("CLcika");
-            //cargandole los datos ingresados de la vista a la persona
+             if(MAgreProf.validarPersona(Integer.parseInt(VAgreProf.txtCedula.getText())) == true){
+                  //cargandole los datos ingresados de la vista a la persona
             Personas p= new Personas();
             p.setCedula(Integer.parseInt(VAgreProf.txtCedula.getText()));
             p.setApellido1(VAgreProf.txtApellido1.getText());
@@ -152,14 +159,16 @@ public class CAgregarProfesor implements ActionListener,KeyListener{
             //despues mandamos la persona al metodo que lo inserta en la base de datos 
             
             String respuestaRegistro = MAgreProf.insertarPersona(p);
-            
-            if(respuestaRegistro!=null){
+              if(respuestaRegistro!=null){
                 JOptionPane.showMessageDialog(null, respuestaRegistro);
                 Limpiar();
             }
-            else{
-                JOptionPane.showMessageDialog(null, "Registro Erróneo");
-            }
+        }
+             else{
+                 JOptionPane.showMessageDialog(null, "Ese Profesor ya existe en el Sistema");
+             }
+            
+    
         }
         
         if(ae.getSource() == VModifProf.btnGuardar){
@@ -190,7 +199,9 @@ public class CAgregarProfesor implements ActionListener,KeyListener{
             else{
                 JOptionPane.showMessageDialog(null, "Registro Erróneo");
             }
-        }        
+        }
+        
+        
     }
 
     @Override

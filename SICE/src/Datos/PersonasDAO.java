@@ -9,6 +9,7 @@ import Modelos.Personas;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
@@ -140,5 +141,25 @@ public class PersonasDAO {
     /////////////////////////////////////////////////////BUSCAR////////////////////////////////////////////////////////////////
     
     
-    ////////////////////////////////DESHABILITAR ES COMO UN UPDATE///////////////////////////////////////////////////7
+    ////////////////////////////////DESHABILITAR ES COMO UN UPDATE///////////////////////////////////////////////////
+    
+     ///////////////////////////////////////VALIDAR PERSONA/////////////////////////////////////////////////////////////////////
+    public Boolean validarPersona(int id_per) {
+        try {
+           Connection accesoDB = conexion.getConexion();
+           PreparedStatement ps = accesoDB.prepareStatement("SELECT cedula FROM sice.personas where cedula=?");
+           ps.setInt(1, id_per); 
+            
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+               return false;
+            }
+            else
+                return true;
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return true;
+    }
 }
