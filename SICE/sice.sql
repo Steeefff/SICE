@@ -48,13 +48,13 @@ LOCK TABLES `cursos` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `genero`
+-- Table structure for table `generos`
 --
 
-DROP TABLE IF EXISTS `genero`;
+DROP TABLE IF EXISTS `generos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `genero` (
+CREATE TABLE `generos` (
   `idGenero` int(11) NOT NULL,
   `nombre` varchar(45) DEFAULT NULL,
   `descripcion` varchar(500) DEFAULT NULL,
@@ -63,13 +63,13 @@ CREATE TABLE `genero` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `genero`
+-- Dumping data for table `generos`
 --
 
-LOCK TABLES `genero` WRITE;
-/*!40000 ALTER TABLE `genero` DISABLE KEYS */;
-INSERT INTO `genero` VALUES (1,'Masculino','Esto es un hombre'),(2,'Femenino','Esto es una mujer'),(3,'Otro','');
-/*!40000 ALTER TABLE `genero` ENABLE KEYS */;
+LOCK TABLES `generos` WRITE;
+/*!40000 ALTER TABLE `generos` DISABLE KEYS */;
+INSERT INTO `generos` VALUES (1,'Masculino','Esto es un hombre'),(2,'Femenino','Esto es una mujer'),(3,'Otro','');
+/*!40000 ALTER TABLE `generos` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -83,14 +83,14 @@ CREATE TABLE `grupos` (
   `idGrupos` int(11) NOT NULL,
   `nombre` varchar(45) DEFAULT NULL,
   `idCurso` int(11) NOT NULL,
-  `idProfesor` int(11) NOT NULL,
+  `idProfesor` varchar(45) NOT NULL,
   `horaInicio` varchar(45) DEFAULT NULL,
   `horaSalida` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idGrupos`),
   KEY `FK_GRU_CUR_idx` (`idCurso`),
   KEY `FK_GRU_PRO_idx` (`idProfesor`),
   CONSTRAINT `FK_GRU_CUR` FOREIGN KEY (`idCurso`) REFERENCES `cursos` (`idcurso`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_GRU_PER_PROF` FOREIGN KEY (`idProfesor`) REFERENCES `personas` (`cedula`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `FK_GRU_PER_PROF` FOREIGN KEY (`idProfesor`) REFERENCES `personas` (`identificacion`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -136,14 +136,14 @@ DROP TABLE IF EXISTS `matriculas`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `matriculas` (
   `idMatriculas` int(11) NOT NULL,
-  `idEstudiante` int(11) NOT NULL,
+  `idEstudiante` varchar(45) NOT NULL,
   `idGrupo` int(11) NOT NULL,
   `fechaPago` varchar(45) DEFAULT NULL,
   `aprobado` int(11) DEFAULT NULL,
   PRIMARY KEY (`idMatriculas`,`idEstudiante`,`idGrupo`),
   KEY `FK_MAT_PER_idx` (`idEstudiante`),
   KEY `Fk_MAT_GRU_idx` (`idGrupo`),
-  CONSTRAINT `FK_MAT_PER` FOREIGN KEY (`idEstudiante`) REFERENCES `personas` (`cedula`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_MAT_PER` FOREIGN KEY (`idEstudiante`) REFERENCES `personas` (`identificacion`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `Fk_MAT_GRU` FOREIGN KEY (`idGrupo`) REFERENCES `grupos` (`idGrupos`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -165,7 +165,7 @@ DROP TABLE IF EXISTS `personas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `personas` (
-  `cedula` int(11) NOT NULL,
+  `identificacion` varchar(45) NOT NULL,
   `nombre` varchar(45) DEFAULT NULL,
   `apellido1` varchar(45) DEFAULT NULL,
   `apellido2` varchar(45) DEFAULT NULL,
@@ -178,11 +178,11 @@ CREATE TABLE `personas` (
   `idTipoPersona` int(11) DEFAULT NULL,
   `idioma` int(11) DEFAULT NULL,
   `Habilitado` int(1) DEFAULT '1' COMMENT '1 - Activo\n0 - Inactivo',
-  PRIMARY KEY (`cedula`),
+  PRIMARY KEY (`identificacion`),
   KEY `FK_PER_TIPER_idx` (`idTipoPersona`),
   KEY `FK_PER_GEN_idx` (`genero`),
   KEY `FK_PER_IDI_idx` (`idioma`),
-  CONSTRAINT `FK_PER_GEN` FOREIGN KEY (`genero`) REFERENCES `genero` (`idGenero`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_PER_GEN` FOREIGN KEY (`genero`) REFERENCES `generos` (`idGenero`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_PER_IDI` FOREIGN KEY (`idioma`) REFERENCES `idiomas` (`idIdioma`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_PER_TIPER` FOREIGN KEY (`idTipoPersona`) REFERENCES `tipopersonas` (`idTipoPersonas`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -194,7 +194,7 @@ CREATE TABLE `personas` (
 
 LOCK TABLES `personas` WRITE;
 /*!40000 ALTER TABLE `personas` DISABLE KEYS */;
-INSERT INTO `personas` VALUES (402190497,'Stefanny','Villalobos','Uva',87453715,2,'San Rafael de Alajuela','15/06/1993','fany-9315@hotmail.com','',2,1,1),(402190598,'Anita','Villalobos','Jimenez',67453214,1,'San Antonio de Belen ','dd/MM/yyyy','anita@anita.com',NULL,2,1,1),(409280487,'Camila','Gonsalez','Jimenez',84758697,1,'wdhfjl','dd/MM/yyyy','camila@camila.com',NULL,2,1,1);
+INSERT INTO `personas` VALUES ('201890486','Esteban','Rodriguez','Solera',78392612,2,'San vicente de carrillo','dd/MM/yyyy','esteban@esteban.com',NULL,2,2,1),('207890567','Miguel','Lopez','Madrigal',87563456,2,'San Jose','dd/MM/yyyy','migles@hotmail.com',NULL,2,1,1),('38934','sjskl','dskjdndskj','djd',8328923,1,'dkjhfhfd','dd/MM/yyyy','aslkkls',NULL,2,1,0),('402190497','Stefanny','Villalobos','Uva',87453715,2,'San Rafael de Alajuela','15/06/1993','fany-9315@hotmail.com','',2,1,1),('402190598','Anita','Villalobos','Jimenez',67453214,1,'San Antonio de Belen ','dd/MM/yyyy','anita@anita.com',NULL,2,1,1),('409280489','Camila','Gonzales','Jimenez',84758697,1,'De la casa de doña Lela 500 metros norte','08/10/1997','camila@camila.com',NULL,2,1,1),('489567','Elizabeth','Montero','Rojas',90563378,2,'La Asunción, Heredia,urbanización las lomas','03/10/1983','moro@hotmail.com',NULL,2,1,1),('490ncdklls','Camilo','Cesto','Rosando',92890022,1,'San jose. desamparados avenida 2','dd/MM/yyyy','cesto@gmail.com',NULL,2,1,1),('4CS678BC08GI','Ericka','Matamoros','Paniagua',67894836,2,'San Josecito, ccale 2 avenida 6','18/10/2000','ericka@gmail.es',NULL,2,1,1),('5544','jjl','kklk','klk',797,2,'kjhjk','dd/MM/yyyy','gkj',NULL,2,1,0),('60345678','Mateo','Viquez','Amaranto',67890987,3,'Escazu de San Jose Avenida 5','dd/MM/yyyy','matama@gmail.com',NULL,2,2,1);
 /*!40000 ALTER TABLE `personas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -231,4 +231,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-13 18:19:08
+-- Dump completed on 2018-10-23 15:39:39

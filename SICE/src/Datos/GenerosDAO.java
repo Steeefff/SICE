@@ -11,35 +11,46 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-/**
- *
- * @author fany-
+/*
+  @author Grupo #30 Ingeniería 2018-2019 
+ *@author David Rodríguez Zamora
+ *@author Katherine Jiménez Soto
+ *@author Melany Monge Montero
+ *@author Stefanny Villalobos Uva
+ * Proyecto de Ingeniería - Universidad Nacional de Costa Rica
+ * Sistema Interno de Control de Estudiantes, SICE
+ * Profesor: Rafael Alvarado Arley
+ * Dueño del producto: Yensy Soto, Centro Cultural Corporación Costa Rica
+ * Versión 1.2, 21/10/2018
+ * Since 1.0
  */
 public class GenerosDAO {
  
     Conexion conexion;
+    ArrayList<String> generos = new ArrayList<String> ();
     
      public  GenerosDAO(){
    
         conexion=new Conexion();
     }   
     
-    
-    public ArrayList<Generos> listarGeneros(){          //metodo listar
+     
+     /////////////////////////////////////////////// LISTAR GENEROS ///////////////////////////////////////////////////////////
+    public ArrayList<Generos> listarGeneros(){          
        
-         ArrayList listarGeneros = new ArrayList();
-        Generos tmp; //
+        ArrayList listarGeneros = new ArrayList();
+        Generos tmp; // Variable Temporal 
         try{
             Connection acceDB = conexion.getConexion();
-            PreparedStatement ps = acceDB.prepareStatement("SELECT * FROM sice.genero;");
-             ResultSet rs = ps.executeQuery();
-            while(rs.next()){ //si hay registros por leer entonces..
+            PreparedStatement ps = acceDB.prepareStatement("SELECT * FROM sice.generos;");
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){ //Si hay registros por leer entonces..
                 tmp = new Generos();
                 
                 tmp.setIdGenero(rs.getInt(1));
                 tmp.setNombre(rs.getString(2));
            
-              listarGeneros.add(tmp);
+                listarGeneros.add(tmp);
             }
         }catch (Exception e){
             e.printStackTrace();

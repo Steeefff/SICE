@@ -1,60 +1,52 @@
-
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package Datos;
 import Modelos.Idiomas;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-/**
- *
- * @author fany-
+/*
+  @author Grupo #30 Ingeniería 2018-2019 
+ *@author David Rodríguez Zamora
+ *@author Katherine Jiménez Soto
+ *@author Melany Monge Montero
+ *@author Stefanny Villalobos Uva
+ * Proyecto de Ingeniería - Universidad Nacional de Costa Rica
+ * Sistema Interno de Control de Estudiantes, SICE
+ * Profesor: Rafael Alvarado Arley
+ * Dueño del producto: Yensy Soto, Centro Cultural Corporación Costa Rica
+ * Versión 1.2, 21/10/2018
+ * Since 1.0
  */
 public class IdiomasDAO {
  
     Conexion conexion;
     
-     public  IdiomasDAO(){
+    public  IdiomasDAO(){
    
         conexion=new Conexion();
     }   
-    public String insertarPersona (Idiomas i){
-       String respuestaRegistro=null;
-        try{
-            Connection accesoDB = conexion.getConexion();
-            PreparedStatement ps = accesoDB.prepareStatement("INSERT INTO `idiomas`(`idIdioma`, `nombre`) "
-                    + "VALUES (?);"
-            );
-            ps.setString(1, i.getNombre()); 
- 
-           
-            int numFAfectadas = ps.executeUpdate(); //toma el numero de filas afectadas
-           
-            if(numFAfectadas>0){
-                respuestaRegistro="Idioma insertado con Exito! ";
-            }
-            
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        
-        return respuestaRegistro;
-   }
     
-    public ArrayList<Idiomas> listarIdiomas(){          //metodo listar
+    ///////////////////////////////////////////////////LISTAR IDIOMAS /////////////////////////////////////////////////////////
+    public ArrayList<Idiomas> listarIdiomas(){          
        
-         ArrayList listarIdiomas = new ArrayList();
-        Idiomas tmp; //
+        ArrayList listarIdiomas = new ArrayList();
+        Idiomas tmp; // Variable Temporal
         try{
             Connection acceDB = conexion.getConexion();
             PreparedStatement ps = acceDB.prepareStatement("SELECT * FROM sice.idiomas;");
-             ResultSet rs = ps.executeQuery();
-            while(rs.next()){ //si hay registros por leer entonces..
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){ //Si hay registros por leer entonces..
                 tmp = new Idiomas();
                 
                 tmp.setIdIdioma(rs.getInt(1));
                 tmp.setNombre(rs.getString(2));
            
-              listarIdiomas.add(tmp);
+                listarIdiomas.add(tmp);
             }
         }catch (Exception e){
             e.printStackTrace();

@@ -1,12 +1,22 @@
-
 package Modelos;
 
-import java.util.Date;
-
+/*
+  @author Grupo #30 Ingeniería 2018-2019 
+ *@author David Rodríguez Zamora
+ *@author Katherine Jiménez Soto
+ *@author Melany Monge Montero
+ *@author Stefanny Villalobos Uva
+ * Proyecto de Ingeniería - Universidad Nacional de Costa Rica
+ * Sistema Interno de Control de Estudiantes, SICE
+ * Profesor: Rafael Alvarado Arley
+ * Dueño del producto: Yensy Soto, Centro Cultural Corporación Costa Rica
+ * Versión 1.2, 21/10/2018
+ * Since 1.0
+ */
 
 public class Personas {
-   
-    private int cedula;
+
+    private String identificacion;
     private String nombre;
     private String apellido1;
     private String apellido2;
@@ -20,11 +30,11 @@ public class Personas {
     private int idioma;
     private int habilitado;
 
-    public Personas() {
+    public Personas() {        
     }
 
-    public Personas(int cedula, String nombre, String apellido1, String apellido2, int telefono, String direccion, String fechaNacimiento, String correo, String contraseña, int genero, int idTipoPersona) {
-        this.cedula = cedula;
+    public Personas(String identificacion, String nombre, String apellido1, String apellido2, int telefono, String direccion, String fechaNacimiento, String correo, String contraseña, int genero, int idTipoPersona, int idioma) {
+        this.identificacion = identificacion;
         this.nombre = nombre;
         this.apellido1 = apellido1;
         this.apellido2 = apellido2;
@@ -35,16 +45,16 @@ public class Personas {
         this.contraseña = contraseña;
         this.genero = genero;
         this.idTipoPersona = idTipoPersona;
+        this.idioma=idioma;
         this.habilitado = 1;
-    }
-    
+    }   
 
-    public int getCedula() {
-        return cedula;
+    public String getIdentificacion() {
+        return identificacion;
     }
 
-    public void setCedula(int cedula) {
-        this.cedula = cedula;
+    public void setIdentificacion(String identificacion) {
+        this.identificacion = identificacion;
     }
 
     public String getNombre() {
@@ -142,7 +152,5 @@ public class Personas {
     public void setHabilitado(int habilitado) {
         this.habilitado = habilitado;
     }
-
-   
     
 }
