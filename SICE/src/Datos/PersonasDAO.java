@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Datos;
 
 import Modelos.Personas;
@@ -153,9 +148,9 @@ public class PersonasDAO {
             ps.setInt(12, p.getIdioma());
            
             int numFAfectadas = ps.executeUpdate(); //Toma el numero de filas afectadas
-           
-            if(numFAfectadas>0){
-                respuestaRegistro="El profesor "+p.getNombre()+" "+p.getApellido1()+" "+p.getApellido2()+" ha sido insertado con éxito! ";
+            
+            if(numFAfectadas>0){                     //Se cambia la palabra INSERTADO por REGISTRADO ya que el profesor realiza un comentario que se suena raro la palabra insertado.
+                respuestaRegistro="El profesor "+p.getNombre()+" "+p.getApellido1()+" "+p.getApellido2()+" ha sido registrado con éxito! ";
             }
             
         }catch(Exception e){

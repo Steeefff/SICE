@@ -247,6 +247,11 @@ public class AgregarProfesor extends javax.swing.JFrame {
         jLabel2.setText("Identificación:");
 
         txtIdentificacion.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtIdentificacion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtIdentificacionKeyTyped(evt);
+            }
+        });
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setText("Nombre:");
@@ -564,6 +569,10 @@ public class AgregarProfesor extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Solo se permite ingresar números, por favor ingrese el número de teléfono de nuevo");
             }
         }
+        if(this.txtTelefono.getText().length() >= 10){
+            JOptionPane.showMessageDialog(null,"El telefono debe ser menor a 9 digitos");
+            txtTelefono.transferFocus();
+        }
     }//GEN-LAST:event_txtTelefonoKeyTyped
 
     private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
@@ -574,6 +583,10 @@ public class AgregarProfesor extends javax.swing.JFrame {
             evt.consume();
             JOptionPane.showMessageDialog(null, "Formato del nombre incorrecto,solo se permite ingresar letras, por favor intente de nuevo.");
         }
+        if(this.txtNombre.getText().length() >= 46){
+            JOptionPane.showMessageDialog(null,"El nombre debe ser menor a 45 caracteres");
+            this.txtNombre.transferFocus();
+        }
     }//GEN-LAST:event_txtNombreKeyTyped
 
     private void txtApellido1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApellido1KeyTyped
@@ -582,6 +595,10 @@ public class AgregarProfesor extends javax.swing.JFrame {
             
             evt.consume();
             JOptionPane.showMessageDialog(null, "Formato del primer apellido incorrecto,solo se permite ingresar letras, por favor intente de nuevo.");
+        }
+        if(this.txtApellido1.getText().length() >= 46){
+            JOptionPane.showMessageDialog(null,"El txtApellido1 debe ser menor a 45 caracteres");
+            this.txtApellido1.transferFocus();
         }
     }//GEN-LAST:event_txtApellido1KeyTyped
 
@@ -592,7 +609,18 @@ public class AgregarProfesor extends javax.swing.JFrame {
             evt.consume();
             JOptionPane.showMessageDialog(null, "Formato del segundo apellido incorrecto,solo se permite ingresar letras, por favor intente de nuevo.");
         }
+        if(this.txtApellido2.getText().length() >= 46){
+            JOptionPane.showMessageDialog(null,"El txtApellido2 debe ser menor a 45 caracteres");
+            this.txtApellido2.transferFocus();
+        }
     }//GEN-LAST:event_txtApellido2KeyTyped
+
+    private void txtIdentificacionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdentificacionKeyTyped
+        if(this.txtIdentificacion.getText().length() >=16){
+            JOptionPane.showMessageDialog(null,"La identificación debe ser menor a 15 caracteres");
+            this.txtIdentificacion.transferFocus();
+        }
+    }//GEN-LAST:event_txtIdentificacionKeyTyped
 
   
     
