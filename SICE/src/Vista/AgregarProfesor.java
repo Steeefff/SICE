@@ -614,7 +614,7 @@ public class AgregarProfesor extends javax.swing.JFrame {
             this.txtApellido2.transferFocus();
         }
     }//GEN-LAST:event_txtApellido2KeyTyped
-
+ 
     private void txtIdentificacionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdentificacionKeyTyped
         if(this.txtIdentificacion.getText().length() >=16){
             JOptionPane.showMessageDialog(null,"La identificación debe ser menor a 15 caracteres");
