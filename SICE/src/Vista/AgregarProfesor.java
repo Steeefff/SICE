@@ -8,9 +8,12 @@ import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.ImageIcon;
@@ -50,6 +53,7 @@ public class AgregarProfesor extends javax.swing.JFrame {
         setVisible(true);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         cargarIdiomasGeneros(this.comboIdiomas, this.comboGenero);
+        this.lbAviso.setVisible(false);
     }   
     
     
@@ -83,11 +87,29 @@ public class AgregarProfesor extends javax.swing.JFrame {
         }
     }
     
-    
+    //Este metodo limpia el formulario después de agregar un profesor nuevo
     public void Limpiar(){
         this.txtApellido1.setText("");
         this.txtApellido2.setText("");
         this.txtIdentificacion.setText("");
+        this.txtCorreo.setText("");
+        this.txtDireccion.setText("");
+        this.comboGenero.setSelectedIndex(0);
+        this.txtNombre.setText("");
+        this.txtTelefono.setText("");
+        this.comboFechaNacimiento.setDate(new Date());
+        this.comboIdiomas.setSelectedIndex(0);
+        this.comboFechaNacimiento.setCalendar(null);
+    }
+    //Cuando se quiere ingresar un profesor nuevo el formulario esta inhabilitado al principio,
+    //cuando se termine de escribir la identificacion el evento txtIdentificacionKeyReleased
+    //busca si la identificacion existe en la base de datos, si es así muestra la informacion
+    //de ese profesor en el formulario pero con los espacios inabilitados excepto el de indentificacion
+    //en el momento en que se escribe un caracter nuevo la busqueda se vuelve a realizar y este metodo 
+    //limpia la informacion de la busqueda anterior de la  identificacion que sí existía
+    public void limpiarBusqueda(){
+        this.txtApellido1.setText("");
+        this.txtApellido2.setText("");
         this.txtCorreo.setText("");
         this.txtDireccion.setText("");
         this.comboGenero.setSelectedIndex(0);
@@ -133,6 +155,7 @@ public class AgregarProfesor extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         txtCorreo = new javax.swing.JTextField();
         comboIdiomas = new javax.swing.JComboBox<>();
+        lbAviso = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -247,7 +270,11 @@ public class AgregarProfesor extends javax.swing.JFrame {
         jLabel2.setText("Identificación:");
 
         txtIdentificacion.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtIdentificacion.setNextFocusableComponent(txtNombre);
         txtIdentificacion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtIdentificacionKeyReleased(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtIdentificacionKeyTyped(evt);
             }
@@ -257,6 +284,8 @@ public class AgregarProfesor extends javax.swing.JFrame {
         jLabel6.setText("Nombre:");
 
         txtNombre.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtNombre.setEnabled(false);
+        txtNombre.setNextFocusableComponent(txtApellido1);
         txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtNombreKeyTyped(evt);
@@ -270,6 +299,8 @@ public class AgregarProfesor extends javax.swing.JFrame {
         jLabel8.setText("Segundo apellido:");
 
         txtApellido2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtApellido2.setEnabled(false);
+        txtApellido2.setNextFocusableComponent(comboFechaNacimiento);
         txtApellido2.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtApellido2KeyTyped(evt);
@@ -277,6 +308,8 @@ public class AgregarProfesor extends javax.swing.JFrame {
         });
 
         txtApellido1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtApellido1.setEnabled(false);
+        txtApellido1.setNextFocusableComponent(txtApellido2);
         txtApellido1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtApellido1KeyTyped(evt);
@@ -300,8 +333,12 @@ public class AgregarProfesor extends javax.swing.JFrame {
 
         comboGenero.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         comboGenero.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        comboGenero.setEnabled(false);
+        comboGenero.setNextFocusableComponent(txtCorreo);
 
         txtTelefono.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtTelefono.setEnabled(false);
+        txtTelefono.setNextFocusableComponent(txtDireccion);
         txtTelefono.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtTelefonoKeyTyped(evt);
@@ -309,6 +346,8 @@ public class AgregarProfesor extends javax.swing.JFrame {
         });
 
         txtDireccion.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtDireccion.setEnabled(false);
+        txtDireccion.setNextFocusableComponent(comboIdiomas);
 
         btnVolver.setBackground(new java.awt.Color(0, 133, 202));
         btnVolver.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -326,18 +365,23 @@ public class AgregarProfesor extends javax.swing.JFrame {
         btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
         btnGuardar.setText("Guardar");
         btnGuardar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnGuardar.setEnabled(false);
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGuardarActionPerformed(evt);
             }
         });
 
+        comboFechaNacimiento.setEnabled(false);
         comboFechaNacimiento.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        comboFechaNacimiento.setNextFocusableComponent(comboGenero);
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel14.setText("Idioma:");
 
         txtCorreo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtCorreo.setEnabled(false);
+        txtCorreo.setNextFocusableComponent(txtTelefono);
         txtCorreo.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtCorreoFocusLost(evt);
@@ -345,6 +389,12 @@ public class AgregarProfesor extends javax.swing.JFrame {
         });
 
         comboIdiomas.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        comboIdiomas.setEnabled(false);
+        comboIdiomas.setNextFocusableComponent(btnGuardar);
+
+        lbAviso.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lbAviso.setForeground(new java.awt.Color(255, 51, 51));
+        lbAviso.setText("¡Esa identificación ya está asociada a un profesor!");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -392,7 +442,10 @@ public class AgregarProfesor extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(btnVolver, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                    .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(lbAviso, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel14)
                                     .addComponent(txtApellido1, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -449,18 +502,20 @@ public class AgregarProfesor extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel14)
-                .addGap(10, 10, 10)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel14)
+                        .addGap(10, 10, 10)
                         .addComponent(comboIdiomas, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(20, 20, 20)
                         .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbAviso))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(61, 61, 61))
         );
 
@@ -526,7 +581,7 @@ public class AgregarProfesor extends javax.swing.JFrame {
                     }
 
                 }else{
-                    JOptionPane.showMessageDialog(null,"Edad inválida. El profesor debe de ser mayor de 18 años.");
+                    JOptionPane.showMessageDialog(null,"Edad inválida. El profesor debe de ser de 18 años o mayor.");
                 }
             }else{
                 JOptionPane.showMessageDialog(null, "Es necesario completar todos los espacios");
@@ -570,7 +625,7 @@ public class AgregarProfesor extends javax.swing.JFrame {
             }
         }
         if(this.txtTelefono.getText().length() >= 10){
-            JOptionPane.showMessageDialog(null,"El telefono debe ser menor a 9 digitos");
+            JOptionPane.showMessageDialog(null,"El telefono debe ser máximo de 9 digitos");
             txtTelefono.transferFocus();
         }
     }//GEN-LAST:event_txtTelefonoKeyTyped
@@ -616,12 +671,98 @@ public class AgregarProfesor extends javax.swing.JFrame {
     }//GEN-LAST:event_txtApellido2KeyTyped
  
     private void txtIdentificacionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdentificacionKeyTyped
-        if(this.txtIdentificacion.getText().length() >=16){
-            JOptionPane.showMessageDialog(null,"La identificación debe ser menor a 15 caracteres");
+        if(this.txtIdentificacion.getText().length() >=20){
+            JOptionPane.showMessageDialog(null,"La identificación debe ser menor a 20 caracteres");
             this.txtIdentificacion.transferFocus();
         }
     }//GEN-LAST:event_txtIdentificacionKeyTyped
+    //Este evento llama al metodo valida que la identificacion nueva que se quiere agregar no exista en la base de datos
+    private void txtIdentificacionKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdentificacionKeyReleased
+        buscar(this.txtIdentificacion.getText());
+    }//GEN-LAST:event_txtIdentificacionKeyReleased
+    //metodo valida que la identificacion nueva que se quiere agregar no exista en la base de datos
+    public void buscar(String identificacion){
+        
+        Personas r = new Personas();
 
+        try {
+            //Se llama a buscaReg en PersonasDAO que validad si existe o no la identificacion en la base de datos
+            //MAgreProf es un objeto de la clase PersonaDAO
+            r = MAgreProf.buscarReg(identificacion);
+        }catch (SQLException ex) {
+            Logger.getLogger(ModificarProfesor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+                
+            if(r==null){
+                //Si la identificacion no existe buscarReg devuelve null
+               System.out.println("No se ha encontrado el profesor");
+               //Se limpian los datos de las busquedas anteriores y se habilita el formulario para agregar al
+               //profesor nuevo con una identificacion que no exista en la base de datos
+               limpiarBusqueda();
+               //Habilita el formulario
+               habilitar();
+               this.lbAviso.setVisible(false);
+            }
+            else{//Si la identificacion ya existe en la base de datos se carga la infomacion de ese profesor con el
+                //formulario inabilitado para editar
+                try {
+                    //Esta linea estaba de primera, llena los combo box con la info de la base de datos para que 
+                    //estén disponibles para cargar la info del profesor encontrado
+                    cargarIdiomasGeneros(this.comboIdiomas, this.comboGenero);
+                    //Deshabilita el formulario para que no sea editable la info del profesor encontrado
+                    deshabilitar();
+                    //muestra los datos del profesor encontrado en los espacios del formulario
+                    mostrar(r);
+                    this.lbAviso.setVisible(true);
+                }catch (Exception ex) {
+                    Logger.getLogger(ModificarProfesor.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+    }
+    //Este metodo muestra la info de un profesor en los espacios del formulario
+    public void mostrar(Personas r) throws ParseException{
+        this.txtIdentificacion.setText(" ");
+           
+        txtIdentificacion.setText(r.getIdentificacion());
+        txtNombre.setText(r.getNombre());
+        txtApellido1.setText(r.getApellido1());
+        txtApellido2.setText(r.getApellido2());
+        txtCorreo.setText(r.getCorreo());
+        txtDireccion.setText(r.getDireccion());
+        txtTelefono.setText(Integer.toString(r.getTelefono()));       
+        this.comboGenero.setSelectedIndex(r.getGenero());
+        this.comboIdiomas.setSelectedIndex(r.getIdioma());        
+        String dateValue = r.getFechaNacimiento(); 
+        java.util.Date date = new SimpleDateFormat("dd/MM/yyyy").parse(dateValue);
+        this.comboFechaNacimiento.setDate(date);
+            
+   } 
+    //Habilita los espacios del formulario y el boton de guardar
+    public void habilitar(){
+        this.txtApellido1.setEnabled(true);
+        this.txtApellido2.setEnabled(true);
+        this.txtCorreo.setEnabled(true);
+        this.txtDireccion.setEnabled(true);
+        this.txtNombre.setEnabled(true);
+        this.txtTelefono.setEnabled(true);
+        this.comboFechaNacimiento.setEnabled(true);
+        this.comboGenero.setEnabled(true);
+        this.comboIdiomas.setEnabled(true);
+        this.btnGuardar.setEnabled(true);
+    }
+    //Deshabilita los espacios del formulario y el boton de guardar
+    public void deshabilitar(){
+        this.txtApellido1.setEnabled(false);
+        this.txtApellido2.setEnabled(false);
+        this.txtCorreo.setEnabled(false);
+        this.txtDireccion.setEnabled(false);
+        this.txtNombre.setEnabled(false);
+        this.txtTelefono.setEnabled(false);
+        this.comboFechaNacimiento.setEnabled(false);
+        this.comboGenero.setEnabled(false);
+        this.comboIdiomas.setEnabled(false);
+        this.btnGuardar.setEnabled(false);
+    }
   
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -650,6 +791,7 @@ public class AgregarProfesor extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JLabel lbAviso;
     public javax.swing.JTextField txtApellido1;
     public javax.swing.JTextField txtApellido2;
     public javax.swing.JTextField txtCorreo;

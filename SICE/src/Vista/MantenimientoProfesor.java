@@ -27,7 +27,7 @@ public class MantenimientoProfesor extends javax.swing.JFrame {
 
     
     VentanaPrincipal ventanaPrincipal;
-     ModificarProfesor modificarProfesor;
+     ModificarProfesor modificarProfesor=new ModificarProfesor();
      PersonasDAO personasDAO = new PersonasDAO();
        
     public MantenimientoProfesor( ) {
@@ -75,7 +75,8 @@ public class MantenimientoProfesor extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         btnBuscarID = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        lbId = new javax.swing.JLabel();
+        lbIDSeleccionado = new javax.swing.JLabel();
+        lbId1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -339,7 +340,9 @@ public class MantenimientoProfesor extends javax.swing.JFrame {
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/sice.jpeg"))); // NOI18N
         jLabel3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        lbId.setFont(new java.awt.Font("sansserif", 0, 10)); // NOI18N
+        lbIDSeleccionado.setFont(new java.awt.Font("sansserif", 0, 10)); // NOI18N
+
+        lbId1.setFont(new java.awt.Font("sansserif", 0, 10)); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -351,14 +354,19 @@ public class MantenimientoProfesor extends javax.swing.JFrame {
                 .addGap(20, 20, 20)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
-                            .addComponent(txtBuscar))
-                        .addGap(18, 18, 18)
-                        .addComponent(btnBuscarID, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(lbId, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
+                                    .addComponent(txtBuscar))
+                                .addGap(18, 18, 18)
+                                .addComponent(btnBuscarID, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(22, 22, 22)
+                                .addComponent(lbIDSeleccionado, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lbId1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(184, 184, 184)
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -375,23 +383,23 @@ public class MantenimientoProfesor extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, Short.MAX_VALUE)
+                .addGap(18, 26, Short.MAX_VALUE)
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(49, 49, 49)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnBuscarID)
-                            .addComponent(lbId, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnBuscarID))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel2)
-                        .addGap(78, 78, 78))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbIDSeleccionado, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbId1, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(13, 13, 13)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -417,13 +425,14 @@ public class MantenimientoProfesor extends javax.swing.JFrame {
       ventanaPrincipal = new VentanaPrincipal();
       ventanaPrincipal.setVisible(true);
       this.dispose();
+      if(this.modificarProfesor.isVisible())
+          this.modificarProfesor.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void btnModificarProfesorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarProfesorActionPerformed
-        modificarProfesor=new ModificarProfesor();
         modificarProfesor.setVisible(true);
-        if(this.lbId.getText()!="")
-        modificarProfesor.buscar(this.lbId.getText());
+        if(this.lbId1.getText()!="")
+        modificarProfesor.buscar(this.lbId1.getText());
     }//GEN-LAST:event_btnModificarProfesorActionPerformed
 
     private void btnBuscarIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarIDActionPerformed
@@ -439,20 +448,23 @@ public class MantenimientoProfesor extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBuscarIDActionPerformed
 
     private void btnDeshabilitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshabilitarActionPerformed
-        personasDAO.deshabiliar(lbId.getText());
-        mostrar(lbId.getText());
-        this.lbId.setText("");
+        personasDAO.deshabiliar(lbId1.getText());
+        this.lbIDSeleccionado.setText("Identificación deshabilitada: ");
+        mostrar("");
+        //this.lbId.setText("");
     }//GEN-LAST:event_btnDeshabilitarActionPerformed
 
     private void btnHabilitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHabilitarActionPerformed
-        personasDAO.habiliar(lbId.getText());
-        mostrar(lbId.getText());
-        this.lbId.setText("");
+        personasDAO.habiliar(lbId1.getText());
+        this.lbIDSeleccionado.setText("Identificación habilitada: ");
+        mostrar("");
+        //this.lbId.setText("");
     }//GEN-LAST:event_btnHabilitarActionPerformed
 
     private void tablaProfesoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaProfesoresMouseClicked
-        int fila = tablaProfesores.rowAtPoint(evt.getPoint());        
-        lbId.setText(tablaProfesores.getValueAt(fila, 0).toString());
+        int fila = tablaProfesores.rowAtPoint(evt.getPoint());
+        this.lbIDSeleccionado.setText("Identificación seleccionada: ");
+        lbId1.setText(tablaProfesores.getValueAt(fila, 0).toString());
     }//GEN-LAST:event_tablaProfesoresMouseClicked
     void mostrar(String buscar) {
         try {
@@ -489,7 +501,8 @@ public class MantenimientoProfesor extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lbId;
+    private javax.swing.JLabel lbIDSeleccionado;
+    private javax.swing.JLabel lbId1;
     private javax.swing.JTable tablaProfesores;
     private javax.swing.JTextField txtBuscar;
     // End of variables declaration//GEN-END:variables

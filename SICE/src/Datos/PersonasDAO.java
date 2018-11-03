@@ -89,7 +89,7 @@ public class PersonasDAO {
             rs = st.executeQuery(sql);
             System.out.println("Profesor encontrado");           
         }catch (Exception e) {
-            System.out.println("No Correcto");
+            System.out.println("Hubo un error");
             e.printStackTrace();
         }
         r= asignar();
@@ -293,7 +293,7 @@ public class PersonasDAO {
             return modelo;
 
         }catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Ha habido un probema");
+            JOptionPane.showMessageDialog(null, "Ha habido un error");
             
         }
         return null;

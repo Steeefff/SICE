@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Datos;
 
 import java.sql.Connection;
@@ -35,7 +30,7 @@ public class Conexion {
         Connection conexion = null;
         try{
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            conexion=DriverManager.getConnection("jdbc:mysql://localhost:3306/sice","root",""); //Tiene que llamarse igual a la instancia de mi server(Mysql)
+            conexion=DriverManager.getConnection("jdbc:mysql://localhost:3306/sice","root","root"); //Tiene que llamarse igual a la instancia de mi server(Mysql)
             st=conexion.createStatement();
             System.out.println("CONECTADO");
         }catch(Exception e){

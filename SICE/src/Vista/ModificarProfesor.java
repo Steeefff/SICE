@@ -505,8 +505,7 @@ public class ModificarProfesor extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     public void buscar(String identificacion){
-       cargarIdiomasGeneros(this.comboIdiomas, this.comboGenero);
-       this.identificacionBuscada=identificacion;
+        this.identificacionBuscada=identificacion;
         Personas r = new Personas();
 
         try {
@@ -519,6 +518,8 @@ public class ModificarProfesor extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "No existe un profesor con esa identificación");
             else{
                 try {
+                    //Esta linea estaba de primera
+                    cargarIdiomasGeneros(this.comboIdiomas, this.comboGenero);
                     mostrar(r);
                 }catch (ParseException ex) {
                     Logger.getLogger(ModificarProfesor.class.getName()).log(Level.SEVERE, null, ex);
