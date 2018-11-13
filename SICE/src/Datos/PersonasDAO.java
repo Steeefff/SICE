@@ -53,9 +53,9 @@ public class PersonasDAO {
             
             if(!identificacionBuscada.equals(identificacion)) {
                 try {
-                     r = personasDAO.buscarReg(identificacionBuscada);
+                     r = personasDAO.buscarReg(identificacion);
                  }catch (SQLException ex) {
-                    Logger.getLogger(ModificarProfesor.class.getName()).log(Level.SEVERE, null, ex);
+                    ex.printStackTrace();
                 }
                 
                 if(r==null){
@@ -63,7 +63,7 @@ public class PersonasDAO {
                     JOptionPane.showMessageDialog(null, "Se ha actualizado el profesor "+nombre+" "+apellido1+" "+apellido2);
                     modificado=true;   
                 }else{
-                        JOptionPane.showMessageDialog(null, "Ya existe un profesor con esa identificación");
+                        JOptionPane.showMessageDialog(null, "Ya existe un profesor con esa identificación: "+r.getNombre()+" "+r.getApellido1()+" "+r.getApellido2());
                 }
             }else{
                 st.executeUpdate("UPDATE sice.personas SET identificacion='"+identificacion+"', nombre='"+nombre+"', apellido1='"+apellido1+"',apellido2='"+apellido2+"',telefono='"+telefono+"',direccion='"+direccion+"',fechaNacimiento='"+fechaNacimiento+"',correo='"+correo+"',genero='"+genero+"',idioma='"+idioma+"'  WHERE identificacion='"+identificacionBuscada+"'");
@@ -118,6 +118,7 @@ public class PersonasDAO {
                 r= new Personas (identificacion,Nombre,Apellido1,Apellido2,Telefono,Direccion,FechaNacimiento,Correo,Contraseña,Genero,IdTipoPersona,Idioma);
             }
         }catch (Exception e) {
+            e.printStackTrace();
         }
       
       return r;
@@ -229,6 +230,7 @@ public class PersonasDAO {
         }
         catch (Exception e){//En caso de error
             JOptionPane.showMessageDialog(null,"Ha habido un error");
+            e.printStackTrace();
         }
     }
       
@@ -242,6 +244,7 @@ public class PersonasDAO {
         }
         catch (Exception e){//En caso de error
             JOptionPane.showMessageDialog(null,"Ha habido un error");
+            e.printStackTrace();
         }
     }
     
@@ -294,7 +297,7 @@ public class PersonasDAO {
 
         }catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Ha habido un error");
-            
+            e.printStackTrace();
         }
         return null;
     }

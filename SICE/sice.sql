@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `sice` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `sice`;
--- MySQL dump 10.13  Distrib 5.6.24, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
 -- Host: localhost    Database: sice
 -- ------------------------------------------------------
--- Server version	5.6.26-log
+-- Server version	5.7.16-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -123,7 +123,7 @@ CREATE TABLE `idiomas` (
 
 LOCK TABLES `idiomas` WRITE;
 /*!40000 ALTER TABLE `idiomas` DISABLE KEYS */;
-INSERT INTO `idiomas` VALUES (1,'Inglés'),(2,'Portugües');
+INSERT INTO `idiomas` VALUES (1,'Inglés'),(2,'Portugues');
 /*!40000 ALTER TABLE `idiomas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -194,7 +194,7 @@ CREATE TABLE `personas` (
 
 LOCK TABLES `personas` WRITE;
 /*!40000 ALTER TABLE `personas` DISABLE KEYS */;
-INSERT INTO `personas` VALUES ('201890486','Esteban','Rodriguez','Solera',78392612,2,'San vicente de carrillo','dd/MM/yyyy','esteban@esteban.com',NULL,2,2,1),('207890567','Miguel','Lopez','Madrigal',87563456,2,'San Jose','dd/MM/yyyy','migles@hotmail.com',NULL,2,1,1),('38934','sjskl','dskjdndskj','djd',8328923,1,'dkjhfhfd','dd/MM/yyyy','aslkkls',NULL,2,1,0),('402190497','Stefanny','Villalobos','Uva',87453715,2,'San Rafael de Alajuela','15/06/1993','fany-9315@hotmail.com','',2,1,1),('402190598','Anita','Villalobos','Jimenez',67453214,1,'San Antonio de Belen ','dd/MM/yyyy','anita@anita.com',NULL,2,1,1),('409280489','Camila','Gonzales','Jimenez',84758697,1,'De la casa de doña Lela 500 metros norte','08/10/1997','camila@camila.com',NULL,2,1,1),('489567','Elizabeth','Montero','Rojas',90563378,2,'La Asunción, Heredia,urbanización las lomas','03/10/1983','moro@hotmail.com',NULL,2,1,1),('490ncdklls','Camilo','Cesto','Rosando',92890022,1,'San jose. desamparados avenida 2','dd/MM/yyyy','cesto@gmail.com',NULL,2,1,1),('4CS678BC08GI','Ericka','Matamoros','Paniagua',67894836,2,'San Josecito, ccale 2 avenida 6','18/10/2000','ericka@gmail.es',NULL,2,1,1),('5544','jjl','kklk','klk',797,2,'kjhjk','dd/MM/yyyy','gkj',NULL,2,1,0),('60345678','Mateo','Viquez','Amaranto',67890987,3,'Escazu de San Jose Avenida 5','dd/MM/yyyy','matama@gmail.com',NULL,2,2,1);
+INSERT INTO `personas` VALUES ('201890486','Esteban','Rodriguez','Solera',78392612,2,'San vicente de carrillo','02/11/2000','esteban@esteban.com',NULL,2,2,1),('207890567','Miguel','Lopez','Madrigal',87563456,2,'San Jose','dd/MM/yyyy','migles@hotmail.com',NULL,2,1,1),('38934','sjskl','dskjdndskj','djd',8328923,1,'dkjhfhfd','dd/MM/yyyy','aslkkls',NULL,2,1,1),('402190497','Stefanny','Villalobos','Uva',87453715,2,'San Rafael de Alajuela','15/06/1993','fany-9315@hotmail.com','',2,1,1),('402190598','Anita','Villalobos','Jimenez',67453214,1,'San Antonio de Belen ','dd/MM/yyyy','anita@anita.com',NULL,2,1,1),('409280487','Camila','Gonsalez','Jimenez',84758697,1,'wdhfjl','dd/MM/yyyy','camila@camila.com',NULL,2,1,1),('489','kc','kj','lj',86,2,'jl','3/10/2000','hj',NULL,2,1,1),('504210597','dos','dos','dos',55555555,3,'jbdsvkjsf','01/11/2000','dos@dos.com',NULL,2,1,1),('5544','jjl','kklk','klk',797,2,'kjhjk','dd/MM/yyyy','gkj',NULL,2,1,1),('60345678','Mateo','Viquez','Amaranto',67890987,3,'Escazu de San Jose Avenida 5','dd/MM/yyyy','matama@gmail.com',NULL,2,2,1),('8289HK72HDJSN','Juan','Mendez','Guido',8384929,3,'San Jose, Barrio escalante','23/11/2000','juan@gmail.com',NULL,2,1,1);
 /*!40000 ALTER TABLE `personas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -231,4 +231,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-23 15:39:39
+-- Dump completed on 2018-11-12 22:17:21

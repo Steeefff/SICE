@@ -71,7 +71,7 @@ public class AgregarProfesor extends javax.swing.JFrame {
              this.comboIdiomas.addItem(rs.getString("nombre"));
          }
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, e);
+            e.printStackTrace();
         }
         
         sql = "SELECT nombre FROM sice.generos";
@@ -83,7 +83,7 @@ public class AgregarProfesor extends javax.swing.JFrame {
              this.comboGenero.addItem(rs.getString("nombre"));
          }
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, e);
+            e.printStackTrace();
         }
     }
     
@@ -690,7 +690,7 @@ public class AgregarProfesor extends javax.swing.JFrame {
             //MAgreProf es un objeto de la clase PersonaDAO
             r = MAgreProf.buscarReg(identificacion);
         }catch (SQLException ex) {
-            Logger.getLogger(ModificarProfesor.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
                 
             if(r==null){
@@ -715,7 +715,7 @@ public class AgregarProfesor extends javax.swing.JFrame {
                     mostrar(r);
                     this.lbAviso.setVisible(true);
                 }catch (Exception ex) {
-                    Logger.getLogger(ModificarProfesor.class.getName()).log(Level.SEVERE, null, ex);
+                    ex.printStackTrace();
                 }
             }
     }

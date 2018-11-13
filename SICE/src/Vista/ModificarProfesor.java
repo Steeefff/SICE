@@ -68,7 +68,7 @@ public class ModificarProfesor extends javax.swing.JFrame {
              this.comboIdiomas.addItem(rs.getString("nombre"));
          }
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, e);
+            e.printStackTrace();
         }
         
         sql = "SELECT nombre FROM sice.generos";
@@ -80,7 +80,7 @@ public class ModificarProfesor extends javax.swing.JFrame {
              this.comboGenero.addItem(rs.getString("nombre"));
          }
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, e);
+            e.printStackTrace();
         }
     }
     
@@ -259,6 +259,14 @@ public class ModificarProfesor extends javax.swing.JFrame {
         jLabel2.setText("Identificación:");
 
         txtIdentificacion.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtIdentificacion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtIdentificacionKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtIdentificacionKeyTyped(evt);
+            }
+        });
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setText("Nombre:");
@@ -511,7 +519,7 @@ public class ModificarProfesor extends javax.swing.JFrame {
         try {
             r = personasDAO.buscarReg(identificacion);
         }catch (SQLException ex) {
-            Logger.getLogger(ModificarProfesor.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
                 
             if(r==null)
@@ -522,7 +530,7 @@ public class ModificarProfesor extends javax.swing.JFrame {
                     cargarIdiomasGeneros(this.comboIdiomas, this.comboGenero);
                     mostrar(r);
                 }catch (ParseException ex) {
-                    Logger.getLogger(ModificarProfesor.class.getName()).log(Level.SEVERE, null, ex);
+                    ex.printStackTrace();
                 }
             }
     }
@@ -616,7 +624,7 @@ public class ModificarProfesor extends javax.swing.JFrame {
         if(isEmail(this.txtCorreo.getText())){
             
         }else{
-            JOptionPane.showMessageDialog(null, "Formato de correo invalido, debe ser de la forma ejemplo@ejemplo.ej");
+            JOptionPane.showMessageDialog(null, "Formato de correo inválido, debe ser de la forma ejemplo@ejemplo.ej");
             this.txtCorreo.requestFocus();
         }
     }//GEN-LAST:event_txtCorreoFocusLost
@@ -632,6 +640,10 @@ public class ModificarProfesor extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Solo se permite ingresar números, por favor ingrese el número de teléfono de nuevo");
             }
         }
+        if(this.txtTelefono.getText().length() >= 10){
+            JOptionPane.showMessageDialog(null,"El telefono debe ser máximo de 9 digitos");
+            txtTelefono.transferFocus();
+        }
     }//GEN-LAST:event_txtTelefonoKeyTyped
 /*
     private void txtidentificacionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtidentificacionKeyTyped
@@ -646,6 +658,10 @@ public class ModificarProfesor extends javax.swing.JFrame {
             evt.consume();
             JOptionPane.showMessageDialog(null,"Formato del nombre incorrecto,solo se permite ingresar letras, por favor intente de nuevo.");
         }
+        if(this.txtNombre.getText().length() >= 46){
+            JOptionPane.showMessageDialog(null,"El nombre debe ser menor a 45 caracteres");
+            this.txtNombre.transferFocus();
+        }
     }//GEN-LAST:event_txtNombreKeyTyped
 
     private void txtApellido1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApellido1KeyTyped
@@ -654,6 +670,10 @@ public class ModificarProfesor extends javax.swing.JFrame {
             
             evt.consume();
             JOptionPane.showMessageDialog(null, "Formato del primer apellido incorrecto,solo se permite ingresar letras, por favor intente de nuevo.");
+        }
+        if(this.txtApellido1.getText().length() >= 46){
+            JOptionPane.showMessageDialog(null,"El apellido debe ser menor a 45 caracteres");
+            this.txtApellido1.transferFocus();
         }
     }//GEN-LAST:event_txtApellido1KeyTyped
 
@@ -664,8 +684,25 @@ public class ModificarProfesor extends javax.swing.JFrame {
             evt.consume();
             JOptionPane.showMessageDialog(null, "Formato del segundo apellido incorrecto,solo se permite ingresar letras, por favor intente de nuevo.");
         }
+        if(this.txtApellido2.getText().length() >= 46){
+            JOptionPane.showMessageDialog(null,"El apellido debe ser menor a 45 caracteres");
+            this.txtApellido2.transferFocus();
+        }
     }//GEN-LAST:event_txtApellido2KeyTyped
+
+    private void txtIdentificacionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdentificacionKeyTyped
+        if(this.txtIdentificacion.getText().length() >=20){
+            JOptionPane.showMessageDialog(null,"La identificación debe ser menor a 20 caracteres");
+            this.txtIdentificacion.transferFocus();
+        }
+    }//GEN-LAST:event_txtIdentificacionKeyTyped
+
+    private void txtIdentificacionKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdentificacionKeyReleased
         
+    }//GEN-LAST:event_txtIdentificacionKeyReleased
+        
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnGuardar;
