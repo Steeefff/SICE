@@ -431,7 +431,8 @@ public class MantenimientoProfesor extends javax.swing.JFrame {
 
     private void btnModificarProfesorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarProfesorActionPerformed
         modificarProfesor.setVisible(true);
-        if(this.lbId1.getText()!="")
+        if(this.lbId1.getText()!="");
+        modificarProfesor.limpiarBusqueda();
         modificarProfesor.buscar(this.lbId1.getText());
     }//GEN-LAST:event_btnModificarProfesorActionPerformed
 

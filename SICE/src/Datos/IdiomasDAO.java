@@ -8,6 +8,7 @@ import Modelos.Idiomas;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 /*
   @author Grupo #30 Ingeniería 2018-2019 
@@ -24,10 +25,11 @@ import java.util.ArrayList;
  */
 public class IdiomasDAO {
  
-    Conexion conexion;
+    private static Conexion conexion;
+    public static ResultSet rs;
+    public static Statement st;
     
     public  IdiomasDAO(){
-   
         conexion=new Conexion();
     }   
     
@@ -53,5 +55,44 @@ public class IdiomasDAO {
 
         }
          return listarIdiomas;
+    }
+    
+    public int cantidadIdiomasPersona(String identificacion){
+        int cantidadIdiomas = 0;
+        
+        try {
+            Connection accesoDB = conexion.Conexion();
+            PreparedStatement ps = accesoDB.prepareStatement("SELECT COUNT(*) FROM sice.idiomasprofesor WHERE identificacion = '"+identificacion+"'");
+            rs = ps.executeQuery();
+            while(rs.next()){
+                cantidadIdiomas = rs.getInt(1);
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return cantidadIdiomas;
+    }
+    
+    public int[]  vectorIdiomasPersona(String identificacion){
+        int[] Idioma = new int[cantidadIdiomasPersona(identificacion)];
+        System.out.println("Cant idiomas profesor: "+cantidadIdiomasPersona(identificacion));
+        
+        try{
+            Connection accesoDB = conexion.Conexion();
+            PreparedStatement ps = accesoDB.prepareStatement("SELECT idIdioma FROM idiomasprofesor WHERE identificacion ='"+identificacion+"'");
+            ps.executeQuery();
+            int i=0;
+            rs = ps.executeQuery();
+            while(rs.next()){
+                Idioma[i] = ((rs.getInt("idIdioma"))+1);
+               // System.out.println("Agregando ID:"+rs.getInt("idIdioma"));
+                i++;
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        return Idioma;
     }
 }

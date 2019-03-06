@@ -3,6 +3,9 @@ package Vista;
 import Datos.Conexion;
 import Datos.PersonasDAO;
 import Modelos.Personas;
+import static Vista.AgregarProfesor.rs;
+import static Vista.AgregarProfesor.st;
+import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
@@ -12,11 +15,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
@@ -41,6 +46,8 @@ public class ModificarProfesor extends javax.swing.JFrame {
     public static ResultSet rs;
     public static Statement st;
     private String identificacionBuscada = "";
+    Vector<JCheckBox> idiomas = new Vector<>();
+    
     
     public ModificarProfesor() {
         initComponents();
@@ -50,40 +57,54 @@ public class ModificarProfesor extends javax.swing.JFrame {
         setTitle("SICE - Modificar Profesor");
         Image icon = new ImageIcon(getClass().getResource("/Imagenes/sice_1.jpeg")).getImage();
         setIconImage(icon);
+        panelIdiomas.setEnabled(true);
+        cargarIdiomasGeneros(this.comboGenero);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
     
-    
-    public void cargarIdiomasGeneros(JComboBox idiomas, JComboBox generos){        
-       
-        String sql = "SELECT nombre FROM sice.idiomas";
-        try{
-         conexion = new Conexion();
-         conexion.Conexion();
-         st=Conexion.getSt();
-         rs = st.executeQuery(sql);
-         
-         this.comboIdiomas.addItem("Seleccione un idioma");
-         while(rs.next()){
-             this.comboIdiomas.addItem(rs.getString("nombre"));
-         }
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
-        
-        sql = "SELECT nombre FROM sice.generos";
-        try{
-         rs = st.executeQuery(sql);
-         
-         this.comboGenero.addItem("Seleccione un género");
-         while(rs.next()){
-             this.comboGenero.addItem(rs.getString("nombre"));
-         }
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
+    public void limpiarBusqueda(){
+        this.txtApellido1.setText("");
+        this.txtApellido2.setText("");
+        this.txtCorreo.setText("");
+        this.txtDireccion.setText("");
+        this.comboGenero.setSelectedIndex(0);
+        this.txtNombre.setText("");
+        this.txtTelefono.setText("");
+        this.comboFechaNacimiento.setDate(new Date());
+        this.comboFechaNacimiento.setCalendar(null);
+        for(int i=0; i<this.idiomas.size(); i++)
+            this.idiomas.get(i).setSelected(false);
     }
     
+    public void cargarIdiomasGeneros(JComboBox generos){        
+       String sql = "SELECT nombre FROM sice.generos";
+        try{
+            conexion = new Conexion();
+            conexion.Conexion();
+            st=Conexion.getSt();
+            rs = st.executeQuery(sql);
+
+            this.comboGenero.addItem("Seleccione un género");
+            while(rs.next()){
+                this.comboGenero.addItem(rs.getString("nombre"));
+            }
+
+            sql = "SELECT nombre FROM sice.idiomas";
+            rs = st.executeQuery(sql);
+
+            while(rs.next()){
+                idiomas.add(new JCheckBox(rs.getString("nombre"),false));
+            }
+            this.panelIdiomas.setLayout(new FlowLayout());
+            for(int i=0; i<idiomas.size(); i++){
+               this.panelIdiomas.add(idiomas.get(i));
+               idiomas.get(i).setEnabled(false);
+            }
+         
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    }    
     
     public void mostrar(Personas r) throws ParseException{
         this.txtIdentificacion.setText(" ");
@@ -95,7 +116,10 @@ public class ModificarProfesor extends javax.swing.JFrame {
         this.txtDireccion.setEnabled(true);
         this.txtTelefono.setEnabled(true);        
         this.comboGenero.setEnabled(true);
-        this.comboIdiomas.setEnabled(true);
+        //this.comboIdiomas.setEnabled(true);Ya no existe, es JPanel
+        for(int i=0; i<this.idiomas.size(); i++){
+            this.idiomas.get(i).setEnabled(true);
+        }
         this.comboFechaNacimiento.setEnabled(true);
         this.btnGuardar.setEnabled(true);
     
@@ -107,7 +131,32 @@ public class ModificarProfesor extends javax.swing.JFrame {
         txtDireccion.setText(r.getDireccion());
         txtTelefono.setText(Integer.toString(r.getTelefono()));       
         this.comboGenero.setSelectedIndex(r.getGenero());
-        this.comboIdiomas.setSelectedIndex(r.getIdioma());        
+        
+        
+        ///LIMPIAR EL VECTOR......
+        int[] idiomaAux = null;
+        idiomaAux = r.getIdioma();
+        
+        //Metodo burbuja
+        //Se realiza el ordenamiento del vector
+        int temp;
+        for(int i=1;i < idiomaAux.length;i++){
+            for (int j=0 ; j < idiomaAux.length- 1; j++){
+                if (idiomaAux[j] > idiomaAux[j+1]){ 
+                    temp = idiomaAux[j];
+                    idiomaAux[j] = idiomaAux[j+1];
+                    idiomaAux[j+1] = temp;
+                }
+            }
+        }
+        
+        for(int i=0; i<idiomaAux.length; i++){ 
+            if((idiomaAux[i]) == (i+1)){
+                idiomas.get(i).setSelected(true);
+            }
+        }
+        
+        //this.comboIdiomas.setSelectedIndex(r.getIdioma());        
         String dateValue = r.getFechaNacimiento(); 
         java.util.Date date = new SimpleDateFormat("dd/MM/yyyy").parse(dateValue);
         this.comboFechaNacimiento.setDate(date);
@@ -149,7 +198,7 @@ public class ModificarProfesor extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         txtCorreo = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
-        comboIdiomas = new javax.swing.JComboBox<>();
+        panelIdiomas = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -379,8 +428,16 @@ public class ModificarProfesor extends javax.swing.JFrame {
             }
         });
 
-        comboIdiomas.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        comboIdiomas.setEnabled(false);
+        javax.swing.GroupLayout panelIdiomasLayout = new javax.swing.GroupLayout(panelIdiomas);
+        panelIdiomas.setLayout(panelIdiomasLayout);
+        panelIdiomasLayout.setHorizontalGroup(
+            panelIdiomasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 350, Short.MAX_VALUE)
+        );
+        panelIdiomasLayout.setVerticalGroup(
+            panelIdiomasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 66, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -399,16 +456,6 @@ public class ModificarProfesor extends javax.swing.JFrame {
                         .addComponent(txtDireccion)
                         .addContainerGap())
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel14)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(txtApellido1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
-                                .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtApellido2, javax.swing.GroupLayout.Alignment.LEADING))
-                            .addComponent(jLabel13))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
@@ -417,23 +464,33 @@ public class ModificarProfesor extends javax.swing.JFrame {
                             .addComponent(txtIdentificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel6)
                             .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(comboIdiomas, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel10)
-                                .addComponent(jLabel9)
-                                .addComponent(comboFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(comboGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel12)
-                                .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel11)
-                                .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(66, 66, 66))))))
+                            .addComponent(jLabel10)
+                            .addComponent(jLabel9)
+                            .addComponent(comboFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(comboGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel12)
+                            .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel11)
+                            .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(txtApellido1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+                                .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtApellido2, javax.swing.GroupLayout.Alignment.LEADING))
+                            .addComponent(jLabel13)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(panelIdiomas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel14))
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -479,17 +536,19 @@ public class ModificarProfesor extends javax.swing.JFrame {
                 .addComponent(jLabel13)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel14)
-                .addGap(5, 5, 5)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(comboIdiomas, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(21, 21, 21)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel14)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(panelIdiomas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(28, 28, 28)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(72, 72, 72))
@@ -527,7 +586,7 @@ public class ModificarProfesor extends javax.swing.JFrame {
             else{
                 try {
                     //Esta linea estaba de primera
-                    cargarIdiomasGeneros(this.comboIdiomas, this.comboGenero);
+                    //cargarIdiomasGeneros(this.comboIdiomas, this.comboGenero);Ya no existe, es JPanel
                     mostrar(r);
                 }catch (ParseException ex) {
                     ex.printStackTrace();
@@ -558,13 +617,35 @@ public class ModificarProfesor extends javax.swing.JFrame {
                 System.out.print(annioMinimo);        
 
                 if(annioMinimo<=100 & annioMinimo>=18){  
-                    int telefono,genero,idioma;
+                    int telefono,genero;
+                    int[] idiomaAuxiliar = null;
+                    int tamanoIdiomas=0;
+                    for(int i=0; i<this.idiomas.size(); i++){
+                        if(this.idiomas.get(i).isSelected()==true)
+                            tamanoIdiomas++;
+                    }
+                    idiomaAuxiliar = new int[tamanoIdiomas];
                     String identificacion, nombre, apellido1, apellido2, direccion, fechaNacimiento, correo;
 
                     identificacion=txtIdentificacion.getText().trim();
                     telefono=Integer.parseInt(this.txtTelefono.getText());
                     genero=this.comboGenero.getSelectedIndex();
-                    idioma=this.comboIdiomas.getSelectedIndex();
+                    
+                    
+                    
+                    int j=0;
+                    for(int i=0; i<this.idiomas.size(); i++){
+                        if(this.idiomas.get(i).isSelected()==true){
+                            idiomaAuxiliar[j]=(i+1);
+                           j++;}
+                    }
+                    for(int i=0; i<idiomaAuxiliar.length; i++){
+                        System.out.println("idiomaAuxiliar..."+idiomaAuxiliar[i]);
+                    }
+                    
+                    //for(int i=0; i<this.idiomas.size(); i++){
+                    //    System.out.println("idiomaAuxiliar..."+idiomaAuxiliar[i]);
+                    //}
                     nombre=this.txtNombre.getText();
                     apellido1=this.txtApellido1.getText();
                     apellido2=this.txtApellido2.getText();
@@ -579,7 +660,9 @@ public class ModificarProfesor extends javax.swing.JFrame {
                     fechaNacimiento=String.valueOf(sdf.format(date));
                     correo=this.txtCorreo.getText();
                     boolean cerrar=false;
-                    cerrar=personasDAO.modificar(this.identificacionBuscada,identificacion,nombre,apellido1,apellido2,telefono,direccion,fechaNacimiento,correo,genero,idioma);
+                    
+                    cerrar=personasDAO.modificar(this.identificacionBuscada,identificacion,nombre,apellido1,apellido2,telefono,direccion,fechaNacimiento,correo,genero,idiomaAuxiliar);
+                    
                     if(cerrar==true){
                         this.txtIdentificacion.setText("");
                         this.txtTelefono.setText("");
@@ -589,7 +672,7 @@ public class ModificarProfesor extends javax.swing.JFrame {
                         this.txtDireccion.setText("");
                         this.txtCorreo.setText("");
                         this.comboGenero.setSelectedIndex(0);
-                        this.comboIdiomas.setSelectedIndex(0);
+                        //this.comboIdiomas.setSelectedIndex(0);Ya no existe, es JPanel
                         this.comboFechaNacimiento.setCalendar(null);
 
                         this.dispose(); }           
@@ -709,7 +792,6 @@ public class ModificarProfesor extends javax.swing.JFrame {
     private javax.swing.JButton btnVolver;
     private com.toedter.calendar.JDateChooser comboFechaNacimiento;
     private javax.swing.JComboBox<String> comboGenero;
-    private javax.swing.JComboBox<String> comboIdiomas;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -730,6 +812,7 @@ public class ModificarProfesor extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel panelIdiomas;
     private javax.swing.JTextField txtApellido1;
     private javax.swing.JTextField txtApellido2;
     private javax.swing.JTextField txtCorreo;

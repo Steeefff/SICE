@@ -1,5 +1,7 @@
 package Modelos;
 
+import javax.swing.JCheckBox;
+
 /*
   @author Grupo #30 Ingeniería 2018-2019 
  *@author David Rodríguez Zamora
@@ -27,13 +29,14 @@ public class Personas {
     private String contraseña;
     private int genero;
     private int idTipoPersona;
-    private int idioma;
+    private int[] idioma;
+    //private JCheckBox[] idiomas;
     private int habilitado;
 
     public Personas() {        
     }
 
-    public Personas(String identificacion, String nombre, String apellido1, String apellido2, int telefono, String direccion, String fechaNacimiento, String correo, String contraseña, int genero, int idTipoPersona, int idioma) {
+    public Personas(String identificacion, String nombre, String apellido1, String apellido2, int telefono, String direccion, String fechaNacimiento, String correo, String contraseña, int genero, int idTipoPersona, int[] idioma) {
         this.identificacion = identificacion;
         this.nombre = nombre;
         this.apellido1 = apellido1;
@@ -137,11 +140,19 @@ public class Personas {
         this.idTipoPersona = idTipoPersona;
     }
 
-    public int getIdioma() {
+/*    public JCheckBox[] getIdiomas() {
+        return idiomas;
+    }
+
+    public void setIdiomas(JCheckBox[] idiomas) {
+        this.idiomas = idiomas;
+    }
+*/
+    public int[] getIdioma() {
         return idioma;
     }
 
-    public void setIdioma(int idioma) {
+    public void setIdioma(int[] idioma) {
         this.idioma = idioma;
     }
 

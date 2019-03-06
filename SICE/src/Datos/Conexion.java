@@ -30,7 +30,8 @@ public class Conexion {
         Connection conexion = null;
         try{
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            conexion=DriverManager.getConnection("jdbc:mysql://localhost:3306/sice","root","root"); //Tiene que llamarse igual a la instancia de mi server(Mysql)
+            //Class.forName("com.mysql.jc.jdbc.Driver").newInstance(); //La de los que actualizan mysql
+            conexion=DriverManager.getConnection("jdbc:mysql://localhost:3306/sice?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC","root","root"); //Tiene que llamarse igual a la instancia de mi server(Mysql)
             st=conexion.createStatement();
             System.out.println("CONECTADO");
         }catch(Exception e){
