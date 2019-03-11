@@ -25,15 +25,15 @@ public class AdministracionUsuarios extends javax.swing.JFrame {
     UsuarioNuevo usuarioNuevo;
     ModificarUsuario modificarUsuario;
     VentanaPrincipal ventanaPrincipal;
-    
-    public AdministracionUsuarios( ) {
+    Image icon;
+    public AdministracionUsuarios(Image icono) {
         initComponents();
         this.setSize(1290,710); 
         setLocationRelativeTo(null);
         this.setResizable(false);
         fecha();
         setTitle("SICE - Administración de Usuarios"); 
-        Image icon = new ImageIcon(getClass().getResource("/Imagenes/sice_1.jpeg")).getImage();
+        this.icon = icono;
         setIconImage(icon);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     }
@@ -351,17 +351,17 @@ public class AdministracionUsuarios extends javax.swing.JFrame {
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         this.dispose();
-        ventanaPrincipal = new VentanaPrincipal();
+        ventanaPrincipal = new VentanaPrincipal(this.icon);
         ventanaPrincipal.setVisible(true);
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void btnMantenimientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMantenimientoActionPerformed
-        modificarUsuario = new ModificarUsuario();
+        modificarUsuario = new ModificarUsuario(this.icon);
         modificarUsuario.setVisible(true);
     }//GEN-LAST:event_btnMantenimientoActionPerformed
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
-        usuarioNuevo = new UsuarioNuevo();
+        usuarioNuevo = new UsuarioNuevo(this.icon);
         usuarioNuevo.setVisible(true);
     }//GEN-LAST:event_btnNuevoActionPerformed
 

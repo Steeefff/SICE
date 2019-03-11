@@ -1,6 +1,10 @@
 //DAVID ESTUVO AQUÍ
 package Vista;
+import Datos.Conexion;
+import static Vista.ModificarProfesor.st;
 import java.awt.Image;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -15,14 +19,17 @@ import javax.swing.JFrame;
  * Sistema Interno de Control de Estudiantes, SICE
  * Profesor: Rafael Alvarado Arley
  * Dueño del producto: Yensy Soto, Centro Cultural Corporación Costa Rica
- * Versión 1.2, 21/10/2018
+ * Versión 1.3, 17/03/2019
  * Since 1.0
  */
 
 public class Login extends javax.swing.JFrame {
 
     VentanaPrincipal principal;
-    
+    Image icon;
+    private static Conexion conexion;
+    public static ResultSet rs;
+    public static Statement st;            
     
     public Login() {
         initComponents();      
@@ -30,7 +37,10 @@ public class Login extends javax.swing.JFrame {
         this.setResizable(false);
         setLocationRelativeTo(null);
         this.setTitle("SICE - Login");
-        Image icon = new ImageIcon(getClass().getResource("/Imagenes/sice_1.jpeg")).getImage();
+        icon = new ImageIcon(getClass().getResource("/Imagenes/sice_1.jpeg")).getImage();
+        this.conexion=new Conexion();
+        this.conexion.Conexion();
+        this.st=Conexion.getSt();
         setIconImage(icon);
     }
 
@@ -295,7 +305,7 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_txtContrasenaActionPerformed
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
-        principal = new VentanaPrincipal();
+        principal = new VentanaPrincipal(this.icon,this.conexion,this.rs,this.st);
         principal.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnIngresarActionPerformed

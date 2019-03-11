@@ -14,7 +14,7 @@ import java.sql.Statement;
  * Sistema Interno de Control de Estudiantes, SICE
  * Profesor: Rafael Alvarado Arley
  * Dueño del producto: Yensy Soto, Centro Cultural Corporación Costa Rica
- * Versión 1.2, 21/10/2018
+ * Versión 1.3, 17/03/2019
  * Since 1.0
  */
 public class Conexion {
@@ -27,7 +27,7 @@ public class Conexion {
     }*/
     //En agregar profesor usar Conexion en lugar de getConexion
     public Connection Conexion(){
-        Connection conexion = null;
+        conexion = null;
         try{
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             //Class.forName("com.mysql.jc.jdbc.Driver").newInstance(); //La de los que actualizan mysql

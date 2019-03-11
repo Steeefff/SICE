@@ -24,16 +24,16 @@ import javax.swing.JFrame;
 public class ModificarCurso extends javax.swing.JFrame {
 
     MantenimientoCursos mantenimientoCursos;    
-    
-    public ModificarCurso( ) {
+    Image icon;
+    public ModificarCurso(Image icono) {
         initComponents();
         this.setSize(1290,710); 
         setLocationRelativeTo(null);
         this.setResizable(false);
         fecha();
         setTitle("SICE - Modificar Curso");
-        Image icon = new ImageIcon(getClass().getResource("/Imagenes/sice_1.jpeg")).getImage();
-        setIconImage(icon);
+        this.icon = icono;
+        setIconImage(this.icon);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     }
     
@@ -354,7 +354,7 @@ public class ModificarCurso extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        mantenimientoCursos = new MantenimientoCursos();
+        mantenimientoCursos = new MantenimientoCursos(this.icon);
         mantenimientoCursos.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed

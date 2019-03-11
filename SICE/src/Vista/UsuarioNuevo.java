@@ -21,14 +21,16 @@ import javax.swing.JFrame;
 public class UsuarioNuevo extends javax.swing.JFrame {
 
   AdministracionUsuarios administracionUsuarios;
-    public UsuarioNuevo() {
+  Image icon;
+  
+    public UsuarioNuevo(Image icono) {
         initComponents();
         this.setSize(590,768); 
         this.setResizable(false);
         setLocationRelativeTo(null);
          setTitle("SICE - Usuario Nuevo");
-         Image icon = new ImageIcon(getClass().getResource("/Imagenes/sice_1.jpeg")).getImage();
-        setIconImage(icon);
+         this.icon = icono;
+        setIconImage(this.icon);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 

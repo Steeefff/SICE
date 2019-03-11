@@ -19,14 +19,16 @@ import javax.swing.ImageIcon;
 
 public class ModificarEstudiante extends javax.swing.JFrame {
         
-    public ModificarEstudiante() {
+    Image icon;
+    
+    public ModificarEstudiante(Image icono) {
         initComponents();
         setLocationRelativeTo(null);
         this.setSize(590,768); 
         this.setResizable(false);
         setTitle("SICE - Modificar Estudiante");
-        Image icon = new ImageIcon(getClass().getResource("/Imagenes/sice_1.jpeg")).getImage();
-        setIconImage(icon);
+        this.icon = icono;
+        setIconImage(this.icon);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 

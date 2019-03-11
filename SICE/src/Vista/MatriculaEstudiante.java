@@ -26,17 +26,17 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
 
     VentanaPrincipal ventanaPrincipal;
     AgregarEstudiante agregarEstudiante;
+    Image icon;
     
-    
-    public MatriculaEstudiante( ) {
+    public MatriculaEstudiante(Image icono) {
         initComponents();
         this.setSize(1290,710); 
         setLocationRelativeTo(null);
         this.setResizable(false);
         fecha();
         setTitle("SICE - Matrícula de Estudiante");
-        Image icon = new ImageIcon(getClass().getResource("/Imagenes/sice_1.jpeg")).getImage();
-        setIconImage(icon);
+        this.icon = icono;
+        setIconImage(this.icon);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     }
     
@@ -427,7 +427,7 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMatricularActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        ventanaPrincipal = new VentanaPrincipal();
+        ventanaPrincipal = new VentanaPrincipal(this.icon);
         ventanaPrincipal.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed

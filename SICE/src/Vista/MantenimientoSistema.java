@@ -20,15 +20,16 @@ import javax.swing.JFrame;
 public class MantenimientoSistema extends javax.swing.JFrame {
 
   AdministracionUsuarios administracionUsuarios;
+  Image icon;
   
-    public MantenimientoSistema() {
+    public MantenimientoSistema(Image icono) {
         initComponents();
         setLocationRelativeTo(null);
         this.setSize(590,768); 
         this.setResizable(false);
          setTitle("SICE - Usuario Nuevo");
-         Image icon = new ImageIcon(getClass().getResource("/Imagenes/sice_1.jpeg")).getImage();
-        setIconImage(icon);
+         this.icon = icono;
+        setIconImage(this.icon);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 

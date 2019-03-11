@@ -24,17 +24,17 @@ import javax.swing.JFrame;
 public class AgregarGrupo extends javax.swing.JFrame {
 
     VentanaPrincipal ventanaPrincipal;
+    Image icon;
     
-    
-    public AgregarGrupo( ) {
+    public AgregarGrupo(Image icono) {
         initComponents();
         this.setSize(1290,710); 
         setLocationRelativeTo(null);
         this.setResizable(false);
         fecha();
         setTitle("SICE - Agregar Grupo");
-        Image icon = new ImageIcon(getClass().getResource("/Imagenes/sice_1.jpeg")).getImage();
-        setIconImage(icon);
+        this.icon = new ImageIcon(getClass().getResource("/Imagenes/sice_1.jpeg")).getImage();
+        setIconImage(this.icon);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     }
     
@@ -457,7 +457,7 @@ public class AgregarGrupo extends javax.swing.JFrame {
     }//GEN-LAST:event_listaGenero1ActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        ventanaPrincipal = new VentanaPrincipal();
+        ventanaPrincipal = new VentanaPrincipal(this.icon);
         ventanaPrincipal.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed

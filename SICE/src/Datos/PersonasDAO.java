@@ -26,7 +26,7 @@ import javax.swing.table.DefaultTableModel;
  * Sistema Interno de Control de Estudiantes, SICE
  * Profesor: Rafael Alvarado Arley
  * Dueño del producto: Yensy Soto, Centro Cultural Corporación Costa Rica
- * Versión 1.2, 21/10/2018
+ * Versión 1.3, 17/03/2019
  * Since 1.0
  */
 public class PersonasDAO {
@@ -34,10 +34,15 @@ public class PersonasDAO {
     private static Conexion conexion;
     public static ResultSet rs;
     public static Statement st;
+    Connection accesoDB;
+    PreparedStatement ps;
     public ArrayList listaIdiomas = new ArrayList();
     
-     public  PersonasDAO(){
-         conexion=new Conexion();
+     public  PersonasDAO(Conexion conexion,ResultSet rs,Statement st){
+        this.conexion=conexion;
+        this.rs=rs;
+        this.st=st;
+        accesoDB = this.conexion.getConexion();
      }     
      
    ////////////////////////////////MODIFICAR PROFESOR ////////////////////////////////////////////////////////////
@@ -46,37 +51,32 @@ public class PersonasDAO {
         boolean modificado = false;
         IdiomasDAO idiomasDao = new IdiomasDAO();
         try{
-            
-            conexion = new Conexion();
-            conexion.Conexion();
-            st=Conexion.getSt ();
-            Personas r = new Personas();
-            PersonasDAO personasDAO = new PersonasDAO();
-            int[] idiomaAUX;
+            Personas persona = new Personas();
+            //PersonasDAO personasDAO = new PersonasDAO();
+            //int[] idiomaAUX;
             boolean bandera = false;//Sirve para encontrar la diferencia entre dos vectores
             
             if(!identificacionBuscada.equals(identificacion)) {
                 try {
-                     r = personasDAO.buscarReg(identificacion);
+                     persona = this.buscarRegistro(identificacion);
                  }catch (SQLException ex) {
                     ex.printStackTrace();
                 }
                 
-                if(r==null){
+                if(persona==null){
                     //ARREGLAR
-                    idiomaAUX = idiomasDao.vectorIdiomasPersona(identificacion);
+                   // idiomaAUX = idiomasDao.vectorIdiomasPersona(identificacion);
                     
-                    for(int i=0; i<idiomaAUX.length; i++){
+                   // for(int i=0; i<idiomaAUX.length; i++){
                         st.executeUpdate("DELETE FROM idiomasprofesor WHERE identificacion= '"+identificacionBuscada+"'");
-                        System.out.println("idiomaAUX="+idiomaAUX[i]);
-                    }
+                        
+                   // }
                     
                     st.executeUpdate("UPDATE personas SET identificacion='"+identificacion+"', nombre='"+nombre+"', apellido1='"+apellido1+"',apellido2='"+apellido2+"',telefono='"+telefono+"',direccion='"+direccion+"',fechaNacimiento='"+fechaNacimiento+"',correo='"+correo+"',genero='"+genero+"'  WHERE identificacion ='"+identificacionBuscada+"'");
                     
                     
                     for(int i=0; i<idioma.length; i++){
-                        Connection accesoDB = conexion.Conexion();
-                        PreparedStatement ps = accesoDB.prepareStatement("INSERT INTO sice.idiomasprofesor(identificacion, idIdioma) VALUES (?,?)");
+                        ps = accesoDB.prepareStatement("INSERT INTO sice.idiomasprofesor(identificacion, idIdioma) VALUES (?,?)");
                         ps.setString(1, identificacion);
                         ps.setInt(2, idioma[i]);
                         ps.execute();
@@ -86,19 +86,19 @@ public class PersonasDAO {
                     JOptionPane.showMessageDialog(null, "Se ha actualizado el profesor "+nombre+" "+apellido1+" "+apellido2);
                     modificado=true;   
                 }else{
-                        JOptionPane.showMessageDialog(null, "Ya existe un profesor con esa identificación: "+r.getNombre()+" "+r.getApellido1()+" "+r.getApellido2());
+                        JOptionPane.showMessageDialog(null, "Ya existe un profesor con esa identificación: "+persona.getNombre()+" "+persona.getApellido1()+" "+persona.getApellido2());
                 }
             }else{
                 st.executeUpdate("UPDATE sice.personas SET nombre='"+nombre+"', apellido1='"+apellido1+"',apellido2='"+apellido2+"',telefono='"+telefono+"',direccion='"+direccion+"',fechaNacimiento='"+fechaNacimiento+"',correo='"+correo+"',genero='"+genero+"'  WHERE identificacion='"+identificacionBuscada+"'");
                 //Segunda consulta a la base de datos
                 
-                idiomaAUX = idiomasDao.vectorIdiomasPersona(identificacion); 
+                //idiomaAUX = idiomasDao.vectorIdiomasPersona(identificacion); 
                 
-                for(int i=0; i<idiomaAUX.length; i++){
+                //for(int i=0; i<idiomaAUX.length; i++){
                     st.execute("DELETE FROM `idiomasprofesor` WHERE identificacion = '"+identificacionBuscada+"';");
                     //st.executeUpdate("DELETE FROM sice.idiomasprofesor WHERE identificacion='"+identificacionBuscada+"' AND idIdioma="+idiomaAUX[i]);
                     //System.out.println("DELETE FROM sice.idiomasprofesor WHERE identificacion="+identificacionBuscada+", AND idIdioma="+idiomaAUX[i]);
-                }
+                //}
             }
         }
         catch (Exception e){//En caso de error
@@ -106,34 +106,29 @@ public class PersonasDAO {
             e.printStackTrace();
         }
         try{
-            Connection accesoDB = conexion.Conexion();
-            PreparedStatement ps = accesoDB.prepareStatement(
+            ps = accesoDB.prepareStatement(
                 "INSERT INTO `sice`.`idiomasprofesor` (`identificacion`, `idIdioma`) "
                 + "VALUES (?,?);"            
             );
             for(int i=0; i<idioma.length; i++){                    
-                    ps.setString(1, identificacionBuscada);
+                    ps.setString(1, identificacion);
                     ps.setInt(2, idioma[i]);
                     ps.execute();
-                    System.out.println("INSERT INTO `sice.idiomasprofesor`(identificacion=>"+identificacionBuscada+"´´, idIdioma=>"+idioma[i]+"'");
-                }
+            }
                 JOptionPane.showMessageDialog(null, "Se ha actualizado el profesor "+nombre+" "+apellido1+" "+apellido2);
                 modificado=true;
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null,"Ha habido un error");
+            JOptionPane.showMessageDialog(null,"Ha habido un error al modificar el idioma.");
             e.printStackTrace();
         }
         return modificado;
     }
    //////////////////////////////// BUSCAR PROFESOR //////////////////////////////////////////////////////////////
 
-    public static Personas buscarReg(String identificacion) throws SQLException{
-        conexion = new Conexion();
-        conexion.Conexion();
-        Personas r = null;
-        st=conexion.getSt ();
+    public Personas buscarRegistro(String identificacion) throws SQLException{
+        Personas persona = null;
         String sql = "SELECT * FROM sice.personas WHERE identificacion='"+identificacion+"'";
-        //Tambien debe traer a los idioma que tiene actualmente idioma[null]
+// -> *****************Tambien debe traer a los idioma que tiene actualmente idioma[null]    FALTA ***************************
         try {
             rs = st.executeQuery(sql);
             System.out.println("Profesor encontrado");           
@@ -141,11 +136,11 @@ public class PersonasDAO {
             System.out.println("Hubo un error");
             e.printStackTrace();
         }
-        r= asignar();
-        return r; 
+        persona= asignar();
+        return persona; 
     }
     
-    public static Personas asignar(){
+    public Personas asignar(){
       Personas r = null;
       IdiomasDAO idiomasDao = new IdiomasDAO();
       String identificacion,Nombre,Apellido1,Apellido2,Direccion,FechaNacimiento,Correo,Contraseña;
@@ -168,8 +163,7 @@ public class PersonasDAO {
                 Idioma = new int[idiomasDao.cantidadIdiomasPersona(identificacion)];//Se trae la cantidad de idioma que tiene la persona
                 //Idiomas
                 try{
-                    Connection accesoDB = conexion.Conexion();
-                    PreparedStatement ps = accesoDB.prepareStatement("SELECT idIdioma FROM idiomasprofesor WHERE identificacion='"+identificacion+"'");
+                    ps = accesoDB.prepareStatement("SELECT idIdioma FROM idiomasprofesor WHERE identificacion='"+identificacion+"'");
                     ps.executeQuery();
                     int i=0;
                     rs = ps.executeQuery();
@@ -211,8 +205,7 @@ public class PersonasDAO {
        String respuestaRegistro=null;
        
         try{
-            Connection accesoDB = conexion.Conexion();
-            PreparedStatement ps = accesoDB.prepareStatement(
+            ps = accesoDB.prepareStatement(
             "INSERT INTO `sice`.`personas` (`identificacion`, `nombre`, `apellido1`, `apellido2`, `telefono`, `genero`, `direccion`, "
                     + "`fechaNacimiento`, `correo`, `contraseña`, `idTipoPersona`) VALUES (?,?,?,?,?,?,?,?,?,?,?);"            
             );
@@ -230,8 +223,7 @@ public class PersonasDAO {
             ps.setInt(11, p.getIdTipoPersona());
             
             int numFAfectadas = ps.executeUpdate(); //Toma el numero de filas afectadas
-            
-           PreparedStatement ps2 = accesoDB.prepareStatement(
+            ps = accesoDB.prepareStatement(
             "INSERT INTO `sice`.`idiomasprofesor` (`identificacion`, `idIdioma`) "
             + "VALUES (?,?);"            
             );
@@ -241,14 +233,14 @@ public class PersonasDAO {
             for(int i=0; i<auxiliarIdioma.length; i++)
             {
                 if(auxiliarIdioma[i]>0){
-                    ps2.setString(1, p.getIdentificacion()); 
-                    ps2.setInt(2, auxiliarIdioma[i]);  
-                    ps2.execute();
+                    ps.setString(1, p.getIdentificacion()); 
+                    ps.setInt(2, auxiliarIdioma[i]);  
+                    ps.execute();
                 }
             }
            
-            if(numFAfectadas>0){                     //Se cambia la palabra INSERTADO por REGISTRADO ya que el profesor realiza un comentario que se suena raro la palabra insertado.
-                respuestaRegistro="El profesor "+p.getNombre()+" "+p.getApellido1()+" "+p.getApellido2()+" ha sido registrado con éxito! ";
+            if(numFAfectadas>0){                     
+                respuestaRegistro="El registro "+p.getNombre()+" "+p.getApellido1()+" "+p.getApellido2()+" ha sido registrado con éxito! ";
             }
             
         }catch(Exception e){
@@ -261,13 +253,12 @@ public class PersonasDAO {
    
    ////////////////////////////////////////////////////////////LISTAR PROFESOR/////////////////////////////////////////////////////////7
    
-    public ArrayList<Personas> listarPersonas(){          //metodo listar
+    public ArrayList<Personas> listarPersonas(){       
        
         ArrayList listarPersonas = new ArrayList();
-        Personas tmp; //
+        Personas tmp; 
         try{
-            Connection acceDB = conexion.Conexion();
-            PreparedStatement ps = acceDB.prepareStatement("SELECT * FROM sice.personas;");
+            ps = accesoDB.prepareStatement("SELECT * FROM sice.personas;");
             ResultSet rs = ps.executeQuery();
             while(rs.next()){ //si hay registros por leer entonces..
                 tmp = new Personas();
@@ -284,14 +275,14 @@ public class PersonasDAO {
                 tmp.setContraseña(rs.getString(10));
                 tmp.setIdTipoPersona(rs.getInt(11));
                     
-                    PreparedStatement ps2 = acceDB.prepareStatement("SELECT * FROM `sice`.`idiomasprofesor` where identificacion='"+tmp.getIdentificacion()+"'");
-                    ResultSet rs2 = ps2.executeQuery();
+                    ps = accesoDB.prepareStatement("SELECT * FROM `sice`.`idiomasprofesor` where identificacion='"+tmp.getIdentificacion()+"'");
+                    ResultSet rs2 = ps.executeQuery();
                     
                     int[] idiomaAuxiliar = new int[listaIdiomas.size()];
                     int i = 0;
                     
                     while(rs2.next()){
-                        idiomaAuxiliar[i]= rs.getInt(2);
+                        idiomaAuxiliar[i]= rs2.getInt(2);
                         i++;
                     }
                     tmp.setIdioma(idiomaAuxiliar);
@@ -301,10 +292,8 @@ public class PersonasDAO {
                 
               listarPersonas.add(tmp);
             }
-            
         }catch (Exception e){
             e.printStackTrace();
-
         }
          return listarPersonas;
     }
@@ -313,17 +302,15 @@ public class PersonasDAO {
     ///////////////////////////////////////VALIDAR PERSONA/////////////////////////////////////////////////////////////////////
     public Boolean validarPersona(int id_per) {
         try {
-           Connection accesoDB = conexion.Conexion();
-           PreparedStatement ps = accesoDB.prepareStatement("SELECT identificacion FROM sice.personas where identificacion=?");
+           ps = accesoDB.prepareStatement("SELECT identificacion FROM sice.personas where identificacion=?");
            ps.setInt(1, id_per); 
             
-           ResultSet rs = ps.executeQuery();
+           rs = ps.executeQuery();
             if (rs.next()) {
                return false;
             }
             else
-                return true;
-            
+                return true;            
         }catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -333,9 +320,6 @@ public class PersonasDAO {
     ////////////////////////////////DESHABILITAR ES COMO UN UPDATE////////////////////////////////////////////////////
      public void deshabiliar(String identificacion){       
        try{
-            conexion = new Conexion();
-            conexion.Conexion();
-            st=Conexion.getSt ();
             st.executeUpdate("UPDATE sice.personas SET Habilitado=0 WHERE identificacion='"+identificacion+"'");
         }
         catch (Exception e){//En caso de error
@@ -347,9 +331,6 @@ public class PersonasDAO {
      ////////////////////////////////HABILITAR ES COMO UN UPDATE////////////////////////////////////////////////////
      public void habiliar(String identificacion){       
        try{
-            conexion = new Conexion();
-            conexion.Conexion();
-            st=Conexion.getSt ();
             st.executeUpdate("UPDATE sice.personas SET Habilitado=1 WHERE identificacion='"+identificacion+"'");
         }
         catch (Exception e){//En caso de error
@@ -370,27 +351,25 @@ public class PersonasDAO {
         String estados[] = {"Deshablitado","Hablitado"};
 
         try {
-            Connection acceDB = conexion.Conexion();
-            PreparedStatement ps = acceDB.prepareStatement("SELECT * FROM sice.generos");
-            ResultSet rs = ps.executeQuery();
+            ps = accesoDB.prepareStatement("SELECT * FROM sice.generos");
+            rs = ps.executeQuery();
             //generos
             while(rs.next()){
                 generos.add(rs.getString("nombre"));
             }
             //Idiomas
-            ps = acceDB.prepareStatement("SELECT nombre FROM sice.idiomas");
+            ps = accesoDB.prepareStatement("SELECT nombre FROM sice.idiomas");
             rs = ps.executeQuery();
             while(rs.next()){
                 idiomas.add(rs.getString("nombre"));
             }
             //ID-Idiomas
-            ps = acceDB.prepareStatement("SELECT idIdioma FROM sice.idiomas");
+            ps = accesoDB.prepareStatement("SELECT idIdioma FROM sice.idiomas");
             rs = ps.executeQuery();
             while(rs.next()){
                 ididiomas.add(rs.getInt("idIdioma"));
             }
-            
-            ps = acceDB.prepareStatement("SELECT * FROM sice.personas WHERE identificacion LIKE '%"+buscar+"%' OR nombre LIKE '%"+buscar+"%' OR apellido1 LIKE '%"+buscar+
+            ps = accesoDB.prepareStatement("SELECT * FROM sice.personas WHERE identificacion LIKE '%"+buscar+"%' OR nombre LIKE '%"+buscar+"%' OR apellido1 LIKE '%"+buscar+
                                     "%' OR apellido2 LIKE '%"+buscar+"%' OR genero LIKE '%"+buscar+"%' OR direccion LIKE '%"+buscar+"%' OR Habilitado LIKE '%"+buscar+"%'");
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -405,28 +384,22 @@ public class PersonasDAO {
                 registro[8] = rs.getString(9); //Correo                
                 
                 //LOGICA ESTA BIEN....
-                PreparedStatement ps2 = acceDB.prepareStatement("SELECT `idIdioma` FROM `idiomasprofesor` WHERE `identificacion` = '"+rs.getString(1)+"'");
+                PreparedStatement ps2 = accesoDB.prepareStatement("SELECT `idIdioma` FROM `idiomasprofesor` WHERE `identificacion` = '"+rs.getString(1)+"'");
                 ResultSet rs2 = ps2.executeQuery();
                 String idioma="";
                 //int i=0;
                 while (rs2.next()) {
                     for(int i=0; i<ididiomas.size();i++){
-                        if(ididiomas.get(i)==(rs2.getInt("idIdioma"))){
-                            System.out.println("OTRA COSA.....ididiomas="+ididiomas.get(i)+" rs2.getInt(idIdioma)="+rs2.getInt("idIdioma"));
-                            idioma += idiomas.get(i)+".";
+                        if(ididiomas.get(i)==(rs2.getInt("idIdioma"))){idioma += idiomas.get(i)+".";
                             i++;
                         }
                     }
-                }
-                
+                }                
                 registro[9] = idioma;
                 registro[10] = estados[rs.getInt(12)];//Estados
-
                 modelo.addRow(registro);
-
             }
             return modelo;
-
         }catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Ha habido un error");
             e.printStackTrace();

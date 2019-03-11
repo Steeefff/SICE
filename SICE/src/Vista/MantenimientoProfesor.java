@@ -1,7 +1,10 @@
 package Vista;
 
+import Datos.Conexion;
 import Datos.PersonasDAO;
 import java.awt.Image;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.ImageIcon;
@@ -18,28 +21,33 @@ import javax.swing.table.DefaultTableModel;
  * Sistema Interno de Control de Estudiantes, SICE
  * Profesor: Rafael Alvarado Arley
  * Dueño del producto: Yensy Soto, Centro Cultural Corporación Costa Rica
- * Versión 1.2, 21/10/2018
+ * Versión 1.3, 17/03/2019
  * Since 1.0
  */
 
-
 public class MantenimientoProfesor extends javax.swing.JFrame {
-
     
-    VentanaPrincipal ventanaPrincipal;
-     ModificarProfesor modificarProfesor=new ModificarProfesor();
-     PersonasDAO personasDAO = new PersonasDAO();
-       
-    public MantenimientoProfesor( ) {
+     VentanaPrincipal ventanaPrincipal;
+     ModificarProfesor modificarProfesor;
+     PersonasDAO personasDAO;
+     Image icon; 
+     private static Conexion conexion;
+     public static ResultSet rs;
+     public static Statement st;
+     
+    public MantenimientoProfesor(Image icono,Conexion conexion,ResultSet rs,Statement st) {
         initComponents();        
         this.setSize(1290,710); 
         setLocationRelativeTo(null);; 
         this.setResizable(false);
         fecha();
         this.setTitle("SICE - Mantenimiento de Profesores");
-        Image icon = new ImageIcon(getClass().getResource("/Imagenes/sice_1.jpeg")).getImage();
-        setIconImage(icon);
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        this.icon = icono;
+        this.conexion=conexion;
+        this.rs=rs;
+        this.st=st;
+        setIconImage(this.icon);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
     
     public void fecha(){
@@ -88,6 +96,11 @@ public class MantenimientoProfesor extends javax.swing.JFrame {
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
         jPanel5.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204)));
 
+        tablaProfesores = new javax.swing.JTable(){
+            public boolean isCellEditable(int rowIndex, int colIndex){
+                return false;
+            }
+        };
         tablaProfesores.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         tablaProfesores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -105,6 +118,7 @@ public class MantenimientoProfesor extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tablaProfesores.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tablaProfesores.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablaProfesoresMouseClicked(evt);
@@ -422,44 +436,50 @@ public class MantenimientoProfesor extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-      ventanaPrincipal = new VentanaPrincipal();
+      ventanaPrincipal = new VentanaPrincipal(this.icon,this.conexion,this.rs,this.st);
       ventanaPrincipal.setVisible(true);
       this.dispose();
-      if(this.modificarProfesor.isVisible())
+      if(this.modificarProfesor.isVisible()==true)
           this.modificarProfesor.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void btnModificarProfesorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarProfesorActionPerformed
+        this.modificarProfesor=new ModificarProfesor(this.icon,this.conexion,this.rs,this.st);
         modificarProfesor.setVisible(true);
-        if(this.lbId1.getText()!="");
-        modificarProfesor.limpiarBusqueda();
-        modificarProfesor.buscar(this.lbId1.getText());
+        if(this.lbId1.getText().equals(""))
+            modificarProfesor.limpiar();
+        else
+            modificarProfesor.buscar(this.lbId1.getText());
     }//GEN-LAST:event_btnModificarProfesorActionPerformed
 
     private void btnBuscarIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarIDActionPerformed
-        String buscar = this.txtBuscar.getText();
+        this.personasDAO= new PersonasDAO(this.conexion,this.rs,this.st);
         try {
             DefaultTableModel modelo;
-            modelo = personasDAO.mostrarBuscar(buscar);
-
+            modelo = this.personasDAO.mostrarBuscar(this.txtBuscar.getText());
             this.tablaProfesores.setModel(modelo);
         }catch (Exception e) {
-            JOptionPane.showConfirmDialog(rootPane, e);
+            JOptionPane.showConfirmDialog(null, "Hubo un error. Si el error persiste contacte a su equipo de TI.");
+            e.printStackTrace();
         }
     }//GEN-LAST:event_btnBuscarIDActionPerformed
 
     private void btnDeshabilitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshabilitarActionPerformed
-        personasDAO.deshabiliar(lbId1.getText());
-        this.lbIDSeleccionado.setText("Identificación deshabilitada: ");
-        mostrar("");
-        //this.lbId.setText("");
+        if(!this.lbId1.getText().equals("") & this.lbId1.isEnabled()==true){
+            this.personasDAO= new PersonasDAO(this.conexion,this.rs,this.st);
+            personasDAO.deshabiliar(lbId1.getText());
+            this.lbIDSeleccionado.setText("Identificación deshabilitada: ");
+            mostrar("");
+        }
     }//GEN-LAST:event_btnDeshabilitarActionPerformed
 
     private void btnHabilitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHabilitarActionPerformed
-        personasDAO.habiliar(lbId1.getText());
-        this.lbIDSeleccionado.setText("Identificación habilitada: ");
-        mostrar("");
-        //this.lbId.setText("");
+        if(!this.lbId1.getText().equals("") & this.lbId1.isEnabled()==true){
+            this.personasDAO= new PersonasDAO(this.conexion,this.rs,this.st);
+            personasDAO.habiliar(lbId1.getText());
+            this.lbIDSeleccionado.setText("Identificación habilitada: ");
+            mostrar("");
+        }
     }//GEN-LAST:event_btnHabilitarActionPerformed
 
     private void tablaProfesoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaProfesoresMouseClicked
@@ -467,17 +487,18 @@ public class MantenimientoProfesor extends javax.swing.JFrame {
         this.lbIDSeleccionado.setText("Identificación seleccionada: ");
         lbId1.setText(tablaProfesores.getValueAt(fila, 0).toString());
     }//GEN-LAST:event_tablaProfesoresMouseClicked
+    
     void mostrar(String buscar) {
         try {
+            this.personasDAO= new PersonasDAO(this.conexion,this.rs,this.st);
             DefaultTableModel modelo;
             modelo = personasDAO.mostrarBuscar(buscar);
-
             tablaProfesores.setModel(modelo);
         } catch (Exception e) {
-            JOptionPane.showConfirmDialog(rootPane, e);
+            JOptionPane.showConfirmDialog(null, "Hubo un error. Si el error persiste contacte a su equipo de TI.");
+            e.printStackTrace();
         }
-    }
-  
+    } 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscarID;

@@ -24,16 +24,17 @@ public class MantenimientoGrupos extends javax.swing.JFrame {
    
     VentanaPrincipal ventanaPrincipal;
     ModificarGrupo modificarGrupo;
+    Image icon;
     
-    public MantenimientoGrupos( ) {
+    public MantenimientoGrupos(Image icono) {
         initComponents();        
         this.setSize(1290,710); 
         setLocationRelativeTo(null);
         this.setResizable(false);
         fecha();
         this.setTitle("SICE - Mantenimiento de Grupos");
-        Image icon = new ImageIcon(getClass().getResource("/Imagenes/sice_1.jpeg")).getImage();
-        setIconImage(icon);
+        this.icon = icono;
+        setIconImage(this.icon);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     }
     
@@ -396,13 +397,13 @@ public class MantenimientoGrupos extends javax.swing.JFrame {
     }//GEN-LAST:event_btnHabilitarActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-      ventanaPrincipal = new VentanaPrincipal();
+      ventanaPrincipal = new VentanaPrincipal(this.icon);
       ventanaPrincipal.setVisible(true);
       this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        modificarGrupo = new ModificarGrupo();
+        modificarGrupo = new ModificarGrupo(this.icon);
         modificarGrupo.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnModificarActionPerformed

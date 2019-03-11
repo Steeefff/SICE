@@ -1,6 +1,9 @@
 package Vista;
 
+import Datos.Conexion;
 import java.awt.Image;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.ImageIcon;
@@ -15,7 +18,7 @@ import javax.swing.ImageIcon;
  * Sistema Interno de Control de Estudiantes, SICE
  * Profesor: Rafael Alvarado Arley
  * Dueño del producto: Yensy Soto, Centro Cultural Corporación Costa Rica
- * Versión 1.2, 21/10/2018
+ * Versión 1.3, 17/03/2019
  * Since 1.0
  */
 
@@ -32,17 +35,24 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     MantenimientoGrupos mantenimientoGrupos;
     MantenimientoCursos mantenimientoCursos;
     Login login;
+    Image icon;
+    private static Conexion conexion;
+    public static ResultSet rs;
+    public static Statement st;
     
-    public VentanaPrincipal() {
+    public VentanaPrincipal(Image icono,Conexion conexion,ResultSet rs,Statement st) {
         initComponents(); 
         this.setTitle("SICE - Principal");
         this.setSize(1290,710); 
         setLocationRelativeTo(null);
         this.setResizable(false);
         fecha();
-        Image icon = new ImageIcon(getClass().getResource("/Imagenes/sice_1.jpeg")).getImage();
+        this.icon = icono;
+        this.conexion=conexion;
+        this.rs=rs;
+        this.st=st;
         setIconImage(icon);
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
     public void fecha(){
@@ -480,42 +490,42 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnMatricularEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMatricularEstudianteActionPerformed
-        matriculaEstudiante = new MatriculaEstudiante();
+        matriculaEstudiante = new MatriculaEstudiante(this.icon);
         matriculaEstudiante.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnMatricularEstudianteActionPerformed
 
     private void btnAdministracionUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdministracionUsuariosActionPerformed
-        administracionUsuarios = new AdministracionUsuarios();
+        administracionUsuarios = new AdministracionUsuarios(this.icon);
         administracionUsuarios.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnAdministracionUsuariosActionPerformed
 
     private void btnMantenimientoEstudiantesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMantenimientoEstudiantesActionPerformed
-        mantenimientoEstudiantes = new MantenimientoEstudiante();
+        mantenimientoEstudiantes = new MantenimientoEstudiante(this.icon);
         mantenimientoEstudiantes.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnMantenimientoEstudiantesActionPerformed
 
     private void btnAgregarProfesorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarProfesorActionPerformed
-        AgregarProfesor agregarProfesor = new AgregarProfesor();
+        AgregarProfesor agregarProfesor = new AgregarProfesor(this.icon,this.conexion,this.rs,this.st);
         agregarProfesor.setVisible(true);
     }//GEN-LAST:event_btnAgregarProfesorActionPerformed
 
     private void btnAgregarGrupoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarGrupoActionPerformed
-        agregarGrupo = new AgregarGrupo();
+        agregarGrupo = new AgregarGrupo(this.icon);
         agregarGrupo.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnAgregarGrupoActionPerformed
 
     private void btnAgregarCursosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarCursosActionPerformed
-        agregarCurso = new AgregarCurso();
+        agregarCurso = new AgregarCurso(this.icon);
         agregarCurso.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnAgregarCursosActionPerformed
 
     private void btnAgregarPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarPagoActionPerformed
-        pago = new Pagos();
+        pago = new Pagos(this.icon);
         pago.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnAgregarPagoActionPerformed
@@ -527,13 +537,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
     private void btnMantenimientoGruposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMantenimientoGruposActionPerformed
-        mantenimientoGrupos = new MantenimientoGrupos();
+        mantenimientoGrupos = new MantenimientoGrupos(this.icon);
         mantenimientoGrupos.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnMantenimientoGruposActionPerformed
 
     private void btnMantenimientoCursosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMantenimientoCursosActionPerformed
-        mantenimientoCursos = new MantenimientoCursos();
+        mantenimientoCursos = new MantenimientoCursos(this.icon);
         mantenimientoCursos.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnMantenimientoCursosActionPerformed
@@ -542,7 +552,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMantenimientoSistemaActionPerformed
 
     private void btnMantenimientoProfesoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMantenimientoProfesoresActionPerformed
-        mantenimientoProfesores = new MantenimientoProfesor();
+        mantenimientoProfesores = new MantenimientoProfesor(this.icon,this.conexion,this.rs,this.st);
         mantenimientoProfesores.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnMantenimientoProfesoresActionPerformed
