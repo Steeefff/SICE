@@ -675,7 +675,7 @@ public class ModificarProfesor extends javax.swing.JFrame {
         //Envía la persona al método insertaPersona del personaDAO que inserta en la base de datos
         personasDAO = new PersonasDAO(this.conexion,this.rs,this.st);
                                                                    
-        boolean respuestaRegistro = personasDAO.modificar(persona.getIdentificacion(),persona.getIdentificacion(),persona.getNombre(),persona.getApellido1(),persona.getApellido2(),persona.getTelefono(),persona.getDireccion(),persona.getFechaNacimiento(),persona.getCorreo(),persona.getGenero(),persona.getIdioma());
+        boolean respuestaRegistro = personasDAO.modificar(persona,this.txtIdentificacion.getText());
         //Si respuestaRegistro es diferente de null quiere decir que se ingresó el profesor correctamente
         if(respuestaRegistro==true){
             limpiar();
