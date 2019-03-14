@@ -12,7 +12,7 @@ import javax.swing.JCheckBox;
  * Sistema Interno de Control de Estudiantes, SICE
  * Profesor: Rafael Alvarado Arley
  * Dueño del producto: Yensy Soto, Centro Cultural Corporación Costa Rica
- * Versión 1.2, 21/10/2018
+ * Versión 1.3, 21/10/2018
  * Since 1.0
  */
 
@@ -30,7 +30,6 @@ public class Personas {
     private int genero;
     private int idTipoPersona;
     private int[] idioma;
-    //private JCheckBox[] idiomas;
     private int habilitado;
 
     public Personas() {        
@@ -139,15 +138,6 @@ public class Personas {
     public void setIdTipoPersona(int idTipoPersona) {
         this.idTipoPersona = idTipoPersona;
     }
-
-/*    public JCheckBox[] getIdiomas() {
-        return idiomas;
-    }
-
-    public void setIdiomas(JCheckBox[] idiomas) {
-        this.idiomas = idiomas;
-    }
-*/
     public int[] getIdioma() {
         return idioma;
     }

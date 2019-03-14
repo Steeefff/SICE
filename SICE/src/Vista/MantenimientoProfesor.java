@@ -107,7 +107,7 @@ public class MantenimientoProfesor extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Cédula", "Nombre", "Apellido 1", "Apellido 2", "Nacimiento", "Género", "Teléfono", "Correo", "Dirección", "Idiomas", "Estado"
+                "Identificación", "Nombre", "Apellido 1", "Apellido 2", "Teléfono", "Género", "Dirección", "Fecha Nacimiento", "Correo", "Idiomas", "Estado"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -456,7 +456,7 @@ public class MantenimientoProfesor extends javax.swing.JFrame {
         this.personasDAO= new PersonasDAO(this.conexion,this.rs,this.st);
         try {
             DefaultTableModel modelo;
-            modelo = this.personasDAO.mostrarBuscar(this.txtBuscar.getText());
+            modelo = this.personasDAO.mostrarBuscarProfesores(this.txtBuscar.getText());
             this.tablaProfesores.setModel(modelo);
         }catch (Exception e) {
             JOptionPane.showConfirmDialog(null, "Hubo un error. Si el error persiste contacte a su equipo de TI.");
@@ -492,7 +492,7 @@ public class MantenimientoProfesor extends javax.swing.JFrame {
         try {
             this.personasDAO= new PersonasDAO(this.conexion,this.rs,this.st);
             DefaultTableModel modelo;
-            modelo = personasDAO.mostrarBuscar(buscar);
+            modelo = personasDAO.mostrarBuscarProfesores(buscar);
             tablaProfesores.setModel(modelo);
         } catch (Exception e) {
             JOptionPane.showConfirmDialog(null, "Hubo un error. Si el error persiste contacte a su equipo de TI.");
