@@ -42,7 +42,7 @@ public class AgregarEstudiante extends javax.swing.JFrame {
     public AgregarEstudiante(Image icono,Conexion conexion,ResultSet rs,Statement st) {
         initComponents();
         setLocationRelativeTo(null);
-        this.setSize(590,768); 
+        this.setSize(565,710); 
         this.setResizable(false);
         this.icon = icono;
         this.conexion=conexion;
@@ -53,9 +53,6 @@ public class AgregarEstudiante extends javax.swing.JFrame {
         setVisible(true);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         JOptionPane.showMessageDialog(null, "La identificación debe de tener un mínimo de 9 caracteres y un máximo de 20.");
-        //Image icon = new ImageIcon(getClass().getResource("/Imagenes/sice_1.jpeg")).getImage();
-        //setIconImage(icon);
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
     
     public void Limpiar(){
@@ -216,7 +213,9 @@ public class AgregarEstudiante extends javax.swing.JFrame {
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -234,6 +233,7 @@ public class AgregarEstudiante extends javax.swing.JFrame {
         jLabel2.setText("Identificación:");
 
         txtIdentificacion.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtIdentificacion.setNextFocusableComponent(txtNombre);
         txtIdentificacion.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtIdentificacionKeyReleased(evt);
@@ -247,6 +247,7 @@ public class AgregarEstudiante extends javax.swing.JFrame {
         jLabel6.setText("Nombre:");
 
         txtNombre.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtNombre.setNextFocusableComponent(txtApellido1);
         txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtNombreKeyTyped(evt);
@@ -260,6 +261,7 @@ public class AgregarEstudiante extends javax.swing.JFrame {
         jLabel8.setText("Apellido 2:");
 
         txtApellido2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtApellido2.setNextFocusableComponent(comboFechaNacimiento);
         txtApellido2.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtApellido2KeyTyped(evt);
@@ -267,6 +269,7 @@ public class AgregarEstudiante extends javax.swing.JFrame {
         });
 
         txtApellido1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtApellido1.setNextFocusableComponent(txtApellido2);
         txtApellido1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtApellido1KeyTyped(evt);
@@ -291,8 +294,11 @@ public class AgregarEstudiante extends javax.swing.JFrame {
         comboGenero.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         comboGenero.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "Femenino", "Masculino", "No especifica" }));
         comboGenero.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        comboGenero.setNextFocusableComponent(txtTelefono);
 
         txtTelefono.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtTelefono.setAutoscrolls(false);
+        txtTelefono.setNextFocusableComponent(txtCorreo);
         txtTelefono.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtTelefonoKeyTyped(evt);
@@ -300,8 +306,10 @@ public class AgregarEstudiante extends javax.swing.JFrame {
         });
 
         txtDireccion.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtDireccion.setNextFocusableComponent(btnGuardar);
 
         txtCorreo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtCorreo.setNextFocusableComponent(txtDireccion);
         txtCorreo.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtCorreoFocusLost(evt);
@@ -331,55 +339,61 @@ public class AgregarEstudiante extends javax.swing.JFrame {
         });
 
         comboFechaNacimiento.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        comboFechaNacimiento.setNextFocusableComponent(comboGenero);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(230, 230, 230)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel9)
-                            .addComponent(comboFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel10)
-                            .addComponent(comboGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel11)
-                            .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel12)
-                            .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(txtApellido1, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
-                        .addComponent(jLabel7)
-                        .addComponent(jLabel8)
-                        .addComponent(txtApellido2))
-                    .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtIdentificacion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(27, 27, 27)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 517, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 20, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDireccion)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                            .addComponent(jLabel2)
+                            .addGap(175, 175, 175)
+                            .addComponent(jLabel9))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtApellido1, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+                                .addComponent(jLabel7)
+                                .addComponent(jLabel8)
+                                .addComponent(txtApellido2))
+                            .addGap(38, 38, 38)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel11)
+                                .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel12)
+                                .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                            .addComponent(txtIdentificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(37, 37, 37)
+                            .addComponent(comboFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel6))
+                            .addGap(38, 38, 38)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel10)
+                                .addComponent(comboGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(16, 16, 16))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -426,22 +440,22 @@ public class AgregarEstudiante extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(96, 96, 96))
+                .addGap(0, 0, 0))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 690, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -454,11 +468,11 @@ public class AgregarEstudiante extends javax.swing.JFrame {
     private boolean validaciones(){
         boolean completos=false; 
         if(validarEspacios()==true){
-                if(validarTamanoTelefono()==true){
-                    if(validarEdad()==true){
-                        completos=true;
-                    }
+            if(validarTamanoTelefono()==true){
+                if(validarEdad()==true){
+                    completos=true;
                 }
+            }
         }
         return completos;
     }
@@ -498,7 +512,7 @@ public class AgregarEstudiante extends javax.swing.JFrame {
             if(annioMinimo<=100 & annioMinimo>=7)
                 mayorDeEdad=true;
             else
-                JOptionPane.showMessageDialog(null,"Edad inválida. El estudiante debe de ser tener 7 años o ser mayor de 7 años.");
+                JOptionPane.showMessageDialog(null,"Edad inválida. El estudiante debe tener 7 años o ser mayor de 7 años.");
         }else
             JOptionPane.showMessageDialog(null, "Es necesario completar todos los espacios.");
         return mayorDeEdad;
@@ -507,7 +521,7 @@ public class AgregarEstudiante extends javax.swing.JFrame {
     private void insertarEstudinte(){
         //Crea un objeto de tipo persona
         Personas persona= new Personas();
-        //Se cargan los atributos de la persona profesor
+        //Se cargan los atributos de la persona estudiante
         persona.setIdentificacion(txtIdentificacion.getText());
         persona.setApellido1(this.txtApellido1.getText());
         persona.setApellido2(this.txtApellido2.getText());
@@ -524,12 +538,12 @@ public class AgregarEstudiante extends javax.swing.JFrame {
         //Envía la persona al método insertaPersona del personaDAO que inserta en la base de datos
         personasDAO = new PersonasDAO(this.conexion,this.rs,this.st);
         String respuestaRegistro = personasDAO.insertarPersona(persona);
-        //Si respuestaRegistro es diferente de null quiere decir que se ingresó el profesor correctamente
+        //Si respuestaRegistro es diferente de null quiere decir que se ingresó el estudiante correctamente
         if(respuestaRegistro!=null){
             JOptionPane.showMessageDialog(null, respuestaRegistro);
             Limpiar();
         }else{
-         JOptionPane.showMessageDialog(null, "Ese Estudiante ya existe en el registro.");
+         JOptionPane.showMessageDialog(null, "El estudiante "+persona.getNombre()+" "+persona.getApellido1()+" "+persona.getApellido2()+" ya existe en el registro.");
         }
     }
     
@@ -540,7 +554,6 @@ public class AgregarEstudiante extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
-    
     public boolean isEmail(String correo){
         Pattern pat = null;
         Matcher mat = null;
@@ -643,15 +656,15 @@ public class AgregarEstudiante extends javax.swing.JFrame {
         }  
         //Si la identificacion no existe buscarRegistro devuelve null
         if(personas==null){
-           //Se limpian los datos de las busquedas anteriores y se habilita el formulario para agregar al profesor
+           //Se limpian los datos de las busquedas anteriores y se habilita el formulario para agregar el estudiante
            limpiarBusqueda();
            //Habilita el formulario
            habilitar();
         }
-        else{//Si la identificacion ya existe en la base de datos se carga la infomacion de ese profesor con el
+        else{//Si la identificacion ya existe en la base de datos se carga la infomacion de ese estudiante con el
             //formulario inabilitado para editar
             try {
-                //muestra los datos del profesor encontrado en los espacios del formulario
+                //muestra los datos del estudiante encontrado en los espacios del formulario
                 mostrar(personas);
                 deshabilitar();
                 JOptionPane.showMessageDialog(null, "!Esa indentificación ya está asociada a un registro!");
@@ -661,7 +674,7 @@ public class AgregarEstudiante extends javax.swing.JFrame {
         }
     }
     
-    //Este metodo muestra la info de un profesor en los espacios del formulario
+    //Este metodo muestra la info de un estudiante en los espacios del formulario
     public void mostrar(Personas persona) throws ParseException{
         this.txtIdentificacion.setText(" ");           
         txtIdentificacion.setText(persona.getIdentificacion());

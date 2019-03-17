@@ -9,6 +9,7 @@ import Modelos.Generos;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 /*
@@ -26,14 +27,18 @@ import java.util.ArrayList;
  */
 public class GenerosDAO {
  
-    Conexion conexion;
+    private static Conexion conexion;
+    public static ResultSet rs;
+    public static Statement st;
+    Connection accesoDB;
     ArrayList<String> generos = new ArrayList<String> ();
     
-     public  GenerosDAO(){
-   
-        conexion=new Conexion();
+     public  GenerosDAO(Conexion conexion,ResultSet rs,Statement st){
+        this.conexion=conexion;
+        this.rs=rs;
+        this.st=st;
+        accesoDB = this.conexion.getConexion();
     }   
-    
      
      /////////////////////////////////////////////// LISTAR GENEROS ///////////////////////////////////////////////////////////
     public ArrayList<Generos> listarGeneros(){          
@@ -41,8 +46,7 @@ public class GenerosDAO {
         ArrayList listarGeneros = new ArrayList();
         Generos tmp; // Variable Temporal 
         try{
-            Connection acceDB = conexion.getConexion();
-            PreparedStatement ps = acceDB.prepareStatement("SELECT * FROM sice.generos;");
+            PreparedStatement ps = accesoDB.prepareStatement("SELECT * FROM sice.generos;");
             ResultSet rs = ps.executeQuery();
             while(rs.next()){ //Si hay registros por leer entonces..
                 tmp = new Generos();

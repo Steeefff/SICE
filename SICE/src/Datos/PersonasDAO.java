@@ -96,12 +96,14 @@ public class PersonasDAO {
                         if(persona==null){
                                 st.executeUpdate("UPDATE personas SET identificacion='"+persona.getIdentificacion()+"', nombre='"+persona.getNombre()+"', apellido1='"+persona.getApellido1()+"',apellido2='"+persona.getApellido2()+"',telefono='"+persona.getTelefono()+"',direccion='"+persona.getDireccion()+"',fechaNacimiento='"+persona.getFechaNacimiento()+"',correo='"+persona.getCorreo()+"',genero='"+persona.getGenero()+"'  WHERE identificacion ='"+identificacionBuscada+"'");
                                 JOptionPane.showMessageDialog(null, "Se ha actualizado el registro "+persona.getNombre()+" "+persona.getApellido1()+" "+persona.getApellido2());
+                                modificado=true;
                         }else{
                                 JOptionPane.showMessageDialog(null, "Ya existe un registro con esa identificación: "+persona.getNombre()+" "+persona.getApellido1()+" "+persona.getApellido2());                
                         }
                 }else{
                     st.executeUpdate("UPDATE sice.personas SET nombre='"+persona.getNombre()+"', apellido1='"+persona.getApellido1()+"',apellido2='"+persona.getApellido2()+"',telefono='"+persona.getTelefono()+"',direccion='"+persona.getDireccion()+"',fechaNacimiento='"+persona.getFechaNacimiento()+"',correo='"+persona.getCorreo()+"',genero='"+persona.getGenero()+"'  WHERE identificacion='"+identificacionBuscada+"'");
                     JOptionPane.showMessageDialog(null, "Se ha actualizado el registro "+persona.getNombre()+" "+persona.getApellido1()+" "+persona.getApellido2());
+                    modificado=true;
                }
             }
             catch (Exception e){
@@ -145,7 +147,7 @@ public class PersonasDAO {
     //Asigna los datos de un registro de tipo personas e idiomasprofesor a una instancia de tipo Personas
     public Personas asignar(){
       Personas persona = null;
-      IdiomasDAO idiomasDao = new IdiomasDAO();
+      IdiomasDAO idiomasDao = new IdiomasDAO(this.conexion,this.rs,this.st);
       String identificacion,Nombre,Apellido1,Apellido2,Direccion,FechaNacimiento,Correo,Contraseña;
       int Telefono,Genero,IdTipoPersona; //Guarda en la vaiable el valor recibido de cada txt.
       int[] Idioma;
@@ -397,7 +399,7 @@ public class PersonasDAO {
             while(rs.next()){
                 ididiomas.add(rs.getInt("idIdioma"));
             }
-            ps = accesoDB.prepareStatement("SELECT * FROM vista_profesores WHERE idTipoPersona=2 AND identificacion LIKE '%"+buscar+"%' OR nombre LIKE '%"+buscar+"%' OR apellido1 LIKE '%"+buscar+
+            ps = accesoDB.prepareStatement("SELECT * FROM vista_profesores WHERE identificacion LIKE '%"+buscar+"%' OR nombre LIKE '%"+buscar+"%' OR apellido1 LIKE '%"+buscar+
                                     "%' OR apellido2 LIKE '%"+buscar+"%' OR genero LIKE '%"+buscar+"%' OR direccion LIKE '%"+buscar+"%' OR Habilitado LIKE '%"+buscar+"%'");
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -440,8 +442,8 @@ public class PersonasDAO {
         String[] registro = new String[11];
         modelo = new DefaultTableModel(null, titulos);
         ArrayList<String> generos = new ArrayList();
-        ArrayList<String> idiomas = new ArrayList();
-        ArrayList<Integer> ididiomas = new ArrayList();
+       /* ArrayList<String> idiomas = new ArrayList();
+        ArrayList<Integer> ididiomas = new ArrayList();*/
         String estados[] = {"Deshablitado","Hablitado"};
 
         try {

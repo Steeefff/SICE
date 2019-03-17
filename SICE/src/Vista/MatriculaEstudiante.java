@@ -46,7 +46,7 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
         this.rs=rs;
         this.st=st;
         setIconImage(this.icon);
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
     
     public void fecha(){

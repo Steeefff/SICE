@@ -28,9 +28,13 @@ public class IdiomasDAO {
     private static Conexion conexion;
     public static ResultSet rs;
     public static Statement st;
+    Connection accesoDB;
     
-    public  IdiomasDAO(){
-        conexion=new Conexion();
+    public  IdiomasDAO(Conexion conexion,ResultSet rs,Statement st){
+        this.conexion=conexion;
+        this.rs=rs;
+        this.st=st;
+        accesoDB = this.conexion.getConexion();
     }   
     
     ///////////////////////////////////////////////////LISTAR IDIOMAS /////////////////////////////////////////////////////////
@@ -39,8 +43,7 @@ public class IdiomasDAO {
         ArrayList listarIdiomas = new ArrayList();
         Idiomas tmp; // Variable Temporal
         try{
-            Connection acceDB = conexion.getConexion();
-            PreparedStatement ps = acceDB.prepareStatement("SELECT * FROM sice.idiomas;");
+            PreparedStatement ps = accesoDB.prepareStatement("SELECT * FROM sice.idiomas;");
             ResultSet rs = ps.executeQuery();
             while(rs.next()){ //Si hay registros por leer entonces..
                 tmp = new Idiomas();
@@ -61,7 +64,6 @@ public class IdiomasDAO {
         int cantidadIdiomas = 0;
         
         try {
-            Connection accesoDB = conexion.Conexion();
             PreparedStatement ps = accesoDB.prepareStatement("SELECT COUNT(*) FROM sice.idiomasprofesor WHERE identificacion = '"+identificacion+"'");
             rs = ps.executeQuery();
             while(rs.next()){
@@ -79,7 +81,6 @@ public class IdiomasDAO {
         System.out.println("Cant idiomas profesor: "+cantidadIdiomasPersona(identificacion));
         
         try{
-            Connection accesoDB = conexion.Conexion();
             PreparedStatement ps = accesoDB.prepareStatement("SELECT idIdioma FROM idiomasprofesor WHERE identificacion ='"+identificacion+"'");
             ps.executeQuery();
             int i=0;

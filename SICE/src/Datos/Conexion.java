@@ -51,6 +51,6 @@ public class Conexion {
     
     public void desconectar(){
         conexion=null;
-        if(conexion == null) System.out.println("La conexion a MSQL ha sido terminadad.");
+        if(conexion == null) System.out.println("La conexion a MySQL ha sido terminada.");
     }
 }

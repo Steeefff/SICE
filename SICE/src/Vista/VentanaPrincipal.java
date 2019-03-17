@@ -532,7 +532,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
        login = new Login();
-        login.setVisible(true); 
+       this.conexion.desconectar();
+       login.setVisible(true); 
        this.dispose();
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
