@@ -552,6 +552,12 @@ public class ModificarProfesor extends javax.swing.JFrame {
             //personasDAO es un objeto de la clase PersonaDAO
             personasDAO = new PersonasDAO(this.conexion,this.rs,this.st);
             personas = personasDAO.buscarRegistro(identificacion);
+            
+            if(personas.getIdTipoPersona() == 1)
+            {
+                JOptionPane.showMessageDialog(null, "Error! Esta persona no es un profesor");
+            }
+            
         }catch (SQLException ex) {
             ex.printStackTrace();
         }  
@@ -768,11 +774,11 @@ public class ModificarProfesor extends javax.swing.JFrame {
         if((car<'a' || car>'z') && (car<'A' || car>'Z') && (car != (char)KeyEvent.VK_BACK_SPACE)){            
             evt.consume();
             JOptionPane.showMessageDialog(null, "Formato incorrecto,solo se permite ingresar letras. Por favor intente de nuevo.");
-        }        
-            if(this.txtApellido2.getText().length() >= 46){
-                JOptionPane.showMessageDialog(null,"El largo del apellido no puede ser mayor a 45 caracteres.");
-                this.txtApellido2.transferFocus();
-            }
+        }
+        if(this.txtApellido2.getText().length() >= 46){
+            JOptionPane.showMessageDialog(null,"El largo del apellido no puede ser mayor a 45 caracteres.");
+            this.txtApellido2.transferFocus();
+        }
     }//GEN-LAST:event_txtApellido2KeyTyped
 
     private void txtIdentificacionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdentificacionKeyTyped
@@ -782,7 +788,8 @@ public class ModificarProfesor extends javax.swing.JFrame {
     }//GEN-LAST:event_txtIdentificacionKeyTyped
 
     private void txtIdentificacionKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdentificacionKeyReleased
-        
+        if(this.txtIdentificacion.getText().length()>=9)   
+            buscar(this.txtIdentificacion.getText());
     }//GEN-LAST:event_txtIdentificacionKeyReleased
       
     //Habilita los espacios del formulario y el boton de guardar

@@ -1,6 +1,9 @@
 package Vista;
 
+import Datos.Conexion;
 import java.awt.Image;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.ImageIcon;
@@ -26,7 +29,11 @@ public class AdministracionUsuarios extends javax.swing.JFrame {
     ModificarUsuario modificarUsuario;
     VentanaPrincipal ventanaPrincipal;
     Image icon;
-    public AdministracionUsuarios(Image icono) {
+    private static Conexion conexion;
+    public static ResultSet rs;
+    public static Statement st;
+    
+    public AdministracionUsuarios(Image icono,Conexion conexion,ResultSet rs,Statement st) {
         initComponents();
         this.setSize(1290,710); 
         setLocationRelativeTo(null);
@@ -34,6 +41,9 @@ public class AdministracionUsuarios extends javax.swing.JFrame {
         fecha();
         setTitle("SICE - Administración de Usuarios"); 
         this.icon = icono;
+        this.conexion=conexion;
+        this.rs=rs;
+        this.st=st;
         setIconImage(icon);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     }
@@ -351,7 +361,7 @@ public class AdministracionUsuarios extends javax.swing.JFrame {
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         this.dispose();
-        ventanaPrincipal = new VentanaPrincipal(this.icon);
+        ventanaPrincipal = new VentanaPrincipal(this.icon,this.conexion,this.rs,this.st);
         ventanaPrincipal.setVisible(true);
     }//GEN-LAST:event_btnVolverActionPerformed
 

@@ -1,6 +1,9 @@
 package Vista;
 
+import Datos.Conexion;
 import java.awt.Image;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.ImageIcon;
@@ -25,6 +28,10 @@ public class MantenimientoCursos extends javax.swing.JFrame {
     VentanaPrincipal ventanaPrincipal;
     ModificarCurso modificarCurso;
     Image icon;
+    private static Conexion conexion;
+    public static ResultSet rs;
+    public static Statement st;
+    
     
     public MantenimientoCursos(Image icono ) {
         initComponents();        
@@ -34,6 +41,9 @@ public class MantenimientoCursos extends javax.swing.JFrame {
         fecha();
         this.setTitle("SICE - Mantenimiento de Cursos");
         this.icon = icono;
+        this.conexion=conexion;
+        this.rs=rs;
+        this.st=st;
         setIconImage(this.icon);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     }
@@ -397,7 +407,7 @@ public class MantenimientoCursos extends javax.swing.JFrame {
     }//GEN-LAST:event_btnHabilitarActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-      ventanaPrincipal = new VentanaPrincipal(this.icon);
+      ventanaPrincipal = new VentanaPrincipal(this.icon,this.conexion,this.rs,this.st);
       ventanaPrincipal.setVisible(true);
       this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed

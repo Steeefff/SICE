@@ -687,7 +687,7 @@ public class AgregarProfesor extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCorreoFocusLost
 
     private void txtTelefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTelefonoKeyTyped
-         char car = evt.getKeyChar();
+        char car = evt.getKeyChar();
         if((car<'0' || car>'9') && this.txtTelefono.getText().contains(".") && (car!=(char)KeyEvent.VK_BACK_SPACE)){
            evt.consume();
            JOptionPane.showMessageDialog(null, "Solo se permite ingresar números. Por favor intente de nuevo.");
@@ -735,10 +735,10 @@ public class AgregarProfesor extends javax.swing.JFrame {
             evt.consume();
             JOptionPane.showMessageDialog(null, "Formato incorrecto,solo se permite ingresar letras. Por favor intente de nuevo.");
         }        
-            if(this.txtApellido2.getText().length() >= 46){
-                JOptionPane.showMessageDialog(null,"El largo del apellido no puede ser mayor a 45 caracteres.");
-                this.txtApellido2.transferFocus();
-            }
+        if(this.txtApellido2.getText().length() >= 46){
+            JOptionPane.showMessageDialog(null,"El largo del apellido no puede ser mayor a 45 caracteres.");
+            this.txtApellido2.transferFocus();
+        }
     }//GEN-LAST:event_txtApellido2KeyTyped
  
     private void txtIdentificacionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdentificacionKeyTyped
@@ -832,7 +832,6 @@ public class AgregarProfesor extends javax.swing.JFrame {
         this.txtTelefono.setEnabled(true);
         this.comboFechaNacimiento.setEnabled(true);
         this.comboGenero.setEnabled(true);
-        //this.comboIdiomas.setEnabled(true);
         for(int i=0; i<this.idiomas.size(); i++){
             this.idiomas.get(i).setEnabled(true);
         }

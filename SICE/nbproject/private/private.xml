@@ -2,19 +2,10 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-<<<<<<< HEAD
         <group>
-            <file>file:/C:/Users/Lenovo/Documents/GitHub/SICE/SICE/src/Vista/MantenimientoProfesor.java</file>
-            <file>file:/C:/Users/Lenovo/Documents/GitHub/SICE/SICE/src/Vista/AgregarGrupo.java</file>
-            <file>file:/C:/Users/Lenovo/Documents/GitHub/SICE/SICE/src/Datos/GenerosDAO.java</file>
-            <file>file:/C:/Users/Lenovo/Documents/GitHub/SICE/SICE/src/Modelos/Idiomas.java</file>
-            <file>file:/C:/Users/Lenovo/Documents/GitHub/SICE/SICE/src/Datos/Conexion.java</file>
-            <file>file:/C:/Users/Lenovo/Documents/GitHub/SICE/SICE/src/Vista/AdministracionUsuarios.java</file>
-            <file>file:/C:/Users/Lenovo/Documents/GitHub/SICE/SICE/src/Vista/MantenimientoCursos.java</file>
+            <file>file:/C:/Users/Lenovo/Documents/GitHub/SICE/SICE/src/Vista/ModificarProfesor.java</file>
+            <file>file:/C:/Users/Lenovo/Documents/GitHub/SICE/SICE/src/Vista/ModificarEstudiante.java</file>
             <file>file:/C:/Users/Lenovo/Documents/GitHub/SICE/SICE/src/Datos/PersonasDAO.java</file>
         </group>
-=======
-        <group/>
->>>>>>> 0e87c38b25d57cb44a94915d4374c84c558d5d31
     </open-files>
 </project-private>

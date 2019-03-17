@@ -1,7 +1,10 @@
 package Vista;
 
+import Datos.Conexion;
 import static java.awt.Frame.MAXIMIZED_BOTH;
 import java.awt.Image;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.ImageIcon;
@@ -25,8 +28,11 @@ public class AgregarGrupo extends javax.swing.JFrame {
 
     VentanaPrincipal ventanaPrincipal;
     Image icon;
+    private static Conexion conexion;
+    public static ResultSet rs;
+    public static Statement st;
     
-    public AgregarGrupo(Image icono) {
+    public AgregarGrupo(Image icono,Conexion conexion,ResultSet rs,Statement st) {
         initComponents();
         this.setSize(1290,710); 
         setLocationRelativeTo(null);
@@ -35,6 +41,9 @@ public class AgregarGrupo extends javax.swing.JFrame {
         setTitle("SICE - Agregar Grupo");
         this.icon = new ImageIcon(getClass().getResource("/Imagenes/sice_1.jpeg")).getImage();
         setIconImage(this.icon);
+        this.conexion=conexion;
+        this.rs=rs;
+        this.st=st;
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     }
     
@@ -457,7 +466,7 @@ public class AgregarGrupo extends javax.swing.JFrame {
     }//GEN-LAST:event_listaGenero1ActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        ventanaPrincipal = new VentanaPrincipal(this.icon);
+        ventanaPrincipal = new VentanaPrincipal(this.icon,this.conexion,this.rs,this.st);
         ventanaPrincipal.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed

@@ -490,19 +490,19 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnMatricularEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMatricularEstudianteActionPerformed
-        matriculaEstudiante = new MatriculaEstudiante(this.icon);
+        matriculaEstudiante = new MatriculaEstudiante(this.icon,this.conexion,this.rs,this.st);
         matriculaEstudiante.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnMatricularEstudianteActionPerformed
 
     private void btnAdministracionUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdministracionUsuariosActionPerformed
-        administracionUsuarios = new AdministracionUsuarios(this.icon);
+        administracionUsuarios = new AdministracionUsuarios(this.icon,this.conexion,this.rs,this.st);
         administracionUsuarios.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnAdministracionUsuariosActionPerformed
 
     private void btnMantenimientoEstudiantesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMantenimientoEstudiantesActionPerformed
-        mantenimientoEstudiantes = new MantenimientoEstudiante(this.icon);
+        mantenimientoEstudiantes = new MantenimientoEstudiante(this.icon,this.conexion,this.rs,this.st);
         mantenimientoEstudiantes.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnMantenimientoEstudiantesActionPerformed
@@ -513,19 +513,19 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAgregarProfesorActionPerformed
 
     private void btnAgregarGrupoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarGrupoActionPerformed
-        agregarGrupo = new AgregarGrupo(this.icon);
+        agregarGrupo = new AgregarGrupo(this.icon,this.conexion,this.rs,this.st);
         agregarGrupo.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnAgregarGrupoActionPerformed
 
     private void btnAgregarCursosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarCursosActionPerformed
-        agregarCurso = new AgregarCurso(this.icon);
+        agregarCurso = new AgregarCurso(this.icon,this.conexion,this.rs,this.st);
         agregarCurso.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnAgregarCursosActionPerformed
 
     private void btnAgregarPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarPagoActionPerformed
-        pago = new Pagos(this.icon);
+        pago = new Pagos(this.icon,this.conexion,this.rs,this.st);
         pago.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnAgregarPagoActionPerformed

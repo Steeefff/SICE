@@ -1,7 +1,10 @@
 package Vista;
 
+import Datos.Conexion;
 import static java.awt.Frame.MAXIMIZED_BOTH;
 import java.awt.Image;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.ImageIcon;
@@ -25,8 +28,11 @@ public class AgregarCurso extends javax.swing.JFrame {
 
     VentanaPrincipal ventanaPrincipal;
     Image icon;
+    private static Conexion conexion;
+    public static ResultSet rs;
+    public static Statement st;
     
-    public AgregarCurso(Image icono) {
+    public AgregarCurso(Image icono,Conexion conexion,ResultSet rs,Statement st) {
         initComponents();
         this.setSize(1290,710); 
         setLocationRelativeTo(null);
@@ -34,6 +40,9 @@ public class AgregarCurso extends javax.swing.JFrame {
         fecha();
         setTitle("SICE - Agregar Curso");
         this.icon = icono;
+        this.conexion=conexion;
+        this.rs=rs;
+        this.st=st;
         setIconImage(this.icon);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     }
@@ -356,7 +365,7 @@ public class AgregarCurso extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        ventanaPrincipal = new VentanaPrincipal(this.icon);
+        ventanaPrincipal = new VentanaPrincipal(this.icon,this.conexion,this.rs,this.st);
         ventanaPrincipal.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
