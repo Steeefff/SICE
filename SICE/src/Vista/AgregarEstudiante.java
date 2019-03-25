@@ -25,9 +25,10 @@ import javax.swing.JOptionPane;
  *@author Stefanny Villalobos Uva
  * Proyecto de Ingeniería - Universidad Nacional de Costa Rica
  * Sistema Interno de Control de Estudiantes, SICE
- * Profesor: Rafael Alvarado Arley
+ * Profesores: Rafael Alvarado Arley
+               Pablo Gamboa Camacho
  * Dueño del producto: Yensy Soto, Centro Cultural Corporación Costa Rica
- * Versión 1.2, 21/10/2018
+ * Versión 1.3, 17/03/2019
  * Since 1.0
  */
 
@@ -247,6 +248,7 @@ public class AgregarEstudiante extends javax.swing.JFrame {
         jLabel6.setText("Nombre:");
 
         txtNombre.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtNombre.setEnabled(false);
         txtNombre.setNextFocusableComponent(txtApellido1);
         txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -261,6 +263,7 @@ public class AgregarEstudiante extends javax.swing.JFrame {
         jLabel8.setText("Apellido 2:");
 
         txtApellido2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtApellido2.setEnabled(false);
         txtApellido2.setNextFocusableComponent(comboFechaNacimiento);
         txtApellido2.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -269,6 +272,7 @@ public class AgregarEstudiante extends javax.swing.JFrame {
         });
 
         txtApellido1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtApellido1.setEnabled(false);
         txtApellido1.setNextFocusableComponent(txtApellido2);
         txtApellido1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -294,10 +298,12 @@ public class AgregarEstudiante extends javax.swing.JFrame {
         comboGenero.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         comboGenero.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "Femenino", "Masculino", "No especifica" }));
         comboGenero.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        comboGenero.setEnabled(false);
         comboGenero.setNextFocusableComponent(txtTelefono);
 
         txtTelefono.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtTelefono.setAutoscrolls(false);
+        txtTelefono.setEnabled(false);
         txtTelefono.setNextFocusableComponent(txtCorreo);
         txtTelefono.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -306,9 +312,11 @@ public class AgregarEstudiante extends javax.swing.JFrame {
         });
 
         txtDireccion.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtDireccion.setEnabled(false);
         txtDireccion.setNextFocusableComponent(btnGuardar);
 
         txtCorreo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtCorreo.setEnabled(false);
         txtCorreo.setNextFocusableComponent(txtDireccion);
         txtCorreo.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -332,12 +340,14 @@ public class AgregarEstudiante extends javax.swing.JFrame {
         btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
         btnGuardar.setText("Guardar");
         btnGuardar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnGuardar.setEnabled(false);
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGuardarActionPerformed(evt);
             }
         });
 
+        comboFechaNacimiento.setEnabled(false);
         comboFechaNacimiento.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         comboFechaNacimiento.setNextFocusableComponent(comboGenero);
 

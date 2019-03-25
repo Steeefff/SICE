@@ -30,9 +30,10 @@ import javax.swing.JOptionPane;
  *@author Stefanny Villalobos Uva
  * Proyecto de Ingeniería - Universidad Nacional de Costa Rica
  * Sistema Interno de Control de Estudiantes, SICE
- * Profesor: Rafael Alvarado Arley
+ * Profesores: Rafael Alvarado Arley
+               Pablo Gamboa Camacho
  * Dueño del producto: Yensy Soto, Centro Cultural Corporación Costa Rica
- * Versión 1.2, 21/10/2018
+ * Versión 1.3, 17/03/2019
  * Since 1.0
  */
 

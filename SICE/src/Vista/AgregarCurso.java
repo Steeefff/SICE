@@ -1,16 +1,27 @@
 package Vista;
 
 import Datos.Conexion;
+import Datos.CursosDAO;
+import Modelos.Cursos;
+import java.awt.FlowLayout;
 import static java.awt.Frame.MAXIMIZED_BOTH;
 import java.awt.Image;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
-/*
+/**
   @author Grupo #30 Ingeniería 2018-2019 
  *@author David Rodríguez Zamora
  *@author Katherine Jiménez Soto
@@ -18,9 +29,10 @@ import javax.swing.JFrame;
  *@author Stefanny Villalobos Uva
  * Proyecto de Ingeniería - Universidad Nacional de Costa Rica
  * Sistema Interno de Control de Estudiantes, SICE
- * Profesor: Rafael Alvarado Arley
+ * Profesores: Rafael Alvarado Arley
+               Pablo Gamboa Camacho
  * Dueño del producto: Yensy Soto, Centro Cultural Corporación Costa Rica
- * Versión 1.2, 21/10/2018
+ * Versión 1.3, 17/03/2019
  * Since 1.0
  */
 
@@ -31,6 +43,8 @@ public class AgregarCurso extends javax.swing.JFrame {
     private static Conexion conexion;
     public static ResultSet rs;
     public static Statement st;
+    CursosDAO cursosDAO;
+    Vector<JCheckBox> cursosCheckBox = new Vector<>();
     
     public AgregarCurso(Image icono,Conexion conexion,ResultSet rs,Statement st) {
         initComponents();
@@ -43,8 +57,19 @@ public class AgregarCurso extends javax.swing.JFrame {
         this.conexion=conexion;
         this.rs=rs;
         this.st=st;
+        this.cargarIdiomas();
+        this.comboIdiomas.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                try {
+                    cargarCursosRequisitos();
+                } catch (SQLException ex) {
+                    Logger.getLogger(AgregarCurso.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
         setIconImage(this.icon);
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
     
     public void fecha(){
@@ -71,14 +96,14 @@ public class AgregarCurso extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtNombre = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
-        btnMatricular = new javax.swing.JButton();
+        btnGuardar = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         listaCursosAprobados = new javax.swing.JList<>();
         btnVolver = new javax.swing.JButton();
-        listaGenero = new javax.swing.JComboBox<>();
+        comboIdiomas = new javax.swing.JComboBox<>();
         jTextField2 = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
@@ -86,6 +111,7 @@ public class AgregarCurso extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLbFecha = new javax.swing.JLabel();
+        panelCursos = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -160,8 +186,13 @@ public class AgregarCurso extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setText("Idioma:");
 
-        jTextField1.setEditable(false);
-        jTextField1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txtNombre.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txtNombre.setFocusCycleRoot(true);
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtNombreKeyReleased(evt);
+            }
+        });
 
         btnBuscar.setBackground(new java.awt.Color(0, 133, 202));
         btnBuscar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -174,14 +205,15 @@ public class AgregarCurso extends javax.swing.JFrame {
             }
         });
 
-        btnMatricular.setBackground(new java.awt.Color(0, 133, 202));
-        btnMatricular.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        btnMatricular.setForeground(new java.awt.Color(255, 255, 255));
-        btnMatricular.setText("Guardar");
-        btnMatricular.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnMatricular.addActionListener(new java.awt.event.ActionListener() {
+        btnGuardar.setBackground(new java.awt.Color(0, 133, 202));
+        btnGuardar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
+        btnGuardar.setText("Guardar");
+        btnGuardar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnGuardar.setEnabled(false);
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMatricularActionPerformed(evt);
+                btnGuardarActionPerformed(evt);
             }
         });
 
@@ -207,9 +239,9 @@ public class AgregarCurso extends javax.swing.JFrame {
             }
         });
 
-        listaGenero.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        listaGenero.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "Inglés", "Portugués" }));
-        listaGenero.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        comboIdiomas.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        comboIdiomas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        comboIdiomas.setEnabled(false);
 
         jTextField2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
 
@@ -277,25 +309,38 @@ public class AgregarCurso extends javax.swing.JFrame {
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
+        javax.swing.GroupLayout panelCursosLayout = new javax.swing.GroupLayout(panelCursos);
+        panelCursos.setLayout(panelCursosLayout);
+        panelCursosLayout.setHorizontalGroup(
+            panelCursosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 588, Short.MAX_VALUE)
+        );
+        panelCursosLayout.setVerticalGroup(
+            panelCursosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 171, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(41, 41, 41)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnMatricular, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
-                        .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel2))
-                        .addGap(28, 28, 28)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField1)
-                            .addComponent(listaGenero, 0, 292, Short.MAX_VALUE))))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
+                            .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel6)
+                                .addComponent(jLabel2))
+                            .addGap(28, 28, 28)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtNombre)
+                                .addComponent(comboIdiomas, 0, 292, Short.MAX_VALUE))))
+                    .addComponent(panelCursos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -327,16 +372,18 @@ public class AgregarCurso extends javax.swing.JFrame {
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(listaGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addGap(27, 27, 27)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(comboIdiomas, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel6))
-                        .addGap(63, 63, 63)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(panelCursos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 24, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -344,7 +391,7 @@ public class AgregarCurso extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnMatricular, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -370,18 +417,103 @@ public class AgregarCurso extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
-    private void btnMatricularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMatricularActionPerformed
-    }//GEN-LAST:event_btnMatricularActionPerformed
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+    }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
 
     }//GEN-LAST:event_btnBuscarActionPerformed
 
-
+    private void txtNombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyReleased
+        if(!this.txtNombre.getText().equals(""))   
+            try {
+                buscar(this.txtNombre.getText());
+        } catch (SQLException ex) {
+            Logger.getLogger(AgregarCurso.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_txtNombreKeyReleased
+    
+    public void limpiarBusqueda(){
+        this.comboIdiomas.setSelectedIndex(0);
+    }
+    
+    public void habilitar(){
+        this.comboIdiomas.setEnabled(true);
+        this.btnGuardar.setEnabled(true);
+    }
+    
+    public void deshabilitar(){
+        this.comboIdiomas.setEnabled(false);
+        this.btnGuardar.setEnabled(false);
+    }
+    
+    public void cargarIdiomas(){
+        String sql = "SELECT nombre FROM sice.idiomas";
+        try{     
+            rs = st.executeQuery(sql);
+            this.comboIdiomas.addItem("Seleccione un idioma");
+            while(rs.next()){
+                this.comboIdiomas.addItem(rs.getString("nombre"));
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+   
+    public void buscar(String nombre) throws SQLException{
+        //Se crea un objeto de tipo Cursos
+        Cursos cursos = null;
+        try {
+            //Se llama a buscarCurso en CursosDAO que valida si existe o no el bombre en la tabla de cursos
+            //cursosDAO es un objeto de la clase CursosDAO
+            cursosDAO = new CursosDAO(this.conexion,this.rs,this.st);
+            cursos = cursosDAO.buscarCurso(nombre);
+        }catch (SQLException ex) {
+            ex.printStackTrace();
+        }  
+        //Si la identificacion no existe buscarCurso devuelve null
+        if(cursos==null){
+           //Se limpian los datos de las busquedas anteriores y se habilita el formulario para agregar el curso
+           limpiarBusqueda();
+           //Habilita el formulario
+           habilitar();
+        }
+        else{//Si el nombre ya existe en la base de datos se carga la infomacion de ese curso con el
+            //formulario inabilitado para editar
+            try {
+                deshabilitar();
+                String idioma=this.comboIdiomas.getItemAt(cursos.getIdIdioma());
+                JOptionPane.showMessageDialog(null, "Ya existe un curso con ese nombre. Curso: "+cursos.getNombre()+" Idioma: "+idioma);
+            }catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+    
+    public void cargarCursosRequisitos() throws SQLException{
+        cursosDAO=new CursosDAO(this.conexion,this.rs,this.st);
+        int idIdioma = this.comboIdiomas.getSelectedIndex();
+        String [] cursos = cursosDAO.buscarCursosPorIdioma(idIdioma);
+        
+        for(int i=0; i<cursos.length; i++){
+            cursosCheckBox.add(new JCheckBox(cursos[i]));
+        }
+        for(int i=0; i<cursos.length; i++)
+            System.out.println(cursos[i]);
+        
+        this.panelCursos.setLayout(new FlowLayout());
+        
+        for(int i=0; i<cursosCheckBox.size(); i++){
+           this.panelCursos.add(cursosCheckBox.get(i));
+           cursosCheckBox.get(i).setEnabled(true);
+        }
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
-    private javax.swing.JButton btnMatricular;
+    private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnVolver;
+    private javax.swing.JComboBox<String> comboIdiomas;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -399,9 +531,9 @@ public class AgregarCurso extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JList<String> listaCursosAprobados;
-    private javax.swing.JComboBox<String> listaGenero;
+    private javax.swing.JPanel panelCursos;
+    private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }

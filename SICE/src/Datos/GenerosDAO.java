@@ -49,7 +49,7 @@ public class GenerosDAO {
             PreparedStatement ps = accesoDB.prepareStatement("SELECT * FROM sice.generos;");
             ResultSet rs = ps.executeQuery();
             while(rs.next()){ //Si hay registros por leer entonces..
-                tmp = new Generos();
+                tmp = new Generos(conexion, rs, st);
                 
                 tmp.setIdGenero(rs.getInt(1));
                 tmp.setNombre(rs.getString(2));

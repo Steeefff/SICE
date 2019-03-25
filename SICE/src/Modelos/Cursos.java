@@ -5,7 +5,7 @@
  */
 package Modelos;
 
-/*
+/**
   @author Grupo #30 Ingeniería 2018-2019 
  *@author David Rodríguez Zamora
  *@author Katherine Jiménez Soto
@@ -13,9 +13,10 @@ package Modelos;
  *@author Stefanny Villalobos Uva
  * Proyecto de Ingeniería - Universidad Nacional de Costa Rica
  * Sistema Interno de Control de Estudiantes, SICE
- * Profesor: Rafael Alvarado Arley
+ * Profesores: Rafael Alvarado Arley
+               Pablo Gamboa Camacho
  * Dueño del producto: Yensy Soto, Centro Cultural Corporación Costa Rica
- * Versión 1.2, 21/10/2018
+ * Versión 1.3, 17/03/2019
  * Since 1.0
  */
 
@@ -24,10 +25,18 @@ public class Cursos {
     private int idcurso;
     private String nombre;
     private int estado;
-    private int requisito;
+    private int[] requisito;
     private int idIdioma;
 
-    public Cursos() {
+    public Cursos(){
+    }
+    
+    public Cursos(int idcurso,String nombre,int estado, int[] requisito, int idIdioma) {
+        this.idcurso=idcurso;
+        this.nombre=nombre;
+        this.estado=estado;
+        this.requisito=requisito;
+        this.idIdioma=idIdioma;
     }
 
     public int getIdcurso() {
@@ -54,11 +63,11 @@ public class Cursos {
         this.estado = estado;
     }
 
-    public int getRequisito() {
+    public int[] getRequisito() {
         return requisito;
     }
 
-    public void setRequisito(int requisito) {
+    public void setRequisito(int[] requisito) {
         this.requisito = requisito;
     }
 

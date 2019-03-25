@@ -19,35 +19,30 @@ package Modelos;
  * Versión 1.3, 17/03/2019
  * Since 1.0
  */
-
-
-public class Idiomas  {
-    private int idIdioma;
-    private String nombre;
+public class Requisitos {
     
-    public Idiomas() {
+    int idCurso, idRequisito;
+    
+    public Requisitos(){
+        
     }
 
-    public Idiomas(int idIdioma, String nombre) {
-        this.idIdioma = idIdioma;
-        this.nombre = nombre;
+    public int getIdCurso() {
+        return idCurso;
     }
 
-    public int getIdIdioma() {
-       return idIdioma;
+    public void setIdCurso(int idCurso) {
+        this.idCurso = idCurso;
     }
 
-    public void setIdIdioma(int idIdioma) {
-        this.idIdioma = idIdioma;
+    public int getIdRequisito() {
+        return idRequisito;
     }
 
-    public String getNombre() {
-        return nombre;
+    public void setIdRequisito(int idRequisito) {
+        this.idRequisito = idRequisito;
     }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
+    
+    
     
 }
