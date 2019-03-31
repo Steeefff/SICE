@@ -14,6 +14,7 @@ package Modelos;
  * Proyecto de Ingeniería - Universidad Nacional de Costa Rica
  * Sistema Interno de Control de Estudiantes, SICE
  * Profesor: Rafael Alvarado Arley
+             Pablo Gamboa Camacho
  * Dueño del producto: Yensy Soto, Centro Cultural Corporación Costa Rica
  * Versión 1.2, 21/10/2018
  * Since 1.0

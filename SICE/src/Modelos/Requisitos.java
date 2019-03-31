@@ -42,7 +42,4 @@ public class Requisitos {
     public void setIdRequisito(int idRequisito) {
         this.idRequisito = idRequisito;
     }
-    
-    
-    
 }

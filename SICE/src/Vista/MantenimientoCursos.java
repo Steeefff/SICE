@@ -1,12 +1,15 @@
 package Vista;
 
 import Datos.Conexion;
+import Datos.CursosDAO;
 import java.awt.Image;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /*
   @author Grupo #30 Ingeniería 2018-2019 
@@ -26,6 +29,7 @@ public class MantenimientoCursos extends javax.swing.JFrame {
 
  
     VentanaPrincipal ventanaPrincipal;
+    CursosDAO cursosDAO;
     ModificarCurso modificarCurso;
     Image icon;
     private static Conexion conexion;
@@ -66,8 +70,8 @@ public class MantenimientoCursos extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jTextField1 = new javax.swing.JTextField();
+        tablaCursos = new javax.swing.JTable();
+        txtBuscar = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         btnBuscar = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
@@ -98,25 +102,25 @@ public class MantenimientoCursos extends javax.swing.JFrame {
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
         jPanel5.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204)));
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaCursos.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        tablaCursos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Nombre", "Idioma", "Estado"
+                "Nombre", "Idioma", "Requisitos", "Estado"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
-        jTable1.getAccessibleContext().setAccessibleName("");
+        jScrollPane1.setViewportView(tablaCursos);
+        tablaCursos.getAccessibleContext().setAccessibleName("");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -142,7 +146,7 @@ public class MantenimientoCursos extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
-                    .addComponent(jTextField1))
+                    .addComponent(txtBuscar))
                 .addGap(18, 18, 18)
                 .addComponent(btnBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
                 .addGap(561, 561, 561))
@@ -152,7 +156,7 @@ public class MantenimientoCursos extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
@@ -419,7 +423,26 @@ public class MantenimientoCursos extends javax.swing.JFrame {
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        
+        /*this.personasDAO= new PersonasDAO(this.conexion,this.rs,this.st);
+        try {
+            DefaultTableModel modelo;
+            modelo = this.personasDAO.mostrarBuscarEstudiantes(this.txtBuscar.getText());
+            this.tablaEstudiantes.setModel(modelo);
+        }catch (Exception e) {
+            JOptionPane.showConfirmDialog(null, "Hubo un error. Si el error persiste contacte a su equipo de TI.");
+            e.printStackTrace();
+        }
+        */
+        this.cursosDAO = new CursosDAO(conexion, rs, st);
+        try {
+            DefaultTableModel modelo;
+            modelo = this.cursosDAO.mostrarBuscarCursos(this.txtBuscar.getText());
+            this.tablaCursos.setModel(modelo);
+            
+        } catch (Exception e) {
+            JOptionPane.showConfirmDialog(null, "Hubo un error. Si el error persiste contacte a su equipo de TI.");
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     
@@ -447,7 +470,7 @@ public class MantenimientoCursos extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable tablaCursos;
+    private javax.swing.JTextField txtBuscar;
     // End of variables declaration//GEN-END:variables
 }

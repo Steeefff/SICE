@@ -1,11 +1,16 @@
 package Datos;
 
+import static Datos.PersonasDAO.rs;
 import Modelos.Cursos;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
   @author Grupo #30 Ingeniería 2018-2019 
@@ -119,30 +124,86 @@ public class CursosDAO {
     //BUSCA TODOS LOS CURSOS QUE EXISTEN PARA EL IDIOMA SELECCIONADO Y DEVUELVE UN VECTOR DE TIPO CURSOS
     public String[] buscarCursosPorIdioma(int idIdioma) throws SQLException{
         int cant = cantidadCursosPorIdioma(idIdioma);
-        String [] cursosNombres =new String[cant];
-        System.out.println("Cant. Cursos: "+cant);
-        cursos=new Cursos();
-        String sql=("SELECT * FROM cursos WHERE idIdioma='"+idIdioma+"';");
+        String [] cursosNombres = new String[cant];
         
+        cursos=new Cursos();
+        String sql=("SELECT nombre FROM cursos WHERE idIdioma='"+idIdioma+"';");
          try {
             rs = st.executeQuery(sql);         
             int i=0;
+            
             while(rs.next()){
-                cursos=asignar();
-                cursosNombres[i]=cursos.getNombre();
-                System.out.println(cursosNombres[i]);
+                cursosNombres[i] = rs.getString("nombre");
                 i++;
             }
         }catch (Exception e) {
             System.out.println("Hubo un error");
             e.printStackTrace();
         }
+      
         
         return cursosNombres;
     }
     
-    public void insertarCurso(){
+    
+    public String insertarCurso(Cursos curso){
+        String respuestaRegistro=null;
         
+        try{
+            ps = accesoDB.prepareStatement(
+                    "INSERT INTO `sice`.`cursos` (`idcurso`, `nombre`, `idIdioma`, `estado`) "+
+                            "VALUES (?,?,?,?);");            
+                ps.setInt(1, curso.getIdcurso());
+                ps.setString(2, curso.getNombre());
+                ps.setInt(3, curso.getIdIdioma());
+                ps.setInt(4, curso.getEstado());
+                          
+                int numFAfectadas = ps.executeUpdate(); //Toma el numero de filas afectadas
+                if(numFAfectadas>0){                     
+                    respuestaRegistro="¡El registro del curso "+curso.getNombre()+" ha sido guardado con éxito! ";
+                }else{
+                    respuestaRegistro="Hubo un error al guardar el registro del curos "+curso.getNombre()+". Intene de nuevo.";
+                }            
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(null, "Ha habido un error. Intente de nuevo.");
+                e.printStackTrace();
+            }
+      return respuestaRegistro;
     }
-   
+    
+    ////////////////////////////////BOTON BUSCAR EN MANTENIMIENTO PROFESORES///////////////////////////////////////////////////
+    public DefaultTableModel mostrarBuscarCursos(String buscar){
+        DefaultTableModel modelo;
+        String[] titulos = {"Id curso","Nombre","Idioma", "Requisitos", "Estado"};
+        String[] registro = new String[5];
+        modelo = new DefaultTableModel(null, titulos);
+        ArrayList<String> generos = new ArrayList();
+        String estados[] = {"Deshablitado","Hablitado"};
+
+        try {
+            ps = accesoDB.prepareStatement("SELECT * FROM sice.cursos WHERE nombre LIKE '%"+buscar+"%' OR apellido1 LIKE '%"+buscar+
+                                    "%'OR Habilitado LIKE '%"+buscar+"%'");
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                registro[0] = Integer.toString(rs.getInt(1));//Id curso NO MOSTRAR EN LA VISTA
+                registro[1] = rs.getString(2);//Nombre
+                registro[2] = Integer.toString(rs.getInt(3));//Id idioma
+                
+                PreparedStatement ps2 = accesoDB.prepareStatement("SELECT `idRequisito` FROM `requisitos` WHERE `idcurso` = '"+rs.getInt(1)+"'");
+                ResultSet rs2 = ps2.executeQuery();
+                String requsitos="";
+                while (rs2.next()) {
+                    //AGREGAR REQUISITOS AL REGISTRO[3]---->rs2.getInt("idRequisito")
+                }
+                registro[4] = Integer.toString(rs.getInt(5)); //Estado                
+                
+                modelo.addRow(registro);
+            }
+            return modelo;
+        }catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Ha habido un error.");
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

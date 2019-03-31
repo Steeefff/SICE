@@ -2,7 +2,9 @@ package Vista;
 
 import Datos.Conexion;
 import Datos.CursosDAO;
+import Datos.RequisitosDAO;
 import Modelos.Cursos;
+import Modelos.Requisitos;
 import java.awt.FlowLayout;
 import static java.awt.Frame.MAXIMIZED_BOTH;
 import java.awt.Image;
@@ -44,6 +46,7 @@ public class AgregarCurso extends javax.swing.JFrame {
     public static ResultSet rs;
     public static Statement st;
     CursosDAO cursosDAO;
+    RequisitosDAO requisitosDAO;
     Vector<JCheckBox> cursosCheckBox = new Vector<>();
     
     public AgregarCurso(Image icono,Conexion conexion,ResultSet rs,Statement st) {
@@ -55,14 +58,17 @@ public class AgregarCurso extends javax.swing.JFrame {
         setTitle("SICE - Agregar Curso");
         this.icon = icono;
         this.conexion=conexion;
-        this.rs=rs;
+        this.rs=rs; 
         this.st=st;
         this.cargarIdiomas();
+        
         this.comboIdiomas.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 try {
-                    cargarCursosRequisitos();
+                    System.out.println("Entro");
+                    cargarCursosRequisitos(comboIdiomas.getSelectedIndex());
+                    System.out.println("salgo");
                 } catch (SQLException ex) {
                     Logger.getLogger(AgregarCurso.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -112,6 +118,7 @@ public class AgregarCurso extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLbFecha = new javax.swing.JLabel();
         panelCursos = new javax.swing.JPanel();
+        lblRequisitos = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -313,11 +320,17 @@ public class AgregarCurso extends javax.swing.JFrame {
         panelCursos.setLayout(panelCursosLayout);
         panelCursosLayout.setHorizontalGroup(
             panelCursosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 588, Short.MAX_VALUE)
+            .addGroup(panelCursosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblRequisitos, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelCursosLayout.setVerticalGroup(
             panelCursosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 171, Short.MAX_VALUE)
+            .addGroup(panelCursosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblRequisitos, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(81, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -326,21 +339,20 @@ public class AgregarCurso extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(41, 41, 41)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
-                            .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel6)
-                                .addComponent(jLabel2))
-                            .addGap(28, 28, 28)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtNombre)
-                                .addComponent(comboIdiomas, 0, 292, Short.MAX_VALUE))))
-                    .addComponent(panelCursos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
+                        .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel2))
+                        .addGap(28, 28, 28)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtNombre)
+                            .addComponent(comboIdiomas, 0, 292, Short.MAX_VALUE)))
+                    .addComponent(panelCursos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -360,7 +372,7 @@ public class AgregarCurso extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 1262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -370,9 +382,9 @@ public class AgregarCurso extends javax.swing.JFrame {
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(14, 14, 14)
                 .addComponent(jLabel9)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2))
@@ -380,10 +392,13 @@ public class AgregarCurso extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(comboIdiomas, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel6))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(panelCursos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                        .addGap(50, 50, 50)
+                        .addComponent(panelCursos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -401,7 +416,10 @@ public class AgregarCurso extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -418,8 +436,57 @@ public class AgregarCurso extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        //No ocupa validaciones porque puede existir cursos sin requisitos
+        //ni ocupa validar espacios o letras en el nombre
+        insertarCurso();
+        insertarRequisitos();//Debe realizar una consulta y despues insertar
+        this.dispose();
     }//GEN-LAST:event_btnGuardarActionPerformed
+   
+    private void insertarRequisitos(){
+        Requisitos requisitos = new Requisitos();
+        requisitos.setIdCurso(0);
+        requisitos.setIdRequisito(0);
+        
+        requisitosDAO = new RequisitosDAO(this.conexion,this.rs,this.st);
+        String respuestaRegistro = requisitosDAO.insertarRequisitos(requisitos);
+    }
+    private void insertarCurso(){
+        //Crea un objeto de tipo curso
+        Cursos curso= new Cursos();
+        //Se cargan los atributos del curso
+        curso.setNombre(txtNombre.getText());
+        curso.setIdIdioma(comboIdiomas.getSelectedIndex());
+        curso.setEstado(1);
+        
+        int[] cursoAuxiliar= new int[this.cursosCheckBox.size()];
+        for(int i=0; i<this.cursosCheckBox.size(); i++){
+            if(this.cursosCheckBox.get(i).isSelected()==true){
+                cursoAuxiliar[i]=(i+1);
+            }else{
+                cursoAuxiliar[i]=0;
+            }
+        }
 
+        //Envía el curso al método insertaCurso del cursosDAO que inserta en la base de datos
+        cursosDAO = new CursosDAO(this.conexion,this.rs,this.st);
+        String respuestaRegistro = cursosDAO.insertarCurso(curso);
+        //Si respuestaRegistro es diferente de null quiere decir que se ingresó el profesor correctamente
+        if(respuestaRegistro!=null){
+            JOptionPane.showMessageDialog(null, respuestaRegistro);
+            Limpiar();
+        }else{
+         JOptionPane.showMessageDialog(null, "Ese Profesor ya existe en el registro.");
+        }
+    }
+    
+    //Este metodo limpia el formulario después de agregar un profesor
+    public void Limpiar(){
+        this.txtNombre.setText("");
+        this.comboIdiomas.setSelectedIndex(0);
+        this.panelCursos.removeAll();
+    }
+    
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
 
     }//GEN-LAST:event_btnBuscarActionPerformed
@@ -490,22 +557,24 @@ public class AgregarCurso extends javax.swing.JFrame {
         }
     }
     
-    public void cargarCursosRequisitos() throws SQLException{
+    public void cargarCursosRequisitos(int idIdioma) throws SQLException{
         cursosDAO=new CursosDAO(this.conexion,this.rs,this.st);
-        int idIdioma = this.comboIdiomas.getSelectedIndex();
         String [] cursos = cursosDAO.buscarCursosPorIdioma(idIdioma);
-        
-        for(int i=0; i<cursos.length; i++){
-            cursosCheckBox.add(new JCheckBox(cursos[i]));
-        }
-        for(int i=0; i<cursos.length; i++)
-            System.out.println(cursos[i]);
-        
         this.panelCursos.setLayout(new FlowLayout());
+        lblRequisitos.setText("Requisitos: ");
         
-        for(int i=0; i<cursosCheckBox.size(); i++){
-           this.panelCursos.add(cursosCheckBox.get(i));
-           cursosCheckBox.get(i).setEnabled(true);
+        try{     
+            //Rellenamos primero el cursosCheckBox
+            for(int i=0; i<cursos.length; i++){
+                cursosCheckBox.add(new JCheckBox(cursos[i].toString()));
+            }
+            //Despues agregamos en el panel
+            for(int i=0; i<cursosCheckBox.size(); i++){   
+               this.panelCursos.add(cursosCheckBox.get(i));
+               cursosCheckBox.get(i).setEnabled(true);
+            }         
+        }catch(Exception e){
+            e.printStackTrace();
         }
     }
     
@@ -532,6 +601,7 @@ public class AgregarCurso extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField2;
+    private javax.swing.JLabel lblRequisitos;
     private javax.swing.JList<String> listaCursosAprobados;
     private javax.swing.JPanel panelCursos;
     private javax.swing.JTextField txtNombre;
