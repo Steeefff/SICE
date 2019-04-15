@@ -108,11 +108,11 @@ public class MantenimientoCursos extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nombre", "Idioma", "Requisitos", "Estado"
+                "Código", "Nombre", "Idioma", "Requisitos", "Estado"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {

@@ -331,7 +331,15 @@ public class AgregarCurso extends javax.swing.JFrame {
             new String [] {
                 "Código", "Nombre", "Requisitos", "Estado"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tablaCursos);
 
         jPanel5.setBackground(new java.awt.Color(0, 133, 202));
@@ -496,6 +504,17 @@ public class AgregarCurso extends javax.swing.JFrame {
         //No ocupa validaciones porque puede existir cursos sin requisitos
         //ni ocupa validar espacios o letras en el nombre
         insertarCurso();
+        this.limpiarBusqueda();
+        this.deshabilitar();
+        try {
+           this.cursosDAO=new CursosDAO(this.conexion,this.rs,this.st);
+            DefaultTableModel modelo;
+            modelo = this.cursosDAO.mostrarBuscarCursosEnAgregar(this.txtBuscar.getText());
+            this.tablaCursos.setModel(modelo);
+        }catch (Exception e) {
+            JOptionPane.showConfirmDialog(null, "Hubo un error al cargar la tabla con los cursos. Si el error persiste contacte a su equipo de TI.");
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
@@ -505,11 +524,9 @@ public class AgregarCurso extends javax.swing.JFrame {
             modelo = this.cursosDAO.mostrarBuscarCursosEnAgregar(this.txtBuscar.getText());
             this.tablaCursos.setModel(modelo);
         }catch (Exception e) {
-            JOptionPane.showConfirmDialog(null, "Hubo un error. Si el error persiste contacte a su equipo de TI.");
+            JOptionPane.showConfirmDialog(null, "Hubo un error al cargar la tabla con los cursos. Si el error persiste contacte a su equipo de TI.");
             e.printStackTrace();
         }
-    this.limpiarBusqueda();
-    this.deshabilitar();
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void txtNombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyReleased
