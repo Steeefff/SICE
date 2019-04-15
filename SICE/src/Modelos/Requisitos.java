@@ -21,25 +21,25 @@ package Modelos;
  */
 public class Requisitos {
     
-    int idCurso, idRequisito;
+    String idCurso, idRequisito;
     
     public Requisitos(){
         
     }
 
-    public int getIdCurso() {
+    public String getIdCurso() {
         return idCurso;
     }
 
-    public void setIdCurso(int idCurso) {
+    public void setIdCurso(String idCurso) {
         this.idCurso = idCurso;
     }
 
-    public int getIdRequisito() {
+    public String getIdRequisito() {
         return idRequisito;
     }
 
-    public void setIdRequisito(int idRequisito) {
+    public void setIdRequisito(String idRequisito) {
         this.idRequisito = idRequisito;
     }
 }

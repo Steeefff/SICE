@@ -22,16 +22,16 @@ package Modelos;
 
 public class Cursos {
 
-    private int idcurso;
+    private String idcurso;
     private String nombre;
     private int estado;
-    private int[] requisito;
+    private String[] requisito;
     private int idIdioma;
 
     public Cursos(){
     }
     
-    public Cursos(int idcurso,String nombre,int estado, int[] requisito, int idIdioma) {
+    public Cursos(String idcurso, String nombre, int estado, String[] requisito, int idIdioma) {
         this.idcurso=idcurso;
         this.nombre=nombre;
         this.estado=estado;
@@ -39,11 +39,11 @@ public class Cursos {
         this.idIdioma=idIdioma;
     }
 
-    public int getIdcurso() {
+    public String getIdcurso() {
         return idcurso;
     }
 
-    public void setIdcurso(int idcurso) {
+    public void setIdcurso(String idcurso) {
         this.idcurso = idcurso;
     }
 
@@ -63,11 +63,11 @@ public class Cursos {
         this.estado = estado;
     }
 
-    public int[] getRequisito() {
+    public String[] getRequisito() {
         return requisito;
     }
 
-    public void setRequisito(int[] requisito) {
+    public void setRequisito(String[] requisito) {
         this.requisito = requisito;
     }
 
@@ -77,9 +77,5 @@ public class Cursos {
 
     public void setIdIdioma(int idIdioma) {
         this.idIdioma = idIdioma;
-    }
-
-    
-
-    
+    }   
 }
