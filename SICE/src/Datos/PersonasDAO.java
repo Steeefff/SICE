@@ -130,21 +130,6 @@ public class PersonasDAO {
         return persona; 
     }
     
-    //Este metodo va realizar una busqueda para ver si es un estudiante o un profesor
-    //Así evitar errores al momento de modificar
-    /*public Personas buscarIDTipo(String identificacion) throws SQLException{
-        Personas persona = null;
-        String sql = "SELECT * FROM sice.personas WHERE identificacion='"+identificacion+"'";
-        try {
-            rs = st.executeQuery(sql);         
-        }catch (Exception e) {
-            System.out.println("Hubo un error");
-            e.printStackTrace();
-        }
-        persona= asignar();
-        return persona; 
-    }*/
-    
     //Asigna los datos de un registro de tipo personas e idiomasprofesor a una instancia de tipo Personas
     public Personas asignar(){
       Personas persona = null;

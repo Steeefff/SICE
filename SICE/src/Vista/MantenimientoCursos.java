@@ -436,7 +436,7 @@ public class MantenimientoCursos extends javax.swing.JFrame {
         this.cursosDAO = new CursosDAO(conexion, rs, st);
         try {
             DefaultTableModel modelo;
-            modelo = this.cursosDAO.mostrarBuscarCursos(this.txtBuscar.getText());
+            modelo = this.cursosDAO.mostrarBuscarCursosEnMantenimiento(this.txtBuscar.getText());
             this.tablaCursos.setModel(modelo);
             
         } catch (Exception e) {

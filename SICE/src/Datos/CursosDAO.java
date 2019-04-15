@@ -77,17 +77,15 @@ public class CursosDAO {
     }
     
     //ASIGNA LA INFORMACIÓN DE UN CURSO DESDE LA DB A UN OBJETO TIPO CURSOS
-    public Cursos asignar(String idcursos) throws SQLException{
+    public Cursos asignarCurso(String idcursos) throws SQLException{
         cursos=null;
         int estado,idIdioma;
         String nombre,idcurso;
         String[] requisitos;
-        System.out.println("Entra a asignar");
         try {
-            String sql ="SELECT idcurso,nombre,idIdioma,estado FROM cursos WHERE idCurso='"+idcursos+"'";
-           rs= st.executeQuery(sql);
-            while(rs.next()){
-                System.out.println("Curso encontrado: "+rs.getString("nombre"));
+           ps = accesoDB.prepareStatement("SELECT * FROM cursos WHERE idcurso='"+idcursos+"'");
+           rs= ps.executeQuery();
+            if(rs.first()){
                 idcurso=rs.getString("idcurso");
                 nombre=rs.getString("nombre");
                 estado=rs.getInt("estado");
@@ -102,23 +100,42 @@ public class CursosDAO {
                     i++;
                 }
                 cursos=new Cursos(idcurso,nombre,estado,requisitos,idIdioma);
-                System.out.println("Curso encontrado: "+cursos.getIdcurso()+" "+cursos.getNombre()+" "+cursos.getIdIdioma());
             }
         }catch (Exception e) {
             e.printStackTrace();
         }
         return cursos;
     }
-    
+   
     //BUSCA SI EXISTE EL CURSO Y SI EXISTE LLAMA A ASIGNAR
     public Cursos buscarCursoCodigo(String idcurso) throws SQLException{
        Cursos cursosAux=null;
        try{
-           String sql ="SELECT idcurso,nombre,idIdioma,estado FROM cursos WHERE idCurso='"+idcurso+"'";
-           rs= st.executeQuery(sql);
-           if(rs.getStatement()!=null){
-               CursosDAO cursosDAO=new CursosDAO(this.conexion,this.rs,this.st);
-               cursosAux=cursosDAO.asignar(idcurso);
+           ps = accesoDB.prepareStatement("SELECT nombre FROM cursos WHERE idcurso='"+idcurso+"'");
+           rs= ps.executeQuery();
+           if(rs.first()){
+               //CursosDAO cursosDAO=new CursosDAO(this.conexion,this.rs,this.st);
+               cursosAux=asignarCurso(idcurso);
+           }
+       }catch(Exception e){ e.printStackTrace();}
+       return cursosAux;
+    }
+    
+    public Vector<Cursos> buscarCursosRequisitos(String idcurso) throws SQLException{
+       Vector<Cursos> cursosAux= new Vector<Cursos>();
+       Vector<String> idRequisitos = new Vector<String>();
+       try{
+           ps = accesoDB.prepareStatement("SELECT idCursoRequisito FROM requisitoscursos WHERE idCursoAgregado='"+idcurso+"'");
+           rs= ps.executeQuery();
+           while(rs.next()){
+               idRequisitos.add(rs.getString("idCursoRequisito"));
+           }
+           for(int i=0; i<idRequisitos.size(); i++){
+                ps = accesoDB.prepareStatement("SELECT * FROM cursos WHERE idcurso='"+idRequisitos.get(i)+"'");
+                rs= ps.executeQuery();
+                if(rs.first()){
+                    cursosAux.add(asignarCurso(idRequisitos.get(i)));
+                }
            }
        }catch(Exception e){ e.printStackTrace();}
        return cursosAux;
@@ -155,7 +172,7 @@ public class CursosDAO {
         String respuestaRegistro=null;
         
         try{
-            ps = accesoDB.prepareStatement("INSERT INTO cursos ('idcurso', 'nombre', 'idIdioma', 'estado') VALUES (?, ?, ?, ?)");  
+            ps = accesoDB.prepareStatement("INSERT INTO sice.cursos (idcurso, nombre, idIdioma, estado) VALUES (?, ?, ?, ?)");  
                 ps.setString(1, curso.getIdcurso());
                 ps.setString(2, curso.getNombre());
                 ps.setInt(3, curso.getIdIdioma());
@@ -169,7 +186,7 @@ public class CursosDAO {
                 int numFAfectadasRequisitos = insertarRequisitos(curso.getIdcurso(),requisitos);
                 
                 
-                if(numFAfectadasCursos>0 & numFAfectadasRequisitos>0){                     
+                if(numFAfectadasCursos>0){                     
                     respuestaRegistro="¡El registro del curso "+curso.getIdcurso()+" ha sido guardado con éxito! ";
                 }else{
                     respuestaRegistro="Hubo un error al guardar el registro del cursos "+curso.getIdcurso()+". Intente de nuevo.";
@@ -196,8 +213,40 @@ public class CursosDAO {
         }
         return numFAfectadas;
     }
-    ////////////////////////////////BOTON BUSCAR EN MANTENIMIENTO PROFESORES///////////////////////////////////////////////////
-    public DefaultTableModel mostrarBuscarCursos(String buscar){
+    ////////////////////////////////BOTON BUSCAR EN MANTENIMIENTO CURSOS///////////////////////////////////////////////////
+    public DefaultTableModel mostrarBuscarCursosEnAgregar(String buscar){
+        DefaultTableModel modelo;
+        String[] titulos = {"Código","Nombre","Requisitos", "Estado"};
+        String[] registro = new String[4];
+        modelo = new DefaultTableModel(null, titulos);
+        String estados[] = {"Deshabilitado","Habilitado"};
+        
+            try {
+                ps = accesoDB.prepareStatement("SELECT * FROM sice.cursos WHERE idcurso LIKE '%"+buscar+"%' OR nombre LIKE '%"+buscar+"%'");
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    registro[0] = rs.getString(1);//Id curso
+                    registro[1] = rs.getString(2);//Nombre                
+                    registro[3] = estados[rs.getInt(4)];//Estado
+
+                    PreparedStatement ps2 = accesoDB.prepareStatement("SELECT * FROM requisitoscursos WHERE `idCursoAgregado` = '"+registro[0]+"'");
+                    ResultSet rs2 = ps2.executeQuery();
+                    String requisitos="";
+                    while (rs2.next()) {
+                      requisitos=(requisitos+rs2.getString(2)+".");
+                    } 
+                    registro[2]=requisitos;
+                    modelo.addRow(registro);
+                }
+                return modelo;
+            }catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Ha habido un error.");
+                e.printStackTrace();
+            }
+        return null;
+    }
+    
+    public DefaultTableModel mostrarBuscarCursosEnMantenimiento(String buscar){
         DefaultTableModel modelo;
         String[] titulos = {"Id curso","Nombre","Idioma", "Requisitos", "Estado"};
         String[] registro = new String[5];
