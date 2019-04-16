@@ -503,20 +503,38 @@ public class AgregarCurso extends javax.swing.JFrame {
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         //No ocupa validaciones porque puede existir cursos sin requisitos
         //ni ocupa validar espacios o letras en el nombre
-        insertarCurso();
-        this.limpiarBusqueda();
-        this.deshabilitar();
-        try {
-           this.cursosDAO=new CursosDAO(this.conexion,this.rs,this.st);
-            DefaultTableModel modelo;
-            modelo = this.cursosDAO.mostrarBuscarCursosEnAgregar(this.txtBuscar.getText());
-            this.tablaCursos.setModel(modelo);
-        }catch (Exception e) {
-            JOptionPane.showConfirmDialog(null, "Hubo un error al cargar la tabla con los cursos. Si el error persiste contacte a su equipo de TI.");
-            e.printStackTrace();
-        }
+        if(this.validaFormulario()==true){
+            insertarCurso();
+            this.limpiarBusqueda();
+            this.deshabilitar();
+            try {
+               this.cursosDAO=new CursosDAO(this.conexion,this.rs,this.st);
+                DefaultTableModel modelo;
+                modelo = this.cursosDAO.mostrarBuscarCursosEnAgregar(this.txtBuscar.getText());
+                this.tablaCursos.setModel(modelo);
+            }catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Hubo un error al cargar la tabla con los cursos. Si el error persiste contacte a su equipo de TI.");
+                e.printStackTrace();
+            }
+        }else
+            JOptionPane.showMessageDialog(null, "Es necesario completar los espacios para código y nombre del curso, y seleccionar un idioma. Por favor vuelva a intentar.");
     }//GEN-LAST:event_btnGuardarActionPerformed
 
+    private boolean validaFormulario(){
+        boolean valido = false;
+        if(!this.txtCodigo.getText().equals(""))
+            if(!this.txtNombre.getText().equals(""))
+                if(this.validaComboIdioma()==true)
+                    valido=true;
+        return valido;
+    }
+    
+    public boolean validaComboIdioma(){
+        boolean valido= false;
+        if(this.comboIdiomas.getSelectedIndex()!=0)
+            valido=true;
+        return valido;
+    }
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
     try {
            this.cursosDAO=new CursosDAO(this.conexion,this.rs,this.st);
