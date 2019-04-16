@@ -21,7 +21,7 @@ USE `sice`;
 -- Position to start replication or point-in-time recovery from
 --
 
--- CHANGE MASTER TO MASTER_LOG_FILE='DESKTOP-15DI8I9-bin.000044', MASTER_LOG_POS=155;
+-- CHANGE MASTER TO MASTER_LOG_FILE='DESKTOP-15DI8I9-bin.000049', MASTER_LOG_POS=155;
 
 --
 -- Table structure for table `cursos`
@@ -31,14 +31,15 @@ DROP TABLE IF EXISTS `cursos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `cursos` (
-  `idcurso` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(45) DEFAULT NULL,
-  `idIdioma` int(11) DEFAULT NULL,
-  `estado` int(11) NOT NULL,
+  `idcurso` varchar(10) NOT NULL,
+  `nombre` varchar(45) NOT NULL,
+  `idIdioma` int(11) NOT NULL,
+  `estado` int(1) NOT NULL,
   PRIMARY KEY (`idcurso`),
-  KEY `FK_CUR_IDI_idx` (`idIdioma`),
-  CONSTRAINT `FK_CUR_IDI` FOREIGN KEY (`idIdioma`) REFERENCES `idiomas` (`ididioma`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  UNIQUE KEY `idcurso_UNIQUE` (`idcurso`),
+  KEY `idIdioma_idx` (`idIdioma`),
+  CONSTRAINT `idIdioma` FOREIGN KEY (`idIdioma`) REFERENCES `idiomas` (`ididioma`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -47,7 +48,7 @@ CREATE TABLE `cursos` (
 
 LOCK TABLES `cursos` WRITE;
 /*!40000 ALTER TABLE `cursos` DISABLE KEYS */;
-INSERT INTO `cursos` VALUES (1,'Inglés 1',1,1);
+INSERT INTO `cursos` VALUES ('C','',1,1),('C001','INGLÉS I',1,1),('C002','INGLÉS II',1,1),('C003','INGLÉS III',1,1),('C004','PORTUGUES I',2,1),('C005','ALEMAN I',3,1),('C006','ALEMAN II',3,1),('C007','PORTUGUES II',2,1),('C008','ALEMAN III',3,1),('C009','PORTUGUES III',2,1),('C010','INGLÉS INTEGRADO I',1,1),('c1','c1',1,1);
 /*!40000 ALTER TABLE `cursos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -84,17 +85,20 @@ DROP TABLE IF EXISTS `grupos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `grupos` (
-  `idGrupos` int(11) NOT NULL,
-  `nombre` varchar(45) DEFAULT NULL,
-  `idCurso` int(11) NOT NULL,
+  `idgrupos` varchar(10) NOT NULL,
+  `nombre` varchar(45) NOT NULL,
+  `idcurso` varchar(10) NOT NULL,
   `idProfesor` varchar(20) NOT NULL,
-  `horaInicio` varchar(45) DEFAULT NULL,
-  `horaSalida` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`idGrupos`),
-  KEY `FK_GRU_CUR_idx` (`idCurso`),
-  KEY `FK_GRU_PRO_idx` (`idProfesor`),
-  CONSTRAINT `FK_GRU_CUR` FOREIGN KEY (`idCurso`) REFERENCES `cursos` (`idcurso`),
-  CONSTRAINT `FK_GRU_PER_PROF` FOREIGN KEY (`idProfesor`) REFERENCES `personas` (`identificacion`)
+  `horaInicio` varchar(45) NOT NULL,
+  `horaSallida` varchar(45) NOT NULL,
+  `estado` int(1) NOT NULL,
+  `dia` varchar(15) NOT NULL,
+  PRIMARY KEY (`idgrupos`),
+  UNIQUE KEY `idgrupos_UNIQUE` (`idgrupos`),
+  KEY `idProfesor_idx` (`idProfesor`),
+  KEY `idcurso_idx` (`idcurso`),
+  CONSTRAINT `idProfesor` FOREIGN KEY (`idProfesor`) REFERENCES `personas` (`identificacion`),
+  CONSTRAINT `idcurso` FOREIGN KEY (`idcurso`) REFERENCES `cursos` (`idcurso`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -153,7 +157,7 @@ CREATE TABLE `idiomasprofesor` (
 
 LOCK TABLES `idiomasprofesor` WRITE;
 /*!40000 ALTER TABLE `idiomasprofesor` DISABLE KEYS */;
-INSERT INTO `idiomasprofesor` VALUES ('504120597',0),('504120597',2),('504120597',0),('222222222',2),('333333333',1),('333333333',2),('333333333',3),('111111111',2),('111111111',3);
+INSERT INTO `idiomasprofesor` VALUES ('504120597',0),('504120597',2),('504120597',0),('222222222',2),('333333333',1),('333333333',2),('333333333',3),('111111111',1),('111111111',2);
 /*!40000 ALTER TABLE `idiomasprofesor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -172,9 +176,7 @@ CREATE TABLE `matriculas` (
   `aprobado` int(11) DEFAULT NULL,
   PRIMARY KEY (`idMatriculas`,`idEstudiante`,`idGrupo`),
   KEY `FK_MAT_PER_idx` (`idEstudiante`),
-  KEY `Fk_MAT_GRU_idx` (`idGrupo`),
-  CONSTRAINT `FK_MAT_PER` FOREIGN KEY (`idEstudiante`) REFERENCES `personas` (`identificacion`),
-  CONSTRAINT `Fk_MAT_GRU` FOREIGN KEY (`idGrupo`) REFERENCES `grupos` (`idgrupos`)
+  KEY `Fk_MAT_GRU_idx` (`idGrupo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -221,32 +223,35 @@ CREATE TABLE `personas` (
 
 LOCK TABLES `personas` WRITE;
 /*!40000 ALTER TABLE `personas` DISABLE KEYS */;
-INSERT INTO `personas` VALUES ('111111111','Marisela','Montero','Varela',88888888,2,'Tilarán','18/03/1976','mariselamv@gmail.com',NULL,2,0),('222222222','Orlando','Monge','Elizondo',888888888,1,'Tilarán, El Dos','28/02/1984','orlando@gmail.com',NULL,2,1),('333333333','Marlon','Monge','Montero',888888888,1,'Tilarán, El Dos','12/12/1997','marlon@hotmail.com',NULL,2,1),('504120597','Melany','Monge','Montero',85985075,2,'Alajuela','26/09/1996','melany9674@hotmail.com',NULL,2,1),('504120598','Michelle','Ugarte','Monge',44444444,1,'Alajuela','01/03/2011','michelle@hotmail.com',NULL,1,1),('504120599','Christopher','Ugarte','Vega',88888888,2,'Turrialba','01/03/2002','Christopher@gmail.com',NULL,1,0);
+INSERT INTO `personas` VALUES ('111111111','Marisela','Montero','Varela',88888888,2,'Tilarán','18/03/1976','mariselamv@gmail.com',NULL,2,1),('222222222','Orlando','Monge','Elizondo',888888888,1,'Tilarán, El Dos','28/02/1984','orlando@gmail.com',NULL,2,1),('333333333','Marlon','Monge','Montero',888888888,1,'Tilarán, El Dos','12/12/1997','marlon@hotmail.com',NULL,2,1),('504120597','Melany','Monge','Montero',85985075,2,'Alajuela','26/09/1996','melany9674@hotmail.com',NULL,2,1),('504120598','Michelle','Ugarte','Monge',44444444,1,'Alajuela','01/03/2011','michelle@hotmail.com',NULL,1,1),('504120599','Christopher','Ugarte','Vega',88888888,2,'Turrialba','01/03/2002','Christopher@gmail.com',NULL,1,1);
 /*!40000 ALTER TABLE `personas` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `requisitos`
+-- Table structure for table `requisitoscursos`
 --
 
-DROP TABLE IF EXISTS `requisitos`;
+DROP TABLE IF EXISTS `requisitoscursos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
-CREATE TABLE `requisitos` (
-  `idcurso` int(11) NOT NULL,
-  `idRequisito` int(11) NOT NULL,
-  KEY `idcurso_idx` (`idcurso`),
-  CONSTRAINT `idcurso` FOREIGN KEY (`idcurso`) REFERENCES `cursos` (`idcurso`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+CREATE TABLE `requisitoscursos` (
+  `idCursoAgregado` varchar(10) NOT NULL,
+  `idCursoRequisito` varchar(10) NOT NULL,
+  KEY `idCursoAgregado_idx` (`idCursoAgregado`),
+  KEY `idCursoRequisito_idx` (`idCursoRequisito`),
+  CONSTRAINT `idCursoAgregado` FOREIGN KEY (`idCursoAgregado`) REFERENCES `cursos` (`idcurso`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `idCursoRequisito` FOREIGN KEY (`idCursoRequisito`) REFERENCES `cursos` (`idcurso`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `requisitos`
+-- Dumping data for table `requisitoscursos`
 --
 
-LOCK TABLES `requisitos` WRITE;
-/*!40000 ALTER TABLE `requisitos` DISABLE KEYS */;
-/*!40000 ALTER TABLE `requisitos` ENABLE KEYS */;
+LOCK TABLES `requisitoscursos` WRITE;
+/*!40000 ALTER TABLE `requisitoscursos` DISABLE KEYS */;
+INSERT INTO `requisitoscursos` VALUES ('C002','C001'),('C003','C002'),('C003','C002'),('C006','C005'),('C007','C004'),('C008','C006'),('C009','C007');
+/*!40000 ALTER TABLE `requisitoscursos` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -368,4 +373,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-03-24 21:37:26
+-- Dump completed on 2019-04-15 22:01:34
