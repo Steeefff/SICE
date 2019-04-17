@@ -3,9 +3,12 @@ package Vista;
 import Datos.Conexion;
 import java.awt.Image;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 /**
@@ -163,7 +166,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         btnAgregarPago.setBackground(new java.awt.Color(0, 133, 202));
         btnAgregarPago.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnAgregarPago.setForeground(new java.awt.Color(255, 255, 255));
-        btnAgregarPago.setText("Agregar pago");
+        btnAgregarPago.setText("Pagos");
         btnAgregarPago.setBorder(null);
         btnAgregarPago.setBorderPainted(false);
         btnAgregarPago.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -514,7 +517,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAgregarProfesorActionPerformed
 
     private void btnAgregarGrupoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarGrupoActionPerformed
-        agregarGrupo = new AgregarGrupo(this.icon,this.conexion,this.rs,this.st);
+        try {
+            agregarGrupo = new AgregarGrupo(this.icon,this.conexion,this.rs,this.st);
+        } catch (SQLException ex) {
+            Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
         agregarGrupo.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnAgregarGrupoActionPerformed
@@ -526,7 +533,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAgregarCursosActionPerformed
 
     private void btnAgregarPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarPagoActionPerformed
-        pago = new Pagos(this.icon,this.conexion,this.rs,this.st);
+        try {
+            pago = new Pagos(this.icon,this.conexion,this.rs,this.st);
+        } catch (SQLException ex) {
+            Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
         pago.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnAgregarPagoActionPerformed
@@ -539,7 +550,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
     private void btnMantenimientoGruposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMantenimientoGruposActionPerformed
-        mantenimientoGrupos = new MantenimientoGrupos(this.icon);
+        mantenimientoGrupos = new MantenimientoGrupos(this.icon,this.conexion,this.rs,this.st);
         mantenimientoGrupos.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnMantenimientoGruposActionPerformed

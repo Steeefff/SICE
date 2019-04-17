@@ -219,7 +219,7 @@ public class AgregarCurso extends javax.swing.JFrame {
         comboIdiomas.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         comboIdiomas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         comboIdiomas.setEnabled(false);
-        comboIdiomas.setNextFocusableComponent(btnGuardar);
+        comboIdiomas.setNextFocusableComponent(panelCursos);
 
         txtBuscar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
 
@@ -501,8 +501,6 @@ public class AgregarCurso extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        //No ocupa validaciones porque puede existir cursos sin requisitos
-        //ni ocupa validar espacios o letras en el nombre
         if(this.validaFormulario()==true){
             insertarCurso();
             this.limpiarBusqueda();
@@ -529,7 +527,7 @@ public class AgregarCurso extends javax.swing.JFrame {
         return valido;
     }
     
-    public boolean validaComboIdioma(){
+    private boolean validaComboIdioma(){
         boolean valido= false;
         if(this.comboIdiomas.getSelectedIndex()!=0)
             valido=true;

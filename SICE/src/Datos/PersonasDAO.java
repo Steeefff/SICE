@@ -272,48 +272,41 @@ public class PersonasDAO {
    
    ////////////////////////////////////////////////////////////LISTAR PERSONAS/////////////////////////////////////////////////////////7
  //-> Hasta el momento este método no se usa  
-    /*public ArrayList<Personas> listarPersonas(int tipoPersona){  
-        ArrayList listarPersonas = new ArrayList();
-        Personas tmp;
+    public Vector<Personas> listarPersonas(int tipoPersona){  
+        Vector vecPersonas = new Vector();
+        Personas personas;
         //Cuando sea listar profesores
         if(tipoPersona==2){
-            try{
-                ps = accesoDB.prepareStatement("SELECT * FROM sice.personas WHERE idTipoPersona=2;");
-                ResultSet rs = ps.executeQuery();
-                while(rs.next()){ //si hay registros por leer entonces..
-                    tmp = new Personas();
-
-                    tmp.setIdentificacion(rs.getString(1));
-                    tmp.setNombre(rs.getString(2));
-                    tmp.setApellido1(rs.getString(3));
-                    tmp.setApellido2(rs.getString(4));
-                    tmp.setTelefono(rs.getInt(5));
-                    tmp.setGenero(rs.getInt(6));
-                    tmp.setDireccion(rs.getString(7));
-                    tmp.setFechaNacimiento(rs.getString(8));
-                    tmp.setCorreo(rs.getString(9));
-                    tmp.setContraseña(rs.getString(10));
-                    tmp.setIdTipoPersona(rs.getInt(11));
-
-                    ps = accesoDB.prepareStatement("SELECT * FROM `sice`.`idiomasprofesor` WHERE identificacion='"+tmp.getIdentificacion()+"'");
-                    ResultSet rs2 = ps.executeQuery();
-                    int[] idiomaAuxiliar = new int[listaIdiomas.size()];
-                    int i = 0;
-                    while(rs2.next()){
-                        idiomaAuxiliar[i]= rs2.getInt(2);
-                        i++;
+                try{
+                    ps = accesoDB.prepareStatement("SELECT * FROM sice.personas WHERE idTipoPersona=2;");
+                    rs = ps.executeQuery();
+                    while(rs.next()){ //si hay registros por leer entonces..
+                       personas = new Personas();
+                       String auxS="";
+                       int auxI=0;
+                       int[] auxIV={};vecPersonas.add(new Personas(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),auxI,auxS,auxS,auxS,auxS,auxI,auxI,auxIV));
                     }
-                    tmp.setIdioma(idiomaAuxiliar);
-                    tmp.setHabilitado(rs.getInt(13));
-
-                  listarPersonas.add(tmp);
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
-            }catch (Exception e){
-                e.printStackTrace();
+        }else{
+                if(tipoPersona==1){
+                try{
+                    ps = accesoDB.prepareStatement("SELECT * FROM sice.personas WHERE idTipoPersona=1;");
+                    rs = ps.executeQuery();
+                    while(rs.next()){ //si hay registros por leer entonces..
+                       personas = new Personas();
+                       String auxS="";
+                       int auxI=0;
+                       int[] auxIV={};vecPersonas.add(new Personas(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),auxI,auxS,auxS,auxS,auxS,auxI,auxI,auxIV));
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         }
-         return listarPersonas;
-    }*/
+         return vecPersonas;
+    }
     
     ///////////////////////////////////////VALIDAR PERSONA/////////////////////////////////////////////////////////////////////
     public Boolean validarPersona(int id_per) {

@@ -39,9 +39,6 @@ public class Login extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         this.setTitle("SICE - Login");
         icon = new ImageIcon(getClass().getResource("/Imagenes/sice_1.jpeg")).getImage();
-        this.conexion=new Conexion();
-        this.conexion.Conexion();
-        this.st=Conexion.getSt();
         setIconImage(icon);
     }
 
@@ -306,6 +303,9 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_txtContrasenaActionPerformed
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
+        this.conexion=new Conexion();
+        this.conexion.Conexion();
+        this.st=Conexion.getSt();
         principal = new VentanaPrincipal(this.icon,this.conexion,this.rs,this.st);
         principal.setVisible(true);
         this.dispose();

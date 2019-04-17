@@ -141,6 +141,22 @@ public class CursosDAO {
        return cursosAux;
     }
     
+    public Vector<Cursos> buscarTodosCursos() throws SQLException{
+       Vector<Cursos> cursosAux= new Vector<Cursos>();
+       Cursos cursoAux=new Cursos();
+       String requisitos[]=new String[]{};
+       try{
+           ps = accesoDB.prepareStatement("SELECT * FROM cursos");
+           rs= ps.executeQuery();
+           while(rs.next()){
+               cursosAux.add(new Cursos(rs.getString("idcurso"),rs.getString("nombre"),rs.getInt("estado"),requisitos,rs.getInt("idIdioma")));
+           }
+       }catch(Exception e){ 
+           JOptionPane.showMessageDialog(null,"Hubo un error al buscar el listado de los cursos. Por favor intente de nuevo y si persiste el error contacte a su equipo de TI.");
+           e.printStackTrace();}
+       return cursosAux;
+    }
+    
     //BUSCA TODOS LOS CURSOS QUE EXISTEN PARA EL IDIOMA SELECCIONADO Y DEVUELVE UN VECTOR DE TIPO CURSOS
     public Vector<Cursos> buscarCursosPorIdioma(int idIdioma) throws SQLException{
         int cant = cantidadCursosPorIdioma(idIdioma);
@@ -152,10 +168,6 @@ public class CursosDAO {
             rs = st.executeQuery(sql); 
             
             while(rs.next()){
-                /*cursos.setIdIdioma(rs.getInt("idcurso"));
-                cursos.setNombre(rs.getString("nombre"));
-                cursos.setIdIdioma(rs.getInt("idIdioma"));
-                cursos.setEstado(rs.getInt("estado"));*/
                 String [] auxiliar=new String[1];
                 vecCursos.add(new Cursos(rs.getString("idcurso"),rs.getString("nombre"),rs.getInt("estado"),auxiliar,rs.getInt("idIdioma")));
             }
