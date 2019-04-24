@@ -22,25 +22,15 @@ package Modelos;
 
 
 public class Idiomas  {
-    private int idIdioma;
     private String nombre;
     
     public Idiomas() {
     }
-
-    public Idiomas(int idIdioma, String nombre) {
-        this.idIdioma = idIdioma;
-        this.nombre = nombre;
+    
+    public Idiomas(String nombre) {
+        this.nombre=nombre;
     }
-
-    public int getIdIdioma() {
-       return idIdioma;
-    }
-
-    public void setIdIdioma(int idIdioma) {
-        this.idIdioma = idIdioma;
-    }
-
+    
     public String getNombre() {
         return nombre;
     }

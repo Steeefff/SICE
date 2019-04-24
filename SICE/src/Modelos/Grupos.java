@@ -5,7 +5,7 @@
  */
 package Modelos;
 
-/*
+/**
   @author Grupo #30 Ingeniería 2018-2019 
  *@author David Rodríguez Zamora
  *@author Katherine Jiménez Soto

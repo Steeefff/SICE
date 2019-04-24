@@ -6,11 +6,13 @@
 package Datos;
 
 import Modelos.Grupos;
+import Modelos.Vista_mantenimientoGrupos;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -36,6 +38,7 @@ public class GruposDAO {
     Connection accesoDB;
     PreparedStatement ps;
     Grupos grupos;
+    Vista_mantenimientoGrupos vista_mantenimientoGrupos;
     
     
     public GruposDAO(Conexion conexion,ResultSet rs,Statement st){
@@ -178,6 +181,7 @@ public class GruposDAO {
             }
         return null;
     }
+    
     public void deshabiliar(String codigo){       
        try{
             st.executeUpdate("UPDATE sice.grupos SET estado=0 WHERE idgrupos='"+codigo+"'");
@@ -250,5 +254,33 @@ public class GruposDAO {
         }
         grupos= asignarGrupo(idgrupos);
         return grupos; 
+    }
+    
+    ////////////////////////////////////////////////////////////LISTAR GRUPOS///////////////////////////////////////////////////////// 
+    public Vector<Vista_mantenimientoGrupos> listarGruposVista(){  
+        Vector vecGrupos = new Vector();
+        Vista_mantenimientoGrupos grupos;
+                try{
+                    ps = accesoDB.prepareStatement("SELECT * FROM sice.vista_mantenimientogrupos WHERE estado=1;");
+                    rs = ps.executeQuery();
+                    while(rs.next()){ //si hay registros por leer entonces..
+                       grupos = new Vista_mantenimientoGrupos();
+                       grupos.setIdGrupos(rs.getString(1));
+                       grupos.setNombreGrupo(rs.getString(2));
+                       grupos.setIdCurso(rs.getString(3));
+                       grupos.setIdProfesor(rs.getString(4));
+                       grupos.setHoraInicio(rs.getString(5));
+                       grupos.setEstado(rs.getInt(6));
+                       grupos.setDia(rs.getString(7));
+                       grupos.setNombreProfesor(rs.getString(8));
+                       grupos.setApellido1(rs.getString(9));
+                       grupos.setApelliddo2(rs.getString(10));
+                       grupos.setNombreCurso(rs.getString(11));
+                       vecGrupos.add(grupos);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+         return vecGrupos;
     }
 }

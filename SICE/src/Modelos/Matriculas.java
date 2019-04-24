@@ -5,6 +5,8 @@
  */
 package Modelos;
 
+import java.util.Date;
+
 
 /*
   @author Grupo #30 Ingeniería 2018-2019 
@@ -23,62 +25,40 @@ package Modelos;
 
 public class Matriculas {
 
-    
-    private int idMatriculas;
-    private int idEstudiante;
-    private int idGrupo;
-    private String fechaPago;
-    private int aprobado;
+    private String idEstudiante,nombreGrupo,fechaDeMatricula;
 
     public Matriculas() {
     }
 
-    public Matriculas(int idMatriculas, int idEstudiante, int idGrupo, String fechaPago, int aprobado) {
-        this.idMatriculas = idMatriculas;
+    public Matriculas(String idEstudiante,String nombreGrupo,String fechaDeMatricula) {
         this.idEstudiante = idEstudiante;
-        this.idGrupo = idGrupo;
-        this.fechaPago = fechaPago;
-        this.aprobado = aprobado;
-    }
-    
-    public int getIdMatriculas() {
-        return idMatriculas;
+        this.nombreGrupo = nombreGrupo;
+        this.fechaDeMatricula=fechaDeMatricula;
     }
 
-    public void setIdMatriculas(int idMatriculas) {
-        this.idMatriculas = idMatriculas;
+    public String getFechaDeMatricula() {
+        return fechaDeMatricula;
     }
 
-    public int getIdEstudiante() {
+    public void setFechaDeMatricula(String fechaDeMatricula) {
+        this.fechaDeMatricula = fechaDeMatricula;
+    }
+
+    public String getIdEstudiante() {
         return idEstudiante;
     }
 
-    public void setIdEstudiante(int idEstudiante) {
+    public void setIdEstudiante(String idEstudiante) {
         this.idEstudiante = idEstudiante;
     }
 
-    public int getIdGrupo() {
-        return idGrupo;
+    public String getNombreGrupo() {
+        return nombreGrupo;
     }
 
-    public void setIdGrupo(int idGrupo) {
-        this.idGrupo = idGrupo;
+    public void setNombreGrupo(String nombreGrupo) {
+        this.nombreGrupo = nombreGrupo;
     }
-
-    public String getFechaPago() {
-        return fechaPago;
-    }
-
-    public void setFechaPago(String fechaPago) {
-        this.fechaPago = fechaPago;
-    }
-
-    public int getAprobado() {
-        return aprobado;
-    }
-
-    public void setAprobado(int aprobado) {
-        this.aprobado = aprobado;
-    }
-
+    
+    
 }

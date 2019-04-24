@@ -1,6 +1,7 @@
 
 package Datos;
 import Modelos.pagos;
+import Datos.PagosDAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -31,6 +32,7 @@ public class PagosDAO {
     public static Statement st;
     Connection accesoDB;
     PreparedStatement ps;
+    FechasDePagoDAO fechasDePagoDAO;
     
     public PagosDAO(Conexion conexion,ResultSet rs,Statement st){
         this.conexion=conexion;
@@ -38,11 +40,11 @@ public class PagosDAO {
         this.st=st;
         accesoDB = this.conexion.getConexion();
     }
-    
-    ////////////////////////////////LISTAR PAGOS ////////////////////////////////////////////////////////////
+        
+    ////////////////////////////////MOSTRAR PAGOS ////////////////////////////////////////////////////////////
     public DefaultTableModel mostrarPagos(String buscar){
         DefaultTableModel modelo;
-        String[] titulos = {"Identificación", "Número de recibo", "Observación", "Mes","Año"};
+        String[] titulos = {"Identificación", "Número de recibo", "Observación", "Fecha cuando pagó Año/Mes/Día","Fecha cancelada Año/Mes/Día"};
         String[] registro = new String[5];
         modelo = new DefaultTableModel(null, titulos);
 
@@ -53,8 +55,8 @@ public class PagosDAO {
                 registro[0] = rs.getString(1);//identificacion
                 registro[1] = rs.getString(5);//Número de recibo
                 registro[2] = rs.getString(6);//Observación
-                registro[3] = rs.getString(7);//Mes
-                registro[4] = rs.getString(8); //Año   
+                registro[3] = rs.getString(7);//Fecha de pago
+                registro[4] = rs.getString(8);//Fecha cancelada
                 modelo.addRow(registro);
             }
             return modelo;
@@ -70,12 +72,12 @@ public class PagosDAO {
         String respuestaRegistro=null;
         
         try{
-            ps = accesoDB.prepareStatement("INSERT INTO sice.pagos (idEstudiante,numeroRecibo,observacion,mes,anio) VALUES (?, ?, ?, ?, ?)");  
+            ps = accesoDB.prepareStatement("INSERT INTO sice.pagos (idEstudiante,numeroRecibo,observacion,fechaPago,fechaDelPago) VALUES (?, ?, ?, ?, ?)");  
                 ps.setString(1, pago.getIdEstudiante());
                 ps.setString(2, pago.getNumeroRecibo());
                 ps.setString(3, pago.getObservacion());
-                ps.setString(4, pago.getMes());
-                ps.setString(5, pago.getAnio());
+                ps.setString(4, pago.getFechaDePago());
+                ps.setString(5, pago.getFechaCancelada());
                 int numFAfectadasCursos = ps.executeUpdate(); //Toma el numero de filas afectadas              
                 
                 if(numFAfectadasCursos>0){                     
@@ -90,4 +92,47 @@ public class PagosDAO {
       return respuestaRegistro;
     }
     
+    public String validaPendienteDePago(String idEstudiante) throws SQLException{
+        String sql ="SELECT MAX(fechaDelPago) FROM sice.pagos WHERE idEstudiante='"+idEstudiante+"'";
+        fechasDePagoDAO = new FechasDePagoDAO(this.conexion,this.rs,this.st);
+        ps = accesoDB.prepareStatement(sql);
+        rs = ps.executeQuery();
+        String fechaDelPago="";
+        if(rs.first()){
+           fechaDelPago =rs.getString(1);
+           System.out.println("cedula: "+idEstudiante+" "+"Fecha pagada: "+fechaDelPago);
+        }
+        String sql2="SELECT MAX(fechaProxPago) FROM sice.fechasdepago WHERE idEstudiante='"+idEstudiante+"'";
+        ps = accesoDB.prepareStatement(sql2);
+        rs = ps.executeQuery();
+        String fechaProxPago="";
+        if(rs.first()){
+            fechaProxPago=rs.getString(1);
+            System.out.println("cedula: "+idEstudiante+" "+"Fecha fecha de prox pago: "+fechaDelPago);
+        }
+        if(fechaDelPago==fechaProxPago)
+            JOptionPane.showMessageDialog(null,"Es necesario que cancele la matrícula anterior");
+        else{
+           JOptionPane.showMessageDialog(null,"No tiene pendientes de pago");
+        }
+        return fechaProxPago;
+    }
+        
+        
+        
+        
+        /*String proxFechaDePago=null;
+        String sql ="SELECT fechaDelPago, MAX(DATE_FORMAT(fechaDelPago, '%Y/%m/%d')) FROM sice.pagos WHERE idEstudiante='"+idEstudiante+"'";
+        fechasDePagoDAO = new FechasDePagoDAO(this.conexion,this.rs,this.st);
+        ps = accesoDB.prepareStatement(sql);
+        rs = ps.executeQuery();
+        String fechaDelPago="";
+        if(rs.first()){
+           
+                fechaDelPago=rs.getString("fechaDelPago");
+                if(fechaDelPago!=fechasDePagoDAO.proximaFechaDePago(idEstudiante))
+                    proxFechaDePago= fechasDePagoDAO.proximaFechaDePago(idEstudiante);
+        }
+        return proxFechaDePago;
+    }*/
 }

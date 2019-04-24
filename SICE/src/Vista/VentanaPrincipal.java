@@ -38,6 +38,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     Pagos pago;
     MantenimientoGrupos mantenimientoGrupos;
     MantenimientoCursos mantenimientoCursos;
+    MantenimientoSistema mantenimientoSistema;
     Login login;
     Image icon;
     private static Conexion conexion;
@@ -494,7 +495,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnMatricularEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMatricularEstudianteActionPerformed
-        matriculaEstudiante = new MatriculaEstudiante(this.icon,this.conexion,this.rs,this.st);
+        try {
+            matriculaEstudiante = new MatriculaEstudiante(this.icon,this.conexion,this.rs,this.st);
+        } catch (SQLException ex) {
+            Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
         matriculaEstudiante.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnMatricularEstudianteActionPerformed
@@ -556,12 +561,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMantenimientoGruposActionPerformed
 
     private void btnMantenimientoCursosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMantenimientoCursosActionPerformed
-        mantenimientoCursos = new MantenimientoCursos(this.icon);
+        mantenimientoCursos = new MantenimientoCursos(this.icon,this.conexion,this.rs,this.st);
         mantenimientoCursos.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnMantenimientoCursosActionPerformed
 
     private void btnMantenimientoSistemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMantenimientoSistemaActionPerformed
+        mantenimientoSistema = new MantenimientoSistema(this.icon,this.conexion,this.rs,this.st);
+        mantenimientoSistema.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnMantenimientoSistemaActionPerformed
 
     private void btnMantenimientoProfesoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMantenimientoProfesoresActionPerformed

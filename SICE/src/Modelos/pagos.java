@@ -21,16 +21,16 @@ package Modelos;
  */
 public class pagos {
     
-    String idEstudiante,numeroRecibo,observacion,mes,anio;
+    String idEstudiante,numeroRecibo,observacion,fechaDePago,fechaCancelada;
     
     public pagos(){}
     
-    public pagos(String idEstudiante,String numeroRecibo,String observacion,String mes,String anio){
+    public pagos(String idEstudiante,String numeroRecibo,String observacion,String fechaDePago){
         this.idEstudiante=idEstudiante;
         this.numeroRecibo=numeroRecibo;
         this.observacion=observacion;
-        this.mes=mes;
-        this.anio=anio;
+        this.fechaDePago=fechaDePago;
+        this.fechaCancelada=fechaCancelada;
     }
 
     public String getIdEstudiante() {
@@ -57,20 +57,19 @@ public class pagos {
         this.observacion = observacion;
     }
 
-    public String getMes() {
-        return mes;
+    public String getFechaDePago() {
+        return fechaDePago;
     }
 
-    public void setMes(String mes) {
-        this.mes = mes;
-    }
-
-    public String getAnio() {
-        return anio;
-    }
-
-    public void setAnio(String anio) {
-        this.anio = anio;
+    public void setFechaDePago(String fechaDePago) {
+        this.fechaDePago = fechaDePago;
     }
     
+    public String getFechaCancelada() {
+        return fechaCancelada;
+    }
+
+    public void setFechaCancelada(String fechaCancelada) {
+        this.fechaCancelada = fechaCancelada;
+    }
 }

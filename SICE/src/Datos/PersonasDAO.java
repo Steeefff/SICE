@@ -270,8 +270,7 @@ public class PersonasDAO {
          return insertado;
    }
    
-   ////////////////////////////////////////////////////////////LISTAR PERSONAS/////////////////////////////////////////////////////////7
- //-> Hasta el momento este método no se usa  
+   ////////////////////////////////////////////////////////////LISTAR PERSONAS///////////////////////////////////////////////////////// 
     public Vector<Personas> listarPersonas(int tipoPersona){  
         Vector vecPersonas = new Vector();
         Personas personas;
@@ -414,7 +413,7 @@ public class PersonasDAO {
         return null;
     }
     
-    ////////////////////////////////BOTON BUSCAR EN MANTENIMIENTO PROFESORES///////////////////////////////////////////////////
+    ////////////////////////////////BOTON BUSCAR EN MANTENIMIENTO ESTUDIANTES///////////////////////////////////////////////////
     public DefaultTableModel mostrarBuscarEstudiantes(String buscar){
         DefaultTableModel modelo;
         String[] titulos = {"Identificación", "Nombre", "Apellido 1", "Apellido 2","Teléfono", "Género", "Dirección", "Fecha Nacimiento", "Correo", "Estado"};
