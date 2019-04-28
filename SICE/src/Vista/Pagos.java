@@ -1,7 +1,6 @@
 package Vista;
 
 import Datos.Conexion;
-import Datos.FechasDePagoDAO;
 import Datos.PagosDAO;
 import Datos.PersonasDAO;
 import Modelos.Personas;
@@ -42,7 +41,6 @@ public class Pagos extends javax.swing.JFrame {
     Image icon;
     PersonasDAO personasDAO;
     PagosDAO pagosDAO;
-    FechasDePagoDAO fechasDePagoDAO;
     Vector<Personas> estudiantes;
     private static Conexion conexion;
     public static ResultSet rs;
@@ -77,24 +75,25 @@ public class Pagos extends javax.swing.JFrame {
                         btnActualizarTabla.setEnabled(false);                        
                     }else{
                         pagosDAO=new PagosDAO(conexion,rs,st);
-                        if(pagosDAO.validaPendienteDePago(estudiantes.get(comboEstudiantes.getSelectedIndex()-1).getIdentificacion())!=null){
+                        String fechaProxPago=pagosDAO.validaPendienteDePago(estudiantes.get(comboEstudiantes.getSelectedIndex()-1).getIdentificacion());
+                        if(fechaProxPago!=""){
                             limpiarBusqueda();
                             txtCedula.setText(estudiantes.get(comboEstudiantes.getSelectedIndex()-1).getIdentificacion());
                             System.out.println(estudiantes.get(comboEstudiantes.getSelectedIndex()-1).getIdentificacion());
                             lblEstudiante.setText(comboEstudiantes.getItemAt(comboEstudiantes.getSelectedIndex()));
-                            ///////////////////////
-                            
                             txtFechaPendPago.setEnabled(true);
-                            fechasDePagoDAO = new FechasDePagoDAO(conexion,rs,st);
-                            txtFechaPendPago.setEnabled(true);
-                            txtFechaPendPago.setText(fechasDePagoDAO.proximaFechaDePago(txtCedula.getText()));
+                            txtFechaPendPago.setText(fechaProxPago);
                             ///////////////////////////
                             DefaultTableModel modelo;
                             modelo = pagosDAO.mostrarPagos(txtCedula.getText());
                             tablaPagos.setModel(modelo);
                             habilitarFormulario();
-                        }else
-                            JOptionPane.showMessageDialog(null, "No tiene pendientes.");
+                        }else{                                
+                                DefaultTableModel modelo;
+                                modelo = pagosDAO.mostrarPagos(estudiantes.get(comboEstudiantes.getSelectedIndex()-1).getIdentificacion());
+                                tablaPagos.setModel(modelo);
+                                JOptionPane.showMessageDialog(null, "No tiene pendientes.");
+                        }
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -383,6 +382,9 @@ public class Pagos extends javax.swing.JFrame {
 
         txtObservacion.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         txtObservacion.setEnabled(false);
+        txtObservacion.setMaximumSize(new java.awt.Dimension(325, 101));
+        txtObservacion.setMinimumSize(new java.awt.Dimension(325, 101));
+        txtObservacion.setPreferredSize(new java.awt.Dimension(325, 101));
         jScrollPane1.setViewportView(txtObservacion);
 
         btnActualizarTabla.setBackground(new java.awt.Color(0, 133, 202));
@@ -437,12 +439,11 @@ public class Pagos extends javax.swing.JFrame {
                                 .addGap(194, 194, 194)
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(8, 8, 8))
+                    .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(comboEstudiantes, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addComponent(txtRecibo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(txtCedula, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(comboEstudiantes, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(txtRecibo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(

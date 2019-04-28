@@ -52,7 +52,7 @@ public class AgregarCurso extends javax.swing.JFrame {
     
     public AgregarCurso(Image icono,Conexion conexion,ResultSet rs,Statement st) {
         initComponents();
-        this.setSize(1290,710); 
+        this.setSize(1295,710); 
         setLocationRelativeTo(null);
         this.setResizable(false);
         fecha();
@@ -296,7 +296,6 @@ public class AgregarCurso extends javax.swing.JFrame {
         panelCursos.setMaximumSize(new java.awt.Dimension(488, 132));
         panelCursos.setMinimumSize(new java.awt.Dimension(488, 132));
         panelCursos.setName(""); // NOI18N
-        panelCursos.setPreferredSize(new java.awt.Dimension(10, 10));
 
         javax.swing.GroupLayout panelCursosLayout = new javax.swing.GroupLayout(panelCursos);
         panelCursos.setLayout(panelCursosLayout);

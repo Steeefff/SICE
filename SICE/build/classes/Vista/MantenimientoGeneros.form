@@ -387,7 +387,7 @@
             </Component>
             <Component class="javax.swing.JLabel" name="lblGenero">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Idioma seleccionado:"/>
+                <Property name="text" type="java.lang.String" value="G&#xe9;nero seleccionado:"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="lbSeleccionado">
@@ -532,7 +532,7 @@
                   <Font name="Tahoma" size="18" style="1"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="text" type="java.lang.String" value="Mantenimiento de Idiomas"/>
+                <Property name="text" type="java.lang.String" value="Mantenimiento de G&#xe9;neros"/>
               </Properties>
             </Component>
           </SubComponents>

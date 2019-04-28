@@ -199,7 +199,7 @@ public class MantenimientoGeneros extends javax.swing.JFrame {
             }
         });
 
-        lblGenero.setText("Idioma seleccionado:");
+        lblGenero.setText("Género seleccionado:");
 
         btnModificar.setBackground(new java.awt.Color(0, 133, 202));
         btnModificar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -335,7 +335,7 @@ public class MantenimientoGeneros extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Mantenimiento de Idiomas");
+        jLabel1.setText("Mantenimiento de Géneros");
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);

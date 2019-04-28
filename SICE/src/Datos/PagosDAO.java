@@ -32,7 +32,6 @@ public class PagosDAO {
     public static Statement st;
     Connection accesoDB;
     PreparedStatement ps;
-    FechasDePagoDAO fechasDePagoDAO;
     
     public PagosDAO(Conexion conexion,ResultSet rs,Statement st){
         this.conexion=conexion;
@@ -72,7 +71,7 @@ public class PagosDAO {
         String respuestaRegistro=null;
         
         try{
-            ps = accesoDB.prepareStatement("INSERT INTO sice.pagos (idEstudiante,numeroRecibo,observacion,fechaPago,fechaDelPago) VALUES (?, ?, ?, ?, ?)");  
+            ps = accesoDB.prepareStatement("INSERT INTO sice.pagos (idEstudiante,numeroRecibo,observacion,fechaDelPago,fechaPagada) VALUES (?, ?, ?, ?, ?)");  
                 ps.setString(1, pago.getIdEstudiante());
                 ps.setString(2, pago.getNumeroRecibo());
                 ps.setString(3, pago.getObservacion());
@@ -93,46 +92,38 @@ public class PagosDAO {
     }
     
     public String validaPendienteDePago(String idEstudiante) throws SQLException{
-        String sql ="SELECT MAX(fechaDelPago) FROM sice.pagos WHERE idEstudiante='"+idEstudiante+"'";
-        fechasDePagoDAO = new FechasDePagoDAO(this.conexion,this.rs,this.st);
+        String sql ="SELECT MAX(fechaPagada) FROM sice.pagos WHERE idEstudiante='"+idEstudiante+"'";
         ps = accesoDB.prepareStatement(sql);
         rs = ps.executeQuery();
-        String fechaDelPago="";
-        if(rs.first()){
-           fechaDelPago =rs.getString(1);
-           System.out.println("cedula: "+idEstudiante+" "+"Fecha pagada: "+fechaDelPago);
-        }
-        String sql2="SELECT MAX(fechaProxPago) FROM sice.fechasdepago WHERE idEstudiante='"+idEstudiante+"'";
-        ps = accesoDB.prepareStatement(sql2);
-        rs = ps.executeQuery();
+        String fechaPagada="";
         String fechaProxPago="";
         if(rs.first()){
-            fechaProxPago=rs.getString(1);
-            System.out.println("cedula: "+idEstudiante+" "+"Fecha fecha de prox pago: "+fechaDelPago);
+           fechaPagada =rs.getString(1);
+           System.out.println("cedula: "+idEstudiante+" "+"Última fecha pagada: "+fechaPagada);
         }
-        if(fechaDelPago==fechaProxPago)
-            JOptionPane.showMessageDialog(null,"Es necesario que cancele la matrícula anterior");
-        else{
-           JOptionPane.showMessageDialog(null,"No tiene pendientes de pago");
+        String sql2="SELECT MAX(fechaProxPago) FROM sice.matriculas WHERE idEstudiante='"+idEstudiante+"'";
+        ps = accesoDB.prepareStatement(sql2);
+        rs = ps.executeQuery();
+        
+        if(rs.first()){
+            fechaProxPago=rs.getString(1);
+            System.out.println("cedula: "+idEstudiante+" "+"Fecha de prox pago: "+fechaProxPago);
+        }
+        if(fechaPagada==null && fechaProxPago==null){
+                fechaProxPago="";
+        }else{
+                if(fechaPagada==null && fechaProxPago!=null){
+                        System.out.println("Es necesario que cancele la matrícula anterior");
+                }else{
+                        if(fechaPagada.equals(fechaProxPago)){
+                            System.out.println("No tiene pendientes de pago");
+                            fechaProxPago="";
+                        }else{
+                           System.out.println("Es necesario que cancele la matrícula anterior");
+                        }
+                }
         }
         return fechaProxPago;
     }
-        
-        
-        
-        
-        /*String proxFechaDePago=null;
-        String sql ="SELECT fechaDelPago, MAX(DATE_FORMAT(fechaDelPago, '%Y/%m/%d')) FROM sice.pagos WHERE idEstudiante='"+idEstudiante+"'";
-        fechasDePagoDAO = new FechasDePagoDAO(this.conexion,this.rs,this.st);
-        ps = accesoDB.prepareStatement(sql);
-        rs = ps.executeQuery();
-        String fechaDelPago="";
-        if(rs.first()){
-           
-                fechaDelPago=rs.getString("fechaDelPago");
-                if(fechaDelPago!=fechasDePagoDAO.proximaFechaDePago(idEstudiante))
-                    proxFechaDePago= fechasDePagoDAO.proximaFechaDePago(idEstudiante);
-        }
-        return proxFechaDePago;
-    }*/
+     
 }

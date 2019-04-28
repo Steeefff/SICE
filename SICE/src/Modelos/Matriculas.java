@@ -25,15 +25,24 @@ import java.util.Date;
 
 public class Matriculas {
 
-    private String idEstudiante,nombreGrupo,fechaDeMatricula;
+    private String idEstudiante,nombreGrupo,fechaDeMatricula,fechaProxPago;
 
     public Matriculas() {
     }
 
-    public Matriculas(String idEstudiante,String nombreGrupo,String fechaDeMatricula) {
+    public Matriculas(String idEstudiante,String nombreGrupo,String fechaDeMatricula, String fechaProxPago) {
         this.idEstudiante = idEstudiante;
         this.nombreGrupo = nombreGrupo;
         this.fechaDeMatricula=fechaDeMatricula;
+        this.fechaProxPago=fechaProxPago;
+    }
+
+    public String getFechaProxPago() {
+        return fechaProxPago;
+    }
+
+    public void setFechaProxPago(String fechaProxPago) {
+        this.fechaProxPago = fechaProxPago;
     }
 
     public String getFechaDeMatricula() {

@@ -50,7 +50,7 @@ public class AgregarGrupo extends javax.swing.JFrame {
     
     public AgregarGrupo(Image icono,Conexion conexion,ResultSet rs,Statement st) throws SQLException {
         initComponents();
-        this.setSize(1290,710); 
+        this.setSize(1295,710); 
         setLocationRelativeTo(null);
         this.setResizable(false);
         fecha();

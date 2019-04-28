@@ -3,8 +3,8 @@ package Vista;
 import Datos.Conexion;
 import Datos.GruposDAO;
 import Datos.MatriculasDAO;
+import Datos.PagosDAO;
 import Datos.PersonasDAO;
-import Datos.FechasDePagoDAO;
 import Modelos.Grupos;
 import Modelos.Matriculas;
 import Modelos.Personas;
@@ -26,6 +26,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 /*
   @author Grupo #30 Ingeniería 2018-2019 
@@ -51,10 +52,10 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
     public static Statement st;
     Image icon;
     PersonasDAO personasDAO;
+    PagosDAO pagosDAO;
     Vector<Personas> estudiantes;
     GruposDAO gruposDAO;
     MatriculasDAO matriculasDAO;
-    FechasDePagoDAO fechasDePagoDAO;
     Vector<Vista_mantenimientoGrupos> vista_mantenimientoGrupos;
     
     public MatriculaEstudiante(Image icono,Conexion conexion,ResultSet rs,Statement st) throws SQLException {
@@ -78,16 +79,10 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
                     txtIdentificacion.setText("");
                     comboGrupos.setEnabled(false);
                     comboGrupos.setSelectedIndex(0);
-                }else{
+                }else{ 
                     comboGrupos.setEnabled(true);
                     txtIdentificacion.setText(estudiantes.get(comboEstudiantes.getSelectedIndex()-1).getIdentificacion());
-                    fechasDePagoDAO = new FechasDePagoDAO(conexion,rs,st);
-                    try {
-                        txtProximoPago.setText(fechasDePagoDAO.proximaFechaDePago(txtIdentificacion.getText()));
-                    } catch (SQLException ex) {
-                        ex.printStackTrace();
-                    }
-                }
+               }
             }
         });
         
@@ -146,25 +141,46 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
         }
     }
     
-    public boolean validar(){
+    public boolean validar() throws SQLException{
         boolean valido=false;
         if(this.comboEstudiantes.getSelectedIndex()!=0)
-            if(this.comboGrupos.getSelectedIndex()!=0)
-                if(this.comboProxFechaPago.getCalendar()!=null)
-                    if(this.validaFechaPago()==true)
-                        valido=true;
+            if(this.comboGrupos.getSelectedIndex()!=0){
+                    if(this.comboProxFechaPago.getCalendar()!=null){
+                        if(validaRangoFecha()==true){
+                            if(this.validaFechaPago()==true)
+                                valido=true;
+                        }else{
+                            JOptionPane.showMessageDialog(null, "La fecha para el próximo pago no debe de ser anterior ni igual a la fecha actual. Por favor intente de nuevo.");
+                        }
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Es necesario que seleccione una fecha para próximo pago de matrícula.");
+                    }
+            }else{
+                JOptionPane.showMessageDialog(null, "Es necesario que seleccione un grupo a matricular.");
+            }
+        return valido;
+    }
+    private boolean validaRangoFecha(){
+        boolean valido=false;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");        
+        Date actual=new Date();
+        System.out.println("Fecha actual: "+actual);
+        Date ingresada=this.comboProxFechaPago.getDate();
+        System.out.println("Fecha ingresada: "+ingresada);
+        int resultado=ingresada.compareTo(actual);
+        System.out.println("Resultado: "+resultado);
+        if(resultado>0)
+            valido=true;    
         return valido;
     }
     
-    private boolean validaFechaPago(){
+    private boolean validaFechaPago() throws SQLException{
         boolean valido=false;
-        if(this.txtProximoPago.getText()==null){
+        this.pagosDAO =new PagosDAO(this.conexion,this.rs,this.st);
+        if(this.pagosDAO.validaPendienteDePago(this.txtIdentificacion.getText())=="")
             valido=true;
-        }else{
-            if(this.txtUltimoPago.getText().equals(this.txtProximoPago.getText()))
-                valido=true;
-            else
-                JOptionPane.showMessageDialog(null, "Para matricular es necesario que la próxia fecha de pago esté cancelada. ");
+        else{
+            JOptionPane.showMessageDialog(null,"El estudiante tiene pendientes de pago. Para matricular es necesario cancelar los pendientes.");
         }
         return valido;
     }
@@ -189,8 +205,6 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
         btnMatricular = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         btnVolver = new javax.swing.JButton();
-        jLabel10 = new javax.swing.JLabel();
-        txtProximoPago = new javax.swing.JLabel();
         btnEstudianteNuevo = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
@@ -200,15 +214,14 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
         jLbFecha = new javax.swing.JLabel();
         comboEstudiantes = new javax.swing.JComboBox<>();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaMatriculas = new javax.swing.JTable();
         txtCurso = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         txtHorario = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
         comboProxFechaPago = new com.toedter.calendar.JDateChooser();
-        jLabel15 = new javax.swing.JLabel();
-        txtUltimoPago = new javax.swing.JLabel();
-        jLabel16 = new javax.swing.JLabel();
+        btnVolver1 = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -252,6 +265,9 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
 
         jPanel8.setBackground(new java.awt.Color(255, 255, 255));
         jPanel8.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204)));
+        jPanel8.setMaximumSize(new java.awt.Dimension(1260, 35));
+        jPanel8.setMinimumSize(new java.awt.Dimension(1260, 35));
+        jPanel8.setPreferredSize(new java.awt.Dimension(1260, 35));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -269,9 +285,8 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 3, Short.MAX_VALUE))
         );
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -321,14 +336,6 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
                 btnVolverActionPerformed(evt);
             }
         });
-
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel10.setText("Próxima fecha de pago:");
-
-        txtProximoPago.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        txtProximoPago.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        txtProximoPago.setText("NI");
-        txtProximoPago.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         btnEstudianteNuevo.setBackground(new java.awt.Color(0, 133, 202));
         btnEstudianteNuevo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -408,13 +415,13 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
 
         comboEstudiantes.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaMatriculas.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        tablaMatriculas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Código", "Nombre", "Idioma", "Grupo", "Profesor"
+                "Código", "Curso", "Idioma", "Grupo", "Profesor"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -425,7 +432,7 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable1);
+        jScrollPane2.setViewportView(tablaMatriculas);
 
         txtCurso.setEditable(false);
         txtCurso.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -443,16 +450,19 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
         comboProxFechaPago.setEnabled(false);
         comboProxFechaPago.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
 
-        jLabel15.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel15.setText("Última fecha cancelada:");
+        btnVolver1.setBackground(new java.awt.Color(0, 133, 202));
+        btnVolver1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnVolver1.setForeground(new java.awt.Color(255, 255, 255));
+        btnVolver1.setText("Buscar");
+        btnVolver1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnVolver1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVolver1ActionPerformed(evt);
+            }
+        });
 
-        txtUltimoPago.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        txtUltimoPago.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        txtUltimoPago.setText("NI");
-        txtUltimoPago.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        jLabel16.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel16.setText("Año/Mes/Día");
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel10.setText("Seleccione un estudiante para buscar registro de matrículas");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -469,7 +479,7 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
                             .addComponent(comboGrupos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(btnMatricular, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGap(18, 18, 18)
                                 .addComponent(btnVolver, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(txtCurso)
                             .addComponent(txtHorario)
@@ -486,31 +496,23 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
                                     .addComponent(jLabel14))
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(comboProxFechaPago, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel9)
+                                .addGap(341, 341, 341))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 944, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(52, 52, 52)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel10)
-                                            .addComponent(jLabel15))
-                                        .addGap(60, 60, 60)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(txtUltimoPago, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(txtProximoPago, javax.swing.GroupLayout.DEFAULT_SIZE, 293, Short.MAX_VALUE)))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel16)
-                                        .addGap(107, 107, 107)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 968, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel9)
-                                        .addGap(341, 341, 341))))))
-                    .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 1260, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(btnVolver1, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
+                                        .addGap(491, 491, 491))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel10)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(182, 182, 182))))
+                    .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(24, 24, 24))
             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -518,9 +520,9 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel9))
@@ -528,51 +530,45 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(comboEstudiantes, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(btnEstudianteNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtIdentificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(comboGrupos, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel8)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel13)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtHorario, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel14)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(comboProxFechaPago, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(btnMatricular, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(22, 22, 22))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 346, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel10)
-                                    .addComponent(txtProximoPago, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(31, 31, 31)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel15)
-                                    .addComponent(txtUltimoPago, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel16))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                        .addComponent(btnEstudianteNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtIdentificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(comboGrupos, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel13)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtHorario, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel14)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(comboProxFechaPago, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnMatricular, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(15, 15, 15))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addGap(12, 12, 12)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(30, 30, 30)
+                                .addComponent(btnVolver1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel10))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(7, 7, 7)))
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -602,14 +598,25 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void btnMatricularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMatricularActionPerformed
-//************FALTA VALIDAR FECHA CANCELADA*********************** 
-        if(this.validar()==true){ 
-             matricular();
-            this.limpiar();
-         }else{
-             JOptionPane.showMessageDialog(null, "Es necesario seleccionar un estudiante, un grupo y una fecha de próximo pago para matricular. Por favor intente de nuevo.");
-         }
+        try {
+            if(this.validar()==true){
+                String identificacion = this.txtIdentificacion.getText();
+                matricular();
+                this.limpiar();
+                mostrarTabla(identificacion);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MatriculaEstudiante.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnMatricularActionPerformed
+
+    private void btnVolver1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolver1ActionPerformed
+        if(this.comboEstudiantes.getSelectedIndex()>0){
+            mostrarTabla(this.txtIdentificacion.getText());
+        }else{
+            JOptionPane.showMessageDialog(null, "Seleccione un estudiante.");
+        }
+    }//GEN-LAST:event_btnVolver1ActionPerformed
 
     private void matricular(){
         //Crea un objeto de tipo curso
@@ -617,16 +624,10 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
         //Se cargan los atributos del curso
         matricula.setIdEstudiante(this.txtIdentificacion.getText());
         matricula.setNombreGrupo(this.comboGrupos.getItemAt(this.comboGrupos.getSelectedIndex()));
+        matricula.setFechaProxPago(((JTextField)this.comboProxFechaPago.getDateEditor().getUiComponent()).getText());
         //Envía el curso al método insertaCurso del cursosDAO que inserta en la base de datos
-        matriculasDAO = new MatriculasDAO(this.conexion,this.rs,this.st);
-        
-        /*Date date = this.comboFechaPago.getDate();
-        SimpleDateFormat sdf = new SimpleDateFormat(this.comboFechaPago.getDateFormatString());
-        String fecha=(String.valueOf(sdf.format(date)));   */
-        
-        String fechaProxPago= ((JTextField)this.comboProxFechaPago.getDateEditor().getUiComponent()).getText();
-        
-        String respuestaRegistro = matriculasDAO.matricular(matricula,fechaProxPago);
+        matriculasDAO = new MatriculasDAO(this.conexion,this.rs,this.st);        
+        String respuestaRegistro = matriculasDAO.matricular(matricula);
         //Si respuestaRegistro es diferente de null quiere decir que se ingresó la matricula correctamente
         if(respuestaRegistro!=null){
             JOptionPane.showMessageDialog(null, respuestaRegistro);
@@ -641,11 +642,19 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
         this.comboProxFechaPago.setDate(new Date());
         this.comboProxFechaPago.setCalendar(null);
     }
+    
+    public void mostrarTabla( String identificacion){
+        DefaultTableModel modelo;
+        matriculasDAO=new MatriculasDAO(this.conexion,this.rs,this.st);
+        modelo = matriculasDAO.mostrarMatriculas(identificacion);
+        tablaMatriculas.setModel(modelo);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEstudianteNuevo;
     private javax.swing.JButton btnMatricular;
     private javax.swing.JButton btnVolver;
+    private javax.swing.JButton btnVolver1;
     private javax.swing.JComboBox<String> comboEstudiantes;
     private javax.swing.JComboBox<String> comboGrupos;
     private com.toedter.calendar.JDateChooser comboProxFechaPago;
@@ -655,8 +664,6 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -673,11 +680,9 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tablaMatriculas;
     private javax.swing.JTextField txtCurso;
     private javax.swing.JTextField txtHorario;
     private javax.swing.JTextField txtIdentificacion;
-    private javax.swing.JLabel txtProximoPago;
-    private javax.swing.JLabel txtUltimoPago;
     // End of variables declaration//GEN-END:variables
 }
