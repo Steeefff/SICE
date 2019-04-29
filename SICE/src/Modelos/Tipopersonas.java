@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package Modelos;
-
 /*
   @author Grupo #30 Ingeniería 2018-2019 
  *@author David Rodríguez Zamora
@@ -20,20 +19,11 @@ package Modelos;
  * Since 1.0
  */
 
-public class Tipopersonas {
+public class TipoPersonas {
 
-    private int idTipoPersonas;
     private String rol;
 
-    public Tipopersonas() {
-    }
-
-    public int getIdTipoPersonas() {
-        return idTipoPersonas;
-    }
-
-    public void setIdTipoPersonas(int idTipoPersonas) {
-        this.idTipoPersonas = idTipoPersonas;
+    public TipoPersonas() {
     }
 
     public String getRol() {

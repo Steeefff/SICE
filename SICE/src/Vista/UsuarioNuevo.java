@@ -1,8 +1,12 @@
 package Vista;
 
+import Datos.Conexion;
+import Datos.PersonasDAO;
+import Modelos.Personas;
 import java.awt.Image;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
 
 /*
   @author Grupo #30 Ingeniería 2018-2019 
@@ -21,15 +25,23 @@ import javax.swing.JFrame;
 public class UsuarioNuevo extends javax.swing.JFrame {
 
   AdministracionUsuarios administracionUsuarios;
+  PersonasDAO personasDAO;
+  private static Conexion conexion;
+  public static ResultSet rs;
+  public static Statement st;
   Image icon;
-  
-    public UsuarioNuevo(Image icono) {
+
+    public UsuarioNuevo(Image icono,Conexion conexion,ResultSet rs,Statement st) {
         initComponents();
         this.setSize(590,768); 
         this.setResizable(false);
         setLocationRelativeTo(null);
-         setTitle("SICE - Usuario Nuevo");
-         this.icon = icono;
+        setTitle("SICE - Usuario Nuevo");
+        this.icon = icono;
+        this.icon = icono;
+        this.conexion=conexion;
+        this.rs=rs;
+        this.st=st;
         setIconImage(this.icon);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
@@ -51,11 +63,11 @@ public class UsuarioNuevo extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        txtIdentificacion = new javax.swing.JTextField();
+        comboRol = new javax.swing.JComboBox<>();
         btnGuardar = new javax.swing.JButton();
         btnVolver = new javax.swing.JButton();
-        jTextField2 = new javax.swing.JTextField();
+        txtContrasena = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -166,7 +178,7 @@ public class UsuarioNuevo extends javax.swing.JFrame {
         jLabel3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel2.setText("Usuario:");
+        jLabel2.setText("Identificación:");
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setText("Contraseña:");
@@ -174,15 +186,18 @@ public class UsuarioNuevo extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel7.setText("Rol:");
 
-        jTextField1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-
-        jComboBox1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "Administrador", "Super Usuario" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+        txtIdentificacion.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txtIdentificacion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtIdentificacionKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtIdentificacionKeyTyped(evt);
             }
         });
+
+        comboRol.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        comboRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "Administrador", "Super Usuario" }));
 
         btnGuardar.setBackground(new java.awt.Color(0, 133, 202));
         btnGuardar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -210,7 +225,7 @@ public class UsuarioNuevo extends javax.swing.JFrame {
             }
         });
 
-        jTextField2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txtContrasena.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -228,12 +243,9 @@ public class UsuarioNuevo extends javax.swing.JFrame {
                                 .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 202, Short.MAX_VALUE)
                                 .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jTextField1)
-                            .addComponent(jTextField2)
-                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(226, 226, 226)
-                        .addComponent(jLabel2))
+                            .addComponent(txtIdentificacion)
+                            .addComponent(txtContrasena)
+                            .addComponent(comboRol, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(213, 213, 213)
                         .addComponent(jLabel6))
@@ -242,7 +254,10 @@ public class UsuarioNuevo extends javax.swing.JFrame {
                         .addComponent(jLabel7))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(187, 187, 187)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(204, 204, 204)
+                        .addComponent(jLabel2)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -254,15 +269,15 @@ public class UsuarioNuevo extends javax.swing.JFrame {
                 .addGap(38, 38, 38)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtIdentificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(comboRol, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(34, 34, 34)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -287,22 +302,79 @@ public class UsuarioNuevo extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private boolean validarEspacios(){
+        boolean completos = false;
+        if(!this.txtIdentificacion.getText().equals("") & !this.txtContrasena.getText().equals("") & this.comboRol.getSelectedIndex()!=0)
+                completos = true;
+        else
+            JOptionPane.showMessageDialog(null, "Es necesario completar todos los espacios.");
+           return completos;
+    }
+    
+    private boolean validaciones(){
+        boolean completos=false; 
+        if(validarEspacios()==true){
+            completos=true;
+        } 
+        return completos;
+    }
+    
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        this.dispose();
+        if(validaciones()==true){//Se valida que los espacios no esten en blanco y que a su vez la identificación no tengo letras
+            insertarUsuario();
+            this.dispose();
+        }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
+    private void insertarUsuario(){
+        //Crea un objeto de tipo persona
+        Personas persona= new Personas();
+        //Se cargan los atributos de la persona usurio
+        persona.setIdentificacion(txtIdentificacion.getText());
+        persona.setContraseña(this.txtContrasena.getText());
+        persona.setIdTipoPersona((comboRol.getSelectedIndex()+2));
+
+        //Envía la persona al método insertaPersona del personaDAO que inserta en la base de datos
+        personasDAO = new PersonasDAO(this.conexion,this.rs,this.st);
+        String respuestaRegistro = personasDAO.insertarPersona(persona);
+        //Si respuestaRegistro es diferente de null quiere decir que se ingresó el profesor correctamente
+        if(respuestaRegistro!=null){
+            JOptionPane.showMessageDialog(null, respuestaRegistro);
+            Limpiar();
+        }else{
+            JOptionPane.showMessageDialog(null, "Ese Usuario ya existe en el registro.");
+        }
+    }
+    
+    public void Limpiar(){
+        this.txtIdentificacion.setText("");
+        this.txtContrasena.setText("");
+        this.comboRol.setSelectedIndex(0);
+    }
+    
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    private void txtIdentificacionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdentificacionKeyTyped
+        if(this.txtIdentificacion.getText().length() >=20){
+            JOptionPane.showMessageDialog(null,"La identificación debe ser menor a 20 dígitos.");
+        }
+    }//GEN-LAST:event_txtIdentificacionKeyTyped
+
+    private void txtIdentificacionKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdentificacionKeyReleased
+        if(this.txtIdentificacion.getText().length()>=9){
+            //buscar(this.txtIdentificacion.getText());
+            //identidad profesor o estudiante?
+            //usurario
+        }
+    }//GEN-LAST:event_txtIdentificacionKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnVolver;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> comboRol;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -316,7 +388,7 @@ public class UsuarioNuevo extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField txtContrasena;
+    private javax.swing.JTextField txtIdentificacion;
     // End of variables declaration//GEN-END:variables
 }

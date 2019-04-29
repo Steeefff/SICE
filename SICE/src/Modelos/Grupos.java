@@ -5,7 +5,7 @@
  */
 package Modelos;
 
-/*
+/**
   @author Grupo #30 Ingeniería 2018-2019 
  *@author David Rodríguez Zamora
  *@author Katherine Jiménez Soto
@@ -13,9 +13,10 @@ package Modelos;
  *@author Stefanny Villalobos Uva
  * Proyecto de Ingeniería - Universidad Nacional de Costa Rica
  * Sistema Interno de Control de Estudiantes, SICE
- * Profesor: Rafael Alvarado Arley
+ * Profesores: Rafael Alvarado Arley
+               Pablo Gamboa Camacho
  * Dueño del producto: Yensy Soto, Centro Cultural Corporación Costa Rica
- * Versión 1.2, 21/10/2018
+ * Versión 1.3, 17/03/2019
  * Since 1.0
  */
 
@@ -23,23 +24,28 @@ package Modelos;
 public class Grupos {
 
     
-    private int idGrupos;
-    private String nombre;
-    private String horaInicio;
-    private String horaSalida;
-    private int idCurso;
-    private int idProfesor;
+    private String idgrupos,nombre,idcurso,idProfesor,horaInicio,dia;
+    private int estado;
 
     public Grupos() {
     }
 
-
-    public int getIdGrupos() {
-        return idGrupos;
+    public Grupos(String idgrupos, String nombre, String idcurso, String idProfesor, String horaInicio, int estdado, String dia) {
+        this.idgrupos=idgrupos;
+        this.nombre=nombre;
+        this.idcurso=idcurso;
+        this.idProfesor=idProfesor;
+        this.horaInicio=horaInicio;
+        this.estado=estado;
+        this.dia=dia;
     }
 
-    public void setIdGrupos(int idGrupos) {
-        this.idGrupos = idGrupos;
+    public String getIdgrupos() {
+        return idgrupos;
+    }
+
+    public void setIdgrupos(String idgrupos) {
+        this.idgrupos = idgrupos;
     }
 
     public String getNombre() {
@@ -50,6 +56,22 @@ public class Grupos {
         this.nombre = nombre;
     }
 
+    public String getIdcurso() {
+        return idcurso;
+    }
+
+    public void setIdcurso(String idcurso) {
+        this.idcurso = idcurso;
+    }
+
+    public String getIdProfesor() {
+        return idProfesor;
+    }
+
+    public void setIdProfesor(String idProfesor) {
+        this.idProfesor = idProfesor;
+    }
+
     public String getHoraInicio() {
         return horaInicio;
     }
@@ -57,28 +79,21 @@ public class Grupos {
     public void setHoraInicio(String horaInicio) {
         this.horaInicio = horaInicio;
     }
-
-    public String getHoraSalida() {
-        return horaSalida;
+    
+    public int getEstado() {
+        return estado;
     }
 
-    public void setHoraSalida(String horaSalida) {
-        this.horaSalida = horaSalida;
+    public void setEstado(int estado) {
+        this.estado = estado;
     }
 
-    public int getIdCurso() {
-        return idCurso;
+    public String getDia() {
+        return dia;
     }
 
-    public void setIdCurso(int idCurso) {
-        this.idCurso = idCurso;
+    public void setDia(String dia) {
+        this.dia = dia;
     }
 
-    public int getIdProfesor() {
-        return idProfesor;
-    }
-
-    public void setIdProfesor(int idProfesor) {
-        this.idProfesor = idProfesor;
-    }
 }

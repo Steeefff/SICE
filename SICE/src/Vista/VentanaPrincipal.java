@@ -1,11 +1,15 @@
 package Vista;
 
 import Datos.Conexion;
+import Modelos.Personas;
 import java.awt.Image;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 /**
@@ -32,11 +36,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     AdministracionUsuarios administracionUsuarios;
     MantenimientoEstudiante mantenimientoEstudiantes;
     MantenimientoProfesor mantenimientoProfesores;
+    MantenimientoSistema mantenimientoSistema; 
     Pagos pago;
     MantenimientoGrupos mantenimientoGrupos;
     MantenimientoCursos mantenimientoCursos;
     Login login;
     Image icon;
+    Personas rol;
     private static Conexion conexion;
     public static ResultSet rs;
     public static Statement st;
@@ -54,6 +60,73 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         this.st=st;
         setIconImage(icon);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+    }
+    
+    public VentanaPrincipal(Image icono,Conexion conexion,ResultSet rs,Statement st,Personas rol) {
+        initComponents(); 
+        this.setTitle("SICE - Principal");
+        this.setSize(1290,710); 
+        setLocationRelativeTo(null);
+        this.setResizable(false);
+        fecha();
+        this.icon = icono;
+        this.conexion=conexion;
+        this.rs=rs;
+        this.st=st;
+        setIconImage(icon);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        
+        this.rol = rol;
+        
+        if(rol.getIdTipoPersona() == 1){ //Estudiante
+            btnMatricularEstudiante.setVisible(false);
+            btnAgregarProfesor.setVisible(false);
+            btnAgregarGrupo.setVisible(false);
+            btnAgregarPago.setVisible(false);
+            btnMantenimientoEstudiantes.setVisible(false);
+            btnMantenimientoProfesores.setVisible(false);
+            btnMantenimientoGrupos.setVisible(false);
+            btnMantenimientoCursos.setVisible(false);
+            btnAdministracionUsuarios.setVisible(false);
+            btnMantenimientoSistema.setVisible(false);
+            btnCerrarSesion.setVisible(true);
+        }else if(rol.getIdTipoPersona() == 2){//2 Profesor
+            btnMatricularEstudiante.setVisible(false);
+            btnAgregarProfesor.setVisible(false);
+            btnAgregarGrupo.setVisible(false);
+            btnAgregarPago.setVisible(false);
+            btnMantenimientoEstudiantes.setVisible(false);
+            btnMantenimientoProfesores.setVisible(false);
+            btnMantenimientoGrupos.setVisible(false);
+            btnMantenimientoCursos.setVisible(false);
+            btnAdministracionUsuarios.setVisible(false);
+            btnMantenimientoSistema.setVisible(false);
+            btnCerrarSesion.setVisible(true);
+        }else if(rol.getIdTipoPersona() == 3){//3 Adminidstrativo
+            btnMatricularEstudiante.setVisible(true);
+            btnAgregarProfesor.setVisible(true);
+            btnAgregarGrupo.setVisible(true);
+            btnAgregarPago.setVisible(true);
+            btnMantenimientoEstudiantes.setVisible(true);
+            btnMantenimientoProfesores.setVisible(true);
+            btnMantenimientoGrupos.setVisible(true);
+            btnMantenimientoCursos.setVisible(true);
+            btnAdministracionUsuarios.setVisible(false);
+            btnMantenimientoSistema.setVisible(false);
+            btnCerrarSesion.setVisible(true);
+        }else if(rol.getIdTipoPersona() == 4){//4 Gerente
+            btnMatricularEstudiante.setVisible(true);
+            btnAgregarProfesor.setVisible(true);
+            btnAgregarGrupo.setVisible(true);
+            btnAgregarPago.setVisible(true);
+            btnMantenimientoEstudiantes.setVisible(true);
+            btnMantenimientoProfesores.setVisible(true);
+            btnMantenimientoGrupos.setVisible(true);
+            btnMantenimientoCursos.setVisible(true);
+            btnAdministracionUsuarios.setVisible(true);
+            btnMantenimientoSistema.setVisible(true);
+            btnCerrarSesion.setVisible(true);
+        }
     }
 
     public void fecha(){
@@ -101,6 +174,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255), 5));
+        jPanel2.setMaximumSize(new java.awt.Dimension(1290, 684));
+        jPanel2.setMinimumSize(new java.awt.Dimension(1290, 684));
+        jPanel2.setPreferredSize(new java.awt.Dimension(1290, 684));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -314,7 +390,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addComponent(btnMantenimientoSistema, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(144, Short.MAX_VALUE))
+                .addContainerGap(121, Short.MAX_VALUE))
         );
 
         jPanel3.setBackground(new java.awt.Color(0, 133, 202));
@@ -332,22 +408,22 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             .addGap(0, 12, Short.MAX_VALUE)
         );
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("Sistema Interno de Control de Estudiantes, SICE");
 
-        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("Usuario:");
 
-        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel7.setText("Nombre");
 
-        jLbFecha.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLbFecha.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLbFecha.setForeground(new java.awt.Color(255, 255, 255));
         jLbFecha.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLbFecha.setText("Fecha");
@@ -359,14 +435,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLbFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLbFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(89, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -422,12 +498,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 690, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(44, 44, 44)
                 .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(28, 28, 28)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(88, 88, 88))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -438,7 +514,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(jLabel2)
                     .addComponent(jLabel9))
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -450,17 +526,18 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(166, 166, 166))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(262, 262, 262))))
+                        .addGap(284, 284, 284))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -470,7 +547,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(57, 57, 57))
+                .addGap(26, 26, 26))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
@@ -480,18 +557,22 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 1290, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 673, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnMatricularEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMatricularEstudianteActionPerformed
-        matriculaEstudiante = new MatriculaEstudiante(this.icon,this.conexion,this.rs,this.st);
+        try {
+            matriculaEstudiante = new MatriculaEstudiante(this.icon,this.conexion,this.rs,this.st);
+        } catch (SQLException ex) {
+            Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
         matriculaEstudiante.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnMatricularEstudianteActionPerformed
@@ -514,7 +595,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAgregarProfesorActionPerformed
 
     private void btnAgregarGrupoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarGrupoActionPerformed
-        agregarGrupo = new AgregarGrupo(this.icon,this.conexion,this.rs,this.st);
+        try {
+            agregarGrupo = new AgregarGrupo(this.icon,this.conexion,this.rs,this.st);
+        } catch (SQLException ex) {
+            Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
         agregarGrupo.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnAgregarGrupoActionPerformed
@@ -526,7 +611,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAgregarCursosActionPerformed
 
     private void btnAgregarPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarPagoActionPerformed
-        pago = new Pagos(this.icon,this.conexion,this.rs,this.st);
+        try {
+            pago = new Pagos(this.icon,this.conexion,this.rs,this.st);
+        } catch (SQLException ex) {
+            Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
         pago.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnAgregarPagoActionPerformed
@@ -539,18 +628,21 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
     private void btnMantenimientoGruposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMantenimientoGruposActionPerformed
-        mantenimientoGrupos = new MantenimientoGrupos(this.icon);
+        mantenimientoGrupos = new MantenimientoGrupos(this.icon,this.conexion,this.rs,this.st);
         mantenimientoGrupos.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnMantenimientoGruposActionPerformed
 
     private void btnMantenimientoCursosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMantenimientoCursosActionPerformed
-        mantenimientoCursos = new MantenimientoCursos(this.icon);
+        mantenimientoCursos = new MantenimientoCursos(this.icon,this.conexion,this.rs,this.st);
         mantenimientoCursos.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnMantenimientoCursosActionPerformed
 
     private void btnMantenimientoSistemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMantenimientoSistemaActionPerformed
+        mantenimientoSistema = new MantenimientoSistema(this.icon,this.conexion,this.rs,this.st);
+        mantenimientoSistema.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnMantenimientoSistemaActionPerformed
 
     private void btnMantenimientoProfesoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMantenimientoProfesoresActionPerformed

@@ -1,6 +1,8 @@
 //DAVID ESTUVO AQUÍ
 package Vista;
 import Datos.Conexion;
+import Datos.PersonasDAO;
+import Modelos.Personas;
 import static Vista.ModificarProfesor.st;
 import java.awt.Image;
 import java.sql.ResultSet;
@@ -8,6 +10,7 @@ import java.sql.Statement;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /*
   @author Grupo #30 Ingeniería 2018-2019 
@@ -30,7 +33,9 @@ public class Login extends javax.swing.JFrame {
     Image icon;
     private static Conexion conexion;
     public static ResultSet rs;
-    public static Statement st;            
+    public static Statement st;
+    Personas persona;
+    PersonasDAO personasDAO;          
     
     public Login() {
         initComponents();      
@@ -39,9 +44,6 @@ public class Login extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         this.setTitle("SICE - Login");
         icon = new ImageIcon(getClass().getResource("/Imagenes/sice_1.jpeg")).getImage();
-        this.conexion=new Conexion();
-        this.conexion.Conexion();
-        this.st=Conexion.getSt();
         setIconImage(icon);
     }
 
@@ -59,7 +61,7 @@ public class Login extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        txtUsuario = new javax.swing.JTextField();
+        txtIdentificacion = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         txtContrasena = new javax.swing.JTextField();
         btnIngresar = new javax.swing.JButton();
@@ -160,14 +162,14 @@ public class Login extends javax.swing.JFrame {
         jLabel4.setText("Control de Estudiantes");
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel1.setText("Usuario");
+        jLabel1.setText("Identificación");
         jLabel1.setAlignmentY(0.0F);
 
-        txtUsuario.setAlignmentX(0.0F);
-        txtUsuario.setAlignmentY(0.0F);
-        txtUsuario.addActionListener(new java.awt.event.ActionListener() {
+        txtIdentificacion.setAlignmentX(0.0F);
+        txtIdentificacion.setAlignmentY(0.0F);
+        txtIdentificacion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtUsuarioActionPerformed(evt);
+                txtIdentificacionActionPerformed(evt);
             }
         });
 
@@ -228,7 +230,7 @@ public class Login extends javax.swing.JFrame {
                         .addComponent(txtContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(48, 48, 48))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtIdentificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(48, 48, 48))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -262,7 +264,7 @@ public class Login extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
                 .addGap(12, 12, 12)
-                .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtIdentificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -297,18 +299,35 @@ public class Login extends javax.swing.JFrame {
         this.btnIngresar = btnIngresar;
     }
 
-    private void txtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioActionPerformed
-        txtUsuario.transferFocus();
-    }//GEN-LAST:event_txtUsuarioActionPerformed
+    private void txtIdentificacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdentificacionActionPerformed
+        txtIdentificacion.transferFocus();
+    }//GEN-LAST:event_txtIdentificacionActionPerformed
 
     private void txtContrasenaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtContrasenaActionPerformed
         txtContrasena.transferFocus();
     }//GEN-LAST:event_txtContrasenaActionPerformed
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
-        principal = new VentanaPrincipal(this.icon,this.conexion,this.rs,this.st);
-        principal.setVisible(true);
-        this.dispose();
+        this.conexion = new Conexion();
+        this.conexion.Conexion();
+        this.st = Conexion.getSt();
+        //LOGIN
+        if (!txtIdentificacion.getText().equals("") && !txtContrasena.getText().equals("")) {
+
+            personasDAO = new PersonasDAO(this.conexion, this.rs, this.st);
+            persona = new Personas(txtIdentificacion.getText(), txtContrasena.getText()/*,date.formate(date)*/);
+            
+            if (personasDAO.login(persona) == true) {
+                principal = new VentanaPrincipal(this.icon, this.conexion, this.rs, this.st, persona);//Pasamos a una persona por parametros
+                principal.setVisible(true);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(null, "Identidad o contraseña incorrectas");
+            }
+        } else {
+            //Focus
+            JOptionPane.showMessageDialog(null, "Debe rellenar todos los espacios");
+        }
     }//GEN-LAST:event_btnIngresarActionPerformed
 
     private void btnIngresar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresar1ActionPerformed
@@ -340,6 +359,6 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JTextField txtContrasena;
-    private javax.swing.JTextField txtUsuario;
+    private javax.swing.JTextField txtIdentificacion;
     // End of variables declaration//GEN-END:variables
 }

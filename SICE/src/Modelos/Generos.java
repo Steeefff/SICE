@@ -28,41 +28,20 @@ import java.util.ArrayList;
 
 
 public class Generos {
-
-   
-    private int idGenero;
+    
     private String nombre;
     private String descripcion;
     
-    
-    /*Codigo nuevo*/
     public ArrayList<String> listaGeneros = new ArrayList<String>();
     public Conexion conexion;
     public Connection connection;
     public Statement st;
     public ResultSet rs;
-    /*Codigo nuevo*/
-    
     
     public Generos(Conexion conexion,ResultSet rs,Statement st) {
-        
         this.conexion=conexion;
         this.rs=rs;
         this.st=st;
-        /*try{        
-            conexion = new Conexion();
-            connection = conexion.Conexion();
-            st = connection.createStatement();
-        }catch(Exception e){
-        }*/
-    }
-
-    public int getIdGenero() {
-        return idGenero;
-    }
-
-    public void setIdGenero(int idGenero) {
-        this.idGenero = idGenero;
     }
 
     public String getNombre() {
@@ -83,9 +62,10 @@ public class Generos {
 
    public ResultSet cargarGeneros(String sql){
         try{
-        rs = st.executeQuery(sql); }catch(SQLException e){
+            rs = st.executeQuery(sql); 
+        }
+        catch(SQLException e){
         }
         return rs;
-    }
-    
+    }    
 }

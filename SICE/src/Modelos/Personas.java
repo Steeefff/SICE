@@ -34,6 +34,12 @@ public class Personas {
 
     public Personas() {        
     }
+    
+    //Constructores para el login
+    public Personas(String identificacion, String contraseña) {
+        this.identificacion = identificacion;
+        this.contraseña = contraseña;
+    }
 
     public Personas(String identificacion, String nombre, String apellido1, String apellido2, int telefono, String direccion, String fechaNacimiento, String correo, String contraseña, int genero, int idTipoPersona, int[] idioma) {
         this.identificacion = identificacion;
