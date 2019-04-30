@@ -308,6 +308,7 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_txtContrasenaActionPerformed
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
+<<<<<<< HEAD
         this.conexion = new Conexion();
         this.conexion.Conexion();
         this.st = Conexion.getSt();
@@ -328,6 +329,14 @@ public class Login extends javax.swing.JFrame {
             //Focus
             JOptionPane.showMessageDialog(null, "Debe rellenar todos los espacios");
         }
+=======
+        this.conexion=new Conexion();
+        this.conexion.Conexion();
+        this.st=Conexion.getSt();
+        principal = new VentanaPrincipal(this.icon,this.conexion,this.rs,this.st);
+        principal.setVisible(true);
+        this.dispose();
+>>>>>>> 94a4b795cde537a722b75a5cb5763444d99ef45a
     }//GEN-LAST:event_btnIngresarActionPerformed
 
     private void btnIngresar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresar1ActionPerformed

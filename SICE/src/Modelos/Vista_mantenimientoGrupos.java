@@ -1,3 +1,11 @@
+<<<<<<< HEAD
+=======
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+>>>>>>> 94a4b795cde537a722b75a5cb5763444d99ef45a
 package Modelos;
 
 /**
