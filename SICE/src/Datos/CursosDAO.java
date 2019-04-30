@@ -334,7 +334,7 @@ public class CursosDAO {
     }
     
     public DefaultTableModel mostrarBuscarCursos(String buscar){
-        DefaultTableModel modelo;
+        DefaultTableModel modelo; 
         String[] titulos = {"Código","Nombre","Idioma", "Requisitos", "Estado"};
         String[] registro = new String[5];
         modelo = new DefaultTableModel(null, titulos);

@@ -1,6 +1,7 @@
 package Vista;
 
 import Datos.Conexion;
+import static Vista.AdministracionUsuarios.lblUsuario;
 import java.awt.Image;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -288,6 +289,7 @@ public class MantenimientoSistema extends javax.swing.JFrame {
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         this.ventanaPrincipal=new VentanaPrincipal(this.icon,this.conexion,this.rs,this.st);
+        ventanaPrincipal.lblUsuario.setText(lblUsuario.getText());
         ventanaPrincipal.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
