@@ -308,17 +308,15 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_txtContrasenaActionPerformed
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
-<<<<<<< HEAD
         this.conexion = new Conexion();
         this.conexion.Conexion();
         this.st = Conexion.getSt();
         //LOGIN
         if (!txtIdentificacion.getText().equals("") && !txtContrasena.getText().equals("")) {
-
             personasDAO = new PersonasDAO(this.conexion, this.rs, this.st);
             persona = new Personas(txtIdentificacion.getText(), txtContrasena.getText()/*,date.formate(date)*/);
             
-            if (personasDAO.login(persona) == true) {
+            if (personasDAO.login(persona)) {
                 principal = new VentanaPrincipal(this.icon, this.conexion, this.rs, this.st, persona);//Pasamos a una persona por parametros
                 principal.setVisible(true);
                 this.dispose();
@@ -329,14 +327,6 @@ public class Login extends javax.swing.JFrame {
             //Focus
             JOptionPane.showMessageDialog(null, "Debe rellenar todos los espacios");
         }
-=======
-        this.conexion=new Conexion();
-        this.conexion.Conexion();
-        this.st=Conexion.getSt();
-        principal = new VentanaPrincipal(this.icon,this.conexion,this.rs,this.st);
-        principal.setVisible(true);
-        this.dispose();
->>>>>>> 94a4b795cde537a722b75a5cb5763444d99ef45a
     }//GEN-LAST:event_btnIngresarActionPerformed
 
     private void btnIngresar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresar1ActionPerformed
@@ -345,7 +335,6 @@ public class Login extends javax.swing.JFrame {
 
    
     public static void main(String args[]) {
-       
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 

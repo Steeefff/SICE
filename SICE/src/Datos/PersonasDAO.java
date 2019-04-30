@@ -213,8 +213,7 @@ public class PersonasDAO {
              JOptionPane.showMessageDialog(null, "Ha habido un error. Intente de nuevo.");
              e.printStackTrace();
          }   
-     }else{
-        if(persona.getIdTipoPersona()==1){
+     }else if(persona.getIdTipoPersona()==1){
             try{
                 ps = accesoDB.prepareStatement(
                     "INSERT INTO `sice`.`personas` (`identificacion`, `nombre`, `apellido1`, `apellido2`, "
@@ -241,8 +240,24 @@ public class PersonasDAO {
                 JOptionPane.showMessageDialog(null, "Ha habido un error. Intente de nuevo.");
                 e.printStackTrace();
             }
+        }else if (persona.getIdTipoPersona() > 2) {
+            try {
+                ps = accesoDB.prepareStatement(
+                        "INSERT INTO `sice`.`personas` (`identificacion`,`contraseña`, `idTipoPersona`) VALUES (?,?,?);");
+                ps.setString(1, persona.getIdentificacion());
+                ps.setString(2, persona.getContraseña());
+                ps.setInt(3, persona.getIdTipoPersona());
+                int numFAfectadas = ps.executeUpdate(); //Toma el numero de filas afectadas
+                if (numFAfectadas > 0) {
+                    respuestaRegistro = "¡El registro del usuario ha sido guardado con éxito! ";
+                } else {
+                    respuestaRegistro = "Hubo un error al guardar del registro usuario. Intene de nuevo.";
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Ha habido un error. Intente de nuevo.");
+                e.printStackTrace();
+            }
         }
-    }
       return respuestaRegistro;
    }
 
@@ -454,8 +469,9 @@ public class PersonasDAO {
         }
         return null;
     }
-    
+     
     public boolean login(Personas persona) {
+        boolean login = false;
         try {
             ps = accesoDB.prepareStatement("SELECT u.identificacion, u.contraseña, u.nombre, u.idTipoPersona , t.rol FROM "
                     + "personas AS u INNER JOIN tipopersonas AS t ON u.idTipoPersona=t.idTipoPersonas WHERE identificacion =?");
@@ -469,15 +485,15 @@ public class PersonasDAO {
                     persona.setIdTipoPersona(rs.getInt(4));
                     return true;
                 }
-                return false;
+                login = false;
             }
             else
             {
-                return false;
+                login = false;
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        return false;
+        return login;
     }
 }
