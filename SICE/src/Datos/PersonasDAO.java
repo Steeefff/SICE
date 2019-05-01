@@ -243,13 +243,14 @@ public class PersonasDAO {
         }else if (persona.getIdTipoPersona() > 2) {
             try {
                 ps = accesoDB.prepareStatement(
-                        "INSERT INTO `sice`.`personas` (`identificacion`,`contraseña`, `idTipoPersona`) VALUES (?,?,?);");
+                        "INSERT INTO `sice`.`personas` (`identificacion`,`nombre`,`contraseña`,`idTipoPersona`) VALUES (?,?,?,?);");
                 ps.setString(1, persona.getIdentificacion());
-                ps.setString(2, persona.getContraseña());
-                ps.setInt(3, persona.getIdTipoPersona());
+                ps.setString(2, persona.getNombre());
+                ps.setString(3, persona.getContraseña());
+                ps.setInt(4, persona.getIdTipoPersona());
                 int numFAfectadas = ps.executeUpdate(); //Toma el numero de filas afectadas
                 if (numFAfectadas > 0) {
-                    respuestaRegistro = "¡El registro del usuario ha sido guardado con éxito! ";
+                    respuestaRegistro = "¡El registro del usuario "+ persona.getNombre() +" ha sido guardado con éxito! ";
                 } else {
                     respuestaRegistro = "Hubo un error al guardar del registro usuario. Intene de nuevo.";
                 }
@@ -474,7 +475,7 @@ public class PersonasDAO {
         boolean login = false;
         try {
             ps = accesoDB.prepareStatement("SELECT u.identificacion, u.contraseña, u.nombre, u.idTipoPersona , t.rol FROM "
-                    + "personas AS u INNER JOIN tipopersonas AS t ON u.idTipoPersona=t.idTipoPersonas WHERE identificacion =?");
+                    + "personas AS u INNER JOIN tipopersonas AS t ON u.idTipoPersona=t.idTipoPersonas WHERE identificacion = ?");
             ps.setString(1, persona.getIdentificacion());
             rs = ps.executeQuery();
 

@@ -159,7 +159,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         lblUsuario = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        lblNombre = new javax.swing.JLabel();
         jLbFecha = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
@@ -419,10 +419,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         lblUsuario.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblUsuario.setText("Usuario:");
 
-        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel7.setText("Nombre");
+        lblNombre.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblNombre.setForeground(new java.awt.Color(255, 255, 255));
+        lblNombre.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblNombre.setText("Nombre");
 
         jLbFecha.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLbFecha.setForeground(new java.awt.Color(255, 255, 255));
@@ -440,7 +440,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(lblUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLbFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(89, Short.MAX_VALUE))
@@ -452,7 +452,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(lblUsuario)
-                    .addComponent(jLabel7)
+                    .addComponent(lblNombre)
                     .addComponent(jLbFecha))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -571,7 +571,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void btnMatricularEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMatricularEstudianteActionPerformed
         try {
             matriculaEstudiante = new MatriculaEstudiante(this.icon,this.conexion,this.rs,this.st);
-            matriculaEstudiante.lblUsuario.setText(lblUsuario.getText().toString());
+            matriculaEstudiante.lblUsuario.setText(lblUsuario.getText());
+            matriculaEstudiante.lblNombre.setText(lblNombre.getText());
         } catch (SQLException ex) {
             Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -581,14 +582,16 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void btnAdministracionUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdministracionUsuariosActionPerformed
         administracionUsuarios = new AdministracionUsuarios(this.icon,this.conexion,this.rs,this.st);
-        administracionUsuarios.lblUsuario.setText(lblUsuario.getText().toString());
+        administracionUsuarios.lblUsuario.setText(lblUsuario.getText());
+        administracionUsuarios.lblNombre.setText(lblNombre.getText());
         administracionUsuarios.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnAdministracionUsuariosActionPerformed
 
     private void btnMantenimientoEstudiantesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMantenimientoEstudiantesActionPerformed
         mantenimientoEstudiantes = new MantenimientoEstudiante(this.icon,this.conexion,this.rs,this.st);
-        mantenimientoEstudiantes.lblUsuario.setText(lblUsuario.getText().toString());
+        mantenimientoEstudiantes.lblUsuario.setText(lblUsuario.getText());
+        mantenimientoEstudiantes.lblNombre.setText(lblNombre.getText());
         mantenimientoEstudiantes.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnMantenimientoEstudiantesActionPerformed
@@ -603,6 +606,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         try {
             agregarGrupo = new AgregarGrupo(this.icon,this.conexion,this.rs,this.st);
             agregarGrupo.lblUsuario.setText(lblUsuario.getText());
+            agregarGrupo.lblNombre.setText(lblNombre.getText());
         } catch (SQLException ex) {
             Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -613,6 +617,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void btnAgregarCursosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarCursosActionPerformed
         agregarCurso = new AgregarCurso(this.icon,this.conexion,this.rs,this.st);
         agregarCurso.lblUsuario.setText(lblUsuario.getText());
+        agregarCurso.lblNombre.setText(lblNombre.getText());
         agregarCurso.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnAgregarCursosActionPerformed
@@ -621,6 +626,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         try {
             pago = new Pagos(this.icon,this.conexion,this.rs,this.st);
             pago.lblUsuario.setText(lblUsuario.getText().toString());
+            pago.lblNombre.setText(lblNombre.getText());
         } catch (SQLException ex) {
             Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -638,6 +644,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void btnMantenimientoGruposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMantenimientoGruposActionPerformed
         mantenimientoGrupos = new MantenimientoGrupos(this.icon,this.conexion,this.rs,this.st);
         mantenimientoGrupos.lblUsuario.setText(lblUsuario.getText());
+        mantenimientoGrupos.lblNombre.setText(lblNombre.getText());
         mantenimientoGrupos.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnMantenimientoGruposActionPerformed
@@ -645,6 +652,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void btnMantenimientoCursosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMantenimientoCursosActionPerformed
         mantenimientoCursos = new MantenimientoCursos(this.icon,this.conexion,this.rs,this.st);
         mantenimientoCursos.lblUsuario.setText(lblUsuario.getText());
+        mantenimientoCursos.lblNombre.setText(lblNombre.getText());
         mantenimientoCursos.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnMantenimientoCursosActionPerformed
@@ -659,6 +667,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void btnMantenimientoProfesoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMantenimientoProfesoresActionPerformed
         mantenimientoProfesores = new MantenimientoProfesor(this.icon,this.conexion,this.rs,this.st);
         mantenimientoProfesores.lblUsuario.setText(lblUsuario.getText().toString());
+        mantenimientoProfesores.lblNombre.setText(lblNombre.getText());
         mantenimientoProfesores.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnMantenimientoProfesoresActionPerformed
@@ -687,7 +696,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel jLbFecha;
@@ -697,6 +705,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    public static javax.swing.JLabel lblNombre;
     public static javax.swing.JLabel lblUsuario;
     // End of variables declaration//GEN-END:variables
 }

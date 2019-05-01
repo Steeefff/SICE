@@ -4,6 +4,7 @@ import Datos.Conexion;
 import Datos.CursosDAO;
 import Modelos.Cursos;
 import Modelos.Requisitos;
+import static Vista.AdministracionUsuarios.lblNombre;
 import java.awt.FlowLayout;
 import static java.awt.Frame.MAXIMIZED_BOTH;
 import java.awt.GridLayout;
@@ -120,7 +121,7 @@ public class ModificarCurso extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         lblUsuario = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        lblNombre = new javax.swing.JLabel();
         jLbFecha = new javax.swing.JLabel();
         panelCursos = new javax.swing.JPanel();
         lblRequisitos = new javax.swing.JLabel();
@@ -251,10 +252,10 @@ public class ModificarCurso extends javax.swing.JFrame {
         lblUsuario.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblUsuario.setText("Usuario:");
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel8.setText("Nombre");
+        lblNombre.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lblNombre.setForeground(new java.awt.Color(255, 255, 255));
+        lblNombre.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblNombre.setText("Nombre");
 
         jLbFecha.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLbFecha.setForeground(new java.awt.Color(255, 255, 255));
@@ -272,7 +273,7 @@ public class ModificarCurso extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLbFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(21, 21, 21))
@@ -284,7 +285,7 @@ public class ModificarCurso extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(lblUsuario)
-                    .addComponent(jLabel8)
+                    .addComponent(lblNombre)
                     .addComponent(jLbFecha))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -316,6 +317,11 @@ public class ModificarCurso extends javax.swing.JFrame {
             }
         });
 
+        tablaCursos = new javax.swing.JTable(){
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         tablaCursos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -498,6 +504,7 @@ public class ModificarCurso extends javax.swing.JFrame {
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         mantenimientoCursos = new MantenimientoCursos(this.icon,this.conexion,this.rs,this.st);
         lblUsuario.setText(lblUsuario.getText());
+        lblNombre.setText(lblNombre.getText());
         mantenimientoCursos.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
@@ -738,7 +745,6 @@ public class ModificarCurso extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel jLbFecha;
     private javax.swing.JPanel jPanel1;
@@ -748,6 +754,7 @@ public class ModificarCurso extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
+    public static javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblRequisitos;
     private javax.swing.JLabel lblRequisitos1;
     private javax.swing.JLabel lblRequisitos2;

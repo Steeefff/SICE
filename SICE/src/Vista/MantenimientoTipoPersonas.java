@@ -2,6 +2,7 @@ package Vista;
 
 import Datos.Conexion;
 import Datos.TipoPersonasDAO;
+import static Vista.AdministracionUsuarios.lblNombre;
 import static Vista.AdministracionUsuarios.lblUsuario;
 import java.awt.Image;
 import java.sql.ResultSet;
@@ -90,7 +91,7 @@ public class MantenimientoTipoPersonas extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         lblUsuario = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        lblNombre = new javax.swing.JLabel();
         jLbFecha = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -332,10 +333,10 @@ public class MantenimientoTipoPersonas extends javax.swing.JFrame {
         lblUsuario.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblUsuario.setText("Usuario:");
 
-        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setText("Nombre");
+        lblNombre.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lblNombre.setForeground(new java.awt.Color(255, 255, 255));
+        lblNombre.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblNombre.setText("Nombre");
 
         jLbFecha.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLbFecha.setForeground(new java.awt.Color(255, 255, 255));
@@ -353,7 +354,7 @@ public class MantenimientoTipoPersonas extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLbFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(21, 21, 21))
@@ -367,7 +368,7 @@ public class MantenimientoTipoPersonas extends javax.swing.JFrame {
                         .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblUsuario))
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel7)
+                        .addComponent(lblNombre)
                         .addComponent(jLbFecha)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -425,6 +426,7 @@ public class MantenimientoTipoPersonas extends javax.swing.JFrame {
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         mantenimientoSistema = new MantenimientoSistema(this.icon,this.conexion,this.rs,this.st);
         lblUsuario.setText(lblUsuario.getText());
+        lblNombre.setText(lblNombre.getText());
         mantenimientoSistema.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
@@ -488,7 +490,6 @@ public class MantenimientoTipoPersonas extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLbFecha;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -500,6 +501,7 @@ public class MantenimientoTipoPersonas extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbSeleccionado;
+    public static javax.swing.JLabel lblNombre;
     public static javax.swing.JLabel lblUsuario;
     private javax.swing.JTable tablaTipoPersonas;
     private javax.swing.JTextField txtBuscar;

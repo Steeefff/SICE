@@ -1,6 +1,7 @@
 package Vista;
 
 import Datos.Conexion;
+import static Vista.AdministracionUsuarios.lblNombre;
 import static Vista.AdministracionUsuarios.lblUsuario;
 import java.awt.Image;
 import java.sql.ResultSet;
@@ -289,13 +290,16 @@ public class MantenimientoSistema extends javax.swing.JFrame {
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         this.ventanaPrincipal=new VentanaPrincipal(this.icon,this.conexion,this.rs,this.st);
-        ventanaPrincipal.lblUsuario.setText(lblUsuario.getText());
+        this.ventanaPrincipal.lblUsuario.setText(ventanaPrincipal.lblUsuario.getText());
+        ventanaPrincipal.lblNombre.setText(lblNombre.getText());
         ventanaPrincipal.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void btnTipoPersonasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTipoPersonasActionPerformed
         mantenimientoTipoPersonas = new MantenimientoTipoPersonas(this.icon,this.conexion,this.rs,this.st);
+        lblUsuario.setText(lblUsuario.getText());
+        lblNombre.setText(lblNombre.getText());
         mantenimientoTipoPersonas.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnTipoPersonasActionPerformed

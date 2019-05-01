@@ -9,6 +9,7 @@ import Modelos.Grupos;
 import Modelos.Matriculas;
 import Modelos.Personas;
 import Modelos.Vista_mantenimientoGrupos;
+import static Vista.AdministracionUsuarios.lblNombre;
 import static Vista.AdministracionUsuarios.lblUsuario;
 import static java.awt.Frame.MAXIMIZED_BOTH;
 import java.awt.Image;
@@ -211,7 +212,7 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         lblUsuario = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
+        lblNombre = new javax.swing.JLabel();
         jLbFecha = new javax.swing.JLabel();
         comboEstudiantes = new javax.swing.JComboBox<>();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -374,10 +375,10 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
         lblUsuario.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblUsuario.setText("Usuario:");
 
-        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel12.setText("Nombre");
+        lblNombre.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lblNombre.setForeground(new java.awt.Color(255, 255, 255));
+        lblNombre.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblNombre.setText("Nombre");
 
         jLbFecha.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLbFecha.setForeground(new java.awt.Color(255, 255, 255));
@@ -395,7 +396,7 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLbFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(21, 21, 21))
@@ -409,7 +410,7 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
                         .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblUsuario))
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel12)
+                        .addComponent(lblNombre)
                         .addComponent(jLbFecha)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -596,6 +597,7 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         ventanaPrincipal = new VentanaPrincipal(this.icon,this.conexion,this.rs,this.st);
         ventanaPrincipal.lblUsuario.setText(lblUsuario.getText());
+        ventanaPrincipal.lblNombre.setText(lblNombre.getText());
         ventanaPrincipal.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
@@ -663,7 +665,6 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
     private com.toedter.calendar.JDateChooser comboProxFechaPago;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
@@ -682,6 +683,7 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane2;
+    public static javax.swing.JLabel lblNombre;
     public static javax.swing.JLabel lblUsuario;
     private javax.swing.JTable tablaMatriculas;
     private javax.swing.JTextField txtCurso;

@@ -320,6 +320,7 @@ public class Login extends javax.swing.JFrame {
             if (personasDAO.login(persona)) {
                 principal = new VentanaPrincipal(this.icon, this.conexion, this.rs, this.st, persona);//Pasamos a una persona por parametros
                 principal.lblUsuario.setText("Usuario: "+persona.getIdentificacion().toString()+"");
+                principal.lblNombre.setText("Nombre: "+persona.getNombre());
                 principal.setVisible(true);
                 this.dispose();
             } else {

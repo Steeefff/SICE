@@ -337,6 +337,11 @@ public class ModificarGrupo extends javax.swing.JFrame {
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
+        tablaGrupos = new javax.swing.JTable(){
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         tablaGrupos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
