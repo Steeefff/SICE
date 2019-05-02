@@ -335,6 +335,11 @@ public class AgregarGrupo extends javax.swing.JFrame {
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
+        tablaGrupos = new javax.swing.JTable(){
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         tablaGrupos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -349,6 +354,12 @@ public class AgregarGrupo extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tablaGrupos.setCellSelectionEnabled(true);
+        tablaGrupos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaGruposMouseClicked(evt);
             }
         });
         jScrollPane2.setViewportView(tablaGrupos);
@@ -558,7 +569,6 @@ public class AgregarGrupo extends javax.swing.JFrame {
         grupos.setIdProfesor(this.profesores.get(this.comboProfesor.getSelectedIndex()-1).getIdentificacion());
         grupos.setIdcurso(this.cursos.get(this.comboCurso.getSelectedIndex()-1).getIdcurso());
         grupos.setDia(this.comboDia.getItemAt(this.comboDia.getSelectedIndex()));
-        grupos.setHoraInicio(this.comboHoras.getItemAt(this.comboHoras.getSelectedIndex())+":"+this.comboMinutos.getItemAt(this.comboMinutos.getSelectedIndex()));
         //Envía el grupos al método insertaGrupo del gruposDAO que inserta en la base de datos
         gruposDAO = new GruposDAO(this.conexion,this.rs,this.st);
         String respuestaRegistro = gruposDAO.insertarGrupo(grupos);
@@ -631,6 +641,10 @@ public class AgregarGrupo extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_txtCodigoKeyReleased
+
+    private void tablaGruposMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaGruposMouseClicked
+        int fila = tablaGrupos.rowAtPoint(evt.getPoint());
+    }//GEN-LAST:event_tablaGruposMouseClicked
     
     private void buscar(){
         //Se crea un objeto de tipo Cursos

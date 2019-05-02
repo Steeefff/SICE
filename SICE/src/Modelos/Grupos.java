@@ -95,5 +95,4 @@ public class Grupos {
     public void setDia(String dia) {
         this.dia = dia;
     }
-
 }

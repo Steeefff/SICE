@@ -659,7 +659,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void btnMantenimientoSistemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMantenimientoSistemaActionPerformed
         mantenimientoSistema = new MantenimientoSistema(this.icon,this.conexion,this.rs,this.st);
-        //mantenimientoSistema.lblUsuario.setText(lblUsuario.getText().toString());
+        mantenimientoSistema.lblUsuario.setText(lblUsuario.getText());
+        mantenimientoSistema.lblNombre.setText(lblNombre.getText());
         mantenimientoSistema.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnMantenimientoSistemaActionPerformed

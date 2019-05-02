@@ -3,6 +3,8 @@ package Vista;
 import Datos.Conexion;
 import Datos.GruposDAO;
 import static Vista.AdministracionUsuarios.lblNombre;
+import static Vista.VentanaPrincipal.lblNombre;
+import static Vista.VentanaPrincipal.lblUsuario;
 import java.awt.Image;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -488,6 +490,8 @@ public class MantenimientoGrupos extends javax.swing.JFrame {
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         try {
             this.modificarGrupo=new ModificarGrupo(this.icon,this.conexion,this.rs,this.st,this.lbSeleccionado.getText());
+            modificarGrupo.lblUsuario.setText(lblUsuario.getText());
+            modificarGrupo.lblNombre.setText(lblNombre.getText());
         } catch (SQLException ex) {
             Logger.getLogger(MantenimientoGrupos.class.getName()).log(Level.SEVERE, null, ex);
         }

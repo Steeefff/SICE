@@ -106,7 +106,7 @@ public class ModificarGrupo extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         lblUsuario = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
+        lblNombre = new javax.swing.JLabel();
         jLbFecha = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaGrupos = new javax.swing.JTable();
@@ -298,10 +298,10 @@ public class ModificarGrupo extends javax.swing.JFrame {
         lblUsuario.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblUsuario.setText("Usuario:");
 
-        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel13.setText("Nombre");
+        lblNombre.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lblNombre.setForeground(new java.awt.Color(255, 255, 255));
+        lblNombre.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblNombre.setText("Nombre");
 
         jLbFecha.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLbFecha.setForeground(new java.awt.Color(255, 255, 255));
@@ -319,7 +319,7 @@ public class ModificarGrupo extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLbFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(21, 21, 21))
@@ -331,7 +331,7 @@ public class ModificarGrupo extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(lblUsuario)
-                    .addComponent(jLabel13)
+                    .addComponent(lblNombre)
                     .addComponent(jLbFecha))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -358,7 +358,14 @@ public class ModificarGrupo extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tablaGrupos.setRowSelectionAllowed(true);
+        tablaGrupos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaGruposMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tablaGrupos);
+        tablaGrupos.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
         txtNombre.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         txtNombre.setEnabled(false);
@@ -629,6 +636,10 @@ public class ModificarGrupo extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_txtCodigoKeyReleased
+
+    private void tablaGruposMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaGruposMouseClicked
+        
+    }//GEN-LAST:event_tablaGruposMouseClicked
     
     public void buscar(String idGrupos){
         //Se crea un objeto de tipo Grupos
@@ -735,7 +746,6 @@ public class ModificarGrupo extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -753,6 +763,7 @@ public class ModificarGrupo extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane2;
+    public static javax.swing.JLabel lblNombre;
     public static javax.swing.JLabel lblUsuario;
     private javax.swing.JTable tablaGrupos;
     private javax.swing.JTextField txtBuscar;

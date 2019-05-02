@@ -4,6 +4,8 @@ import Datos.Conexion;
 import Datos.CursosDAO;
 import static Vista.AdministracionUsuarios.lblNombre;
 import static Vista.AdministracionUsuarios.lblUsuario;
+import static Vista.VentanaPrincipal.lblNombre;
+import static Vista.VentanaPrincipal.lblUsuario;
 import java.awt.Image;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -483,6 +485,8 @@ public class MantenimientoCursos extends javax.swing.JFrame {
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         this.modificarCurso=new ModificarCurso(this.icon,this.conexion,this.rs,this.st);
+        modificarCurso.lblUsuario.setText(lblUsuario.getText());
+        modificarCurso.lblNombre.setText(lblNombre.getText());
         modificarCurso.setVisible(true);
         if(this.lbSeleccionado.getText().equals(""))
         modificarCurso.Limpiar();

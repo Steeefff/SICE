@@ -326,6 +326,11 @@ public class AgregarCurso extends javax.swing.JFrame {
             }
         });
 
+        tablaCursos = new javax.swing.JTable(){
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         tablaCursos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 

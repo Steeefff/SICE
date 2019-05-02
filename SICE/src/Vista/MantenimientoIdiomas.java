@@ -541,7 +541,7 @@ public class MantenimientoIdiomas extends javax.swing.JFrame {
     private javax.swing.JLabel lbSeleccionado;
     private javax.swing.JLabel lblIdioma;
     public static javax.swing.JLabel lblNombre;
-    private javax.swing.JLabel lblUsuario;
+    public static javax.swing.JLabel lblUsuario;
     private javax.swing.JTable tablaIdiomas;
     private javax.swing.JTextField txtBuscar;
     // End of variables declaration//GEN-END:variables
