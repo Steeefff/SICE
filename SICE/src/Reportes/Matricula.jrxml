@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Matricula" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5b0911f2-bbc8-4073-bedc-9e920fdb52ac">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="116"/>
+	<queryString>
+		<![CDATA[SELECT
+     matriculas.`idMatriculas` AS matriculas_idMatriculas,
+     matriculas.`idEstudiante` AS matriculas_idEstudiante,
+     matriculas.`fechaPago` AS matriculas_fechaPago,
+     matriculas.`aprobado` AS matriculas_aprobado,
+     personas.`identificacion` AS personas_identificacion,
+     personas.`nombre` AS personas_nombre,
+     personas.`apellido1` AS personas_apellido1,
+     personas.`apellido2` AS personas_apellido2,
+     personas.`telefono` AS personas_telefono
+FROM
+     `personas` personas INNER JOIN `matriculas` matriculas ON personas.`identificacion` = matriculas.`idEstudiante`]]>
+	</queryString>
+	<field name="matriculas_idMatriculas" class="java.lang.Integer"/>
+	<field name="matriculas_idEstudiante" class="java.lang.String"/>
+	<field name="matriculas_fechaPago" class="java.lang.String"/>
+	<field name="matriculas_aprobado" class="java.lang.Integer"/>
+	<field name="personas_identificacion" class="java.lang.String"/>
+	<field name="personas_nombre" class="java.lang.String"/>
+	<field name="personas_apellido1" class="java.lang.String"/>
+	<field name="personas_apellido2" class="java.lang.String"/>
+	<field name="personas_telefono" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="572" height="79" uuid="f17fee08-81b1-4cbe-901f-d2c42b4a8157"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Arial" size="48"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Reporte de Matricula]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="406" y="59" width="166" height="20" uuid="d4fb3906-2028-4690-9d7b-7061b5350cde"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="0" y="10" width="70" height="59" uuid="c78d6bc1-04b5-42b9-bdc5-86267d5c3b51"/>
+				<imageExpression><![CDATA["C:\\Users\\Lenovo\\Documents\\GitHub\\SICE\\SICE\\src\\Imagenes\\sice.jpeg"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<image>
+				<reportElement x="393" y="144" width="179" height="122" uuid="d24ff6de-8902-48ef-9515-87100101677f"/>
+				<imageExpression><![CDATA["C:\\Users\\Lenovo\\Documents\\GitHub\\SICE\\SICE\\imagenes\\logopdf.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch">
+			<textField>
+				<reportElement x="224" y="0" width="80" height="20" uuid="d6903374-ab6b-4ccb-9571-6f5f298ca94e"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="304" y="0" width="40" height="20" uuid="d49018b8-384d-46dd-939d-9b23833ae722"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>
