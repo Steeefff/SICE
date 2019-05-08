@@ -11,10 +11,23 @@ import Modelos.Personas;
 import Modelos.Vista_mantenimientoGrupos;
 import static Vista.AdministracionUsuarios.lblNombre;
 import static Vista.AdministracionUsuarios.lblUsuario;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.FontFactoryImp;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import java.awt.Font;
 import static java.awt.Frame.MAXIMIZED_BOTH;
+//import com.itextpdf.text.Image;
 import java.awt.Image;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.FileOutputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -224,6 +237,7 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
         comboProxFechaPago = new com.toedter.calendar.JDateChooser();
         btnVolver1 = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
+        btnPDF = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -467,6 +481,17 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel10.setText("Seleccione un estudiante para buscar registro de matrículas");
 
+        btnPDF.setBackground(new java.awt.Color(0, 133, 202));
+        btnPDF.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnPDF.setForeground(new java.awt.Color(255, 255, 255));
+        btnPDF.setText("Generar PDF");
+        btnPDF.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnPDF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPDFActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -509,7 +534,9 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(btnVolver1, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
-                                        .addGap(491, 491, 491))
+                                        .addGap(73, 73, 73)
+                                        .addComponent(btnPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(200, 200, 200))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jLabel10)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -565,7 +592,9 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(30, 30, 30)
-                                .addComponent(btnVolver1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(btnVolver1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel10))
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -609,6 +638,7 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
                 matricular();
                 this.limpiar();
                 mostrarTabla(identificacion);
+
             }
         } catch (SQLException ex) {
             Logger.getLogger(MatriculaEstudiante.class.getName()).log(Level.SEVERE, null, ex);
@@ -622,6 +652,69 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Seleccione un estudiante.");
         }
     }//GEN-LAST:event_btnVolver1ActionPerformed
+
+    public void CrearPDF(String nombrePDF){
+        String destino = "C:\\Users\\Lenovo\\Desktop\\";
+        Date date = new Date();  
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/mm/yyyy");
+        String strDate = formatter.format(date);  
+        try {
+            //Creamos el encabezado del PDF
+            Document doc = new Document();
+            PdfWriter.getInstance(doc, new FileOutputStream(nombrePDF+".pdf"));
+            //Image iconoPDF = new Image(ImageDataFactory.create("C:\\Users\\Lenovo\\Documents\\GitHub\\SICE\\SICE\\imagenes\\logopdf.png"))
+            doc.open();//Abrimos el archivo PDF para poder escribir
+            
+            //Afregamos el estilo del titulo del PDF
+            Paragraph tituloCentral = new Paragraph("Reportaje de matricula",FontFactory.getFont(FontFactory.TIMES_ROMAN, 18, Font.BOLD, BaseColor.BLACK));
+            tituloCentral.setAlignment(Element.ALIGN_CENTER);
+            doc.add(tituloCentral);
+            
+            doc.add(new Paragraph("\n\n"));//Espacio
+            
+            //Agregamos la fecha al PDF
+            Paragraph fecha = new Paragraph("Fecha: " + strDate); 
+            fecha.setAlignment(Element.ALIGN_RIGHT);
+            doc.add(fecha);
+            
+            doc.add(new Paragraph("\n\n"));//Espacio
+
+            //Creamos la Tabla con un titulo
+            PdfPTable tabla = new PdfPTable(2);
+            PdfPCell titulo = new PdfPCell(new Phrase("Estudiante: " + nombrePDF));
+            titulo.setColspan(4);
+            titulo.setHorizontalAlignment(Element.ALIGN_CENTER);
+            tabla.addCell(titulo);
+            
+            doc.add(tabla);//Agreganmos la tabla al documento de PDF
+            doc.add(new Paragraph("\n"));//Espacio
+            
+            //Agregamos informacion importante respectiva de la matricula
+            PdfPTable tabla2 = new PdfPTable(2);
+            tabla2.addCell("Grupo: " + this.comboGrupos.getSelectedItem().toString());
+            tabla2.addCell("Curso: " + this.txtCurso.getText());
+            tabla2.addCell("Horario: " + this.txtHorario.getText());
+            String fechaPago = ((JTextField)this.comboProxFechaPago.getDateEditor().getUiComponent()).getText();
+            tabla2.addCell("Proxima fecha de pago:" + fechaPago);
+            
+            doc.add(tabla2);//Agreganmos la tabla al documento de PDF
+            doc.close();//Cerramos la edicion
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al generar un reporte");
+        }
+    }
+    private void btnPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPDFActionPerformed
+        try {
+            if(this.validar()==true){
+                String nombrePDF = (String) comboEstudiantes.getSelectedItem();
+                CrearPDF(nombrePDF);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MatriculaEstudiante.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_btnPDFActionPerformed
 
     private void matricular(){
         //Crea un objeto de tipo curso
@@ -658,6 +751,7 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEstudianteNuevo;
     private javax.swing.JButton btnMatricular;
+    private javax.swing.JButton btnPDF;
     private javax.swing.JButton btnVolver;
     private javax.swing.JButton btnVolver1;
     private javax.swing.JComboBox<String> comboEstudiantes;

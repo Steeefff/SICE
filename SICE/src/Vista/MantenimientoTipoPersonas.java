@@ -425,8 +425,8 @@ public class MantenimientoTipoPersonas extends javax.swing.JFrame {
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         mantenimientoSistema = new MantenimientoSistema(this.icon,this.conexion,this.rs,this.st);
-        lblUsuario.setText(lblUsuario.getText());
-        lblNombre.setText(lblNombre.getText());
+        mantenimientoSistema.lblUsuario.setText(lblUsuario.getText());
+        mantenimientoSistema.lblNombre.setText(lblNombre.getText());
         mantenimientoSistema.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed

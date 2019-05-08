@@ -450,9 +450,9 @@ public class MantenimientoIdiomas extends javax.swing.JFrame {
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         mantenimientoSistema = new MantenimientoSistema(this.icon,this.conexion,this.rs,this.st);
+        mantenimientoSistema.lblUsuario.setText(lblUsuario.getText());
+        mantenimientoSistema.lblNombre.setText(lblNombre.getText());
         mantenimientoSistema.setVisible(true);
-        lblUsuario.setText(lblUsuario.getText());
-        lblNombre.setText(lblNombre.getText());
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 

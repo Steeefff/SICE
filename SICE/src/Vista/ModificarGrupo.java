@@ -536,6 +536,8 @@ public class ModificarGrupo extends javax.swing.JFrame {
     
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         mantenimientoGrupos = new MantenimientoGrupos(this.icon,this.conexion,this.rs,this.st);
+        mantenimientoGrupos.lblUsuario.setText(lblUsuario.getText());
+        mantenimientoGrupos.lblNombre.setText(lblNombre.getText());
         mantenimientoGrupos.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
