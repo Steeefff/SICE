@@ -503,8 +503,8 @@ public class ModificarCurso extends javax.swing.JFrame {
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         mantenimientoCursos = new MantenimientoCursos(this.icon,this.conexion,this.rs,this.st);
-        lblUsuario.setText(lblUsuario.getText());
-        lblNombre.setText(lblNombre.getText());
+        mantenimientoCursos.lblUsuario.setText(lblUsuario.getText());
+        mantenimientoCursos.lblNombre.setText(lblNombre.getText());
         mantenimientoCursos.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
@@ -648,17 +648,19 @@ public class ModificarCurso extends javax.swing.JFrame {
     public void buscar(String codBuscado) throws SQLException{
         //Se crea un objeto de tipo Cursos
         Cursos cursos= null;
+        this.txtCodigo.setText(codBuscado);
         try {
             //Se llama a buscarCurso en CursosDAO que valida si existe o no el nombre en la tabla de cursos
             //cursosDAO es un objeto de la clase CursosDAO
             cursosDAO = new CursosDAO(this.conexion,this.rs,this.st);
             cursos = cursosDAO.buscarCursoCodigo(codBuscado);
+            
             if(cursos==null){
-                //JOptionPane.showMessageDialog(null,"No existe el curso buscado");
+                JOptionPane.showMessageDialog(null,"No existe el curso buscado");
             }else{//Si el nombre ya existe en la base de datos se carga la infomacion de ese curso con el
                 //formulario inabilitado para editar
                     habilitar();
-                    //this.txtCodigo.setText(codBuscado);
+                    this.txtCodigo.setText(cursos.getIdcurso());
                     this.txtNombre.setText(cursos.getNombre());
                     this.comboIdiomas.setSelectedIndex(cursos.getIdIdioma());
                     setCursosRequisitos(this.txtCodigo.getText());

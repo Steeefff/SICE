@@ -654,9 +654,9 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVolver1ActionPerformed
 
     public void CrearPDF(String nombrePDF){
-        String destino = "C:\\Users\\Lenovo\\Desktop\\";
+        //String destino = "C:\\Users\\Lenovo\\Desktop\\";
         Date date = new Date();  
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/mm/yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("mm/dd/yyyy");
         String strDate = formatter.format(date);  
         try {
             //Creamos el encabezado del PDF
@@ -666,7 +666,7 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
             doc.open();//Abrimos el archivo PDF para poder escribir
             
             //Afregamos el estilo del titulo del PDF
-            Paragraph tituloCentral = new Paragraph("Reportaje de matricula",FontFactory.getFont(FontFactory.TIMES_ROMAN, 18, Font.BOLD, BaseColor.BLACK));
+            Paragraph tituloCentral = new Paragraph("Reporte de matrícula",FontFactory.getFont(FontFactory.TIMES_ROMAN, 18, Font.BOLD, BaseColor.BLACK));
             tituloCentral.setAlignment(Element.ALIGN_CENTER);
             doc.add(tituloCentral);
             
@@ -695,7 +695,7 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
             tabla2.addCell("Curso: " + this.txtCurso.getText());
             tabla2.addCell("Horario: " + this.txtHorario.getText());
             String fechaPago = ((JTextField)this.comboProxFechaPago.getDateEditor().getUiComponent()).getText();
-            tabla2.addCell("Proxima fecha de pago:" + fechaPago);
+            tabla2.addCell("Próxima fecha de pago:" + fechaPago);
             
             doc.add(tabla2);//Agreganmos la tabla al documento de PDF
             doc.close();//Cerramos la edicion
