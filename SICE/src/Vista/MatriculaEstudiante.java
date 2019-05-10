@@ -21,12 +21,14 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
+import java.awt.Desktop;
 import java.awt.Font;
 import static java.awt.Frame.MAXIMIZED_BOTH;
 //import com.itextpdf.text.Image;
 import java.awt.Image;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -699,6 +701,10 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
             
             doc.add(tabla2);//Agreganmos la tabla al documento de PDF
             doc.close();//Cerramos la edicion
+            // Abrir el archivo
+            
+            File file = new File(nombrePDF+".pdf");
+            Desktop.getDesktop().open(file); 
             
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error al generar un reporte");
