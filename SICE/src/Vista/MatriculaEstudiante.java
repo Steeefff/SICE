@@ -703,9 +703,13 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
             doc.close();//Cerramos la edicion
             // Abrir el archivo
             
-            File file = new File(nombrePDF+".pdf");
-            Desktop.getDesktop().open(file); 
+            if (JOptionPane.showConfirmDialog(null, "¿Desea imprimir el reporte e imprimirlo?", null,
+                    JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                File file = new File(nombrePDF+".pdf");
+                Desktop.getDesktop().open(file);
+            } else {
             
+            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error al generar un reporte");
         }
