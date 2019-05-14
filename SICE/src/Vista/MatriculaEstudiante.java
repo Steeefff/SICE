@@ -19,6 +19,7 @@ import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.FontFactoryImp;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import java.awt.Desktop;
@@ -44,6 +45,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import static javax.swing.text.StyleConstants.FontFamily;
 
 /*
   @author Grupo #30 Ingeniería 2018-2019 
@@ -389,7 +391,7 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
         lblUsuario.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lblUsuario.setForeground(new java.awt.Color(255, 255, 255));
         lblUsuario.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblUsuario.setText("Usuario:");
+        lblUsuario.setText("Rol:");
 
         lblNombre.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lblNombre.setForeground(new java.awt.Color(255, 255, 255));
@@ -692,14 +694,27 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
             doc.add(new Paragraph("\n"));//Espacio
             
             //Agregamos informacion importante respectiva de la matricula
-            PdfPTable tabla2 = new PdfPTable(2);
-            tabla2.addCell("Grupo: " + this.comboGrupos.getSelectedItem().toString());
-            tabla2.addCell("Curso: " + this.txtCurso.getText());
-            tabla2.addCell("Horario: " + this.txtHorario.getText());
-            String fechaPago = ((JTextField)this.comboProxFechaPago.getDateEditor().getUiComponent()).getText();
-            tabla2.addCell("Próxima fecha de pago:" + fechaPago);
+            // creo un tabla con 2 columnas
+            PdfPTable table = new PdfPTable(2);
+            table.setWidthPercentage(80);
+            table.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.setWidths(new int[]{40, 50});
             
-            doc.add(tabla2);//Agreganmos la tabla al documento de PDF
+            table.addCell("Grupo: ");
+            table.addCell(this.comboGrupos.getSelectedItem().toString());
+            
+            table.addCell("Curso: ");
+            table.addCell(this.txtCurso.getText());
+            
+            table.addCell("Horario: ");
+            table.addCell(this.txtHorario.getText());
+            
+            String fechaPago = ((JTextField)this.comboProxFechaPago.getDateEditor().getUiComponent()).getText();
+            table.addCell("Próxima fecha de pago: ");
+            table.addCell(fechaPago);
+            
+            
+            doc.add(table);//Agreganmos la tabla al documento de PDF
             doc.close();//Cerramos la edicion
             // Abrir el archivo
             

@@ -386,7 +386,7 @@ public class MantenimientoCursos extends javax.swing.JFrame {
         lblUsuario.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lblUsuario.setForeground(new java.awt.Color(255, 255, 255));
         lblUsuario.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblUsuario.setText("Usuario:");
+        lblUsuario.setText("Rol:");
 
         lblNombre.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lblNombre.setForeground(new java.awt.Color(255, 255, 255));

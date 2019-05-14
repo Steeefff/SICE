@@ -63,9 +63,9 @@ public class Login extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         txtIdentificacion = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        txtContrasena = new javax.swing.JTextField();
         btnIngresar = new javax.swing.JButton();
         btnIngresar1 = new javax.swing.JButton();
+        txtContrasena = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Loggin");
@@ -177,14 +177,6 @@ public class Login extends javax.swing.JFrame {
         jLabel2.setText("Contraseña");
         jLabel2.setAlignmentY(0.0F);
 
-        txtContrasena.setAlignmentX(0.0F);
-        txtContrasena.setAlignmentY(0.0F);
-        txtContrasena.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtContrasenaActionPerformed(evt);
-            }
-        });
-
         btnIngresar.setBackground(new java.awt.Color(51, 102, 255));
         btnIngresar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnIngresar.setForeground(new java.awt.Color(255, 255, 255));
@@ -224,15 +216,6 @@ public class Login extends javax.swing.JFrame {
             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(0, 48, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(txtContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(48, 48, 48))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(txtIdentificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(48, 48, 48))))
-            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(104, 104, 104)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnIngresar1, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
@@ -251,6 +234,12 @@ public class Login extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(132, 132, 132))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 48, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtIdentificacion, javax.swing.GroupLayout.DEFAULT_SIZE, 286, Short.MAX_VALUE)
+                    .addComponent(txtContrasena))
+                .addGap(48, 48, 48))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -268,11 +257,11 @@ public class Login extends javax.swing.JFrame {
                 .addComponent(txtIdentificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(26, 26, 26)
                 .addComponent(btnIngresar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21)
+                .addGap(18, 18, 18)
                 .addComponent(btnIngresar1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 45, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -304,10 +293,6 @@ public class Login extends javax.swing.JFrame {
         txtIdentificacion.transferFocus();
     }//GEN-LAST:event_txtIdentificacionActionPerformed
 
-    private void txtContrasenaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtContrasenaActionPerformed
-        txtContrasena.transferFocus();
-    }//GEN-LAST:event_txtContrasenaActionPerformed
-
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
         this.conexion = new Conexion();
         this.conexion.Conexion();
@@ -315,11 +300,28 @@ public class Login extends javax.swing.JFrame {
         //LOGIN
         if (!txtIdentificacion.getText().equals("") && !txtContrasena.getText().equals("")) {
             personasDAO = new PersonasDAO(this.conexion, this.rs, this.st);
-            persona = new Personas(txtIdentificacion.getText(), txtContrasena.getText()/*,date.formate(date)*/);
+            persona = new Personas(txtIdentificacion.getText(), txtContrasena.getText());
             
             if (personasDAO.login(persona)) {
                 principal = new VentanaPrincipal(this.icon, this.conexion, this.rs, this.st, persona);//Pasamos a una persona por parametros
-                principal.lblUsuario.setText("Usuario: "+persona.getIdentificacion().toString()+"");
+                
+                //Si fuese el caso debería implementar una consulta a la DB porque queda muy estatico
+                if(persona.getIdTipoPersona() == 1){
+                    principal.lblUsuario.setText("Rol: Estudiante");
+                }
+                else if(persona.getIdTipoPersona() == 2){
+                    principal.lblUsuario.setText("Rol: Profesor");
+                }
+                else if(persona.getIdTipoPersona() == 3){
+                    principal.lblUsuario.setText("Rol: Adminidstrativo");
+                }
+                else if(persona.getIdTipoPersona() == 4){
+                    principal.lblUsuario.setText("Rol: Gerente");
+                }
+                else if(persona.getIdTipoPersona() == 5){
+                    principal.lblUsuario.setText("Rol: Desarrolladora");
+                }
+                
                 principal.lblNombre.setText("Nombre: "+persona.getNombre());
                 principal.setVisible(true);
                 this.dispose();
@@ -359,7 +361,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JTextField txtContrasena;
+    private javax.swing.JPasswordField txtContrasena;
     private javax.swing.JTextField txtIdentificacion;
     // End of variables declaration//GEN-END:variables
 }

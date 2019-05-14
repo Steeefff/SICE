@@ -133,7 +133,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     public void fecha(){
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         String fechaComoCadena = sdf.format(new Date());
-        jLbFecha.setText(fechaComoCadena);
+        jLbFecha1.setText(fechaComoCadena);
     }
     
     @SuppressWarnings("unchecked")
@@ -161,6 +161,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         lblUsuario = new javax.swing.JLabel();
         lblNombre = new javax.swing.JLabel();
         jLbFecha = new javax.swing.JLabel();
+        jLbFecha1 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -417,7 +418,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         lblUsuario.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lblUsuario.setForeground(new java.awt.Color(255, 255, 255));
         lblUsuario.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblUsuario.setText("Usuario:");
+        lblUsuario.setText("Rol:");
 
         lblNombre.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lblNombre.setForeground(new java.awt.Color(255, 255, 255));
@@ -429,6 +430,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jLbFecha.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLbFecha.setText("Fecha");
 
+        jLbFecha1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLbFecha1.setForeground(new java.awt.Color(255, 255, 255));
+        jLbFecha1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLbFecha1.setText("Fecha");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -438,10 +444,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(291, 291, 291)
+                .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLbFecha1, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLbFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(89, Short.MAX_VALUE))
         );
@@ -453,7 +461,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                     .addComponent(jLabel5)
                     .addComponent(lblUsuario)
                     .addComponent(lblNombre)
-                    .addComponent(jLbFecha))
+                    .addComponent(jLbFecha)
+                    .addComponent(jLbFecha1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -700,6 +709,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel jLbFecha;
+    private javax.swing.JLabel jLbFecha1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
