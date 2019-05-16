@@ -85,7 +85,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         if(permisos.getMatricular().equals(true)){
             btnMatricularEstudiante.setVisible(true);
         }else{
-            btnAgregarCursos.setVisible(false);
+            btnMatricularEstudiante.setVisible(false);
         }
         
         if(permisos.getAgregarCurso().equals(true)){

@@ -318,13 +318,6 @@ public class Login extends javax.swing.JFrame {
                 tipoPersonasDAO = new TipoPersonasDAO(this.conexion, this.rs, this.st);
                 listaRoles = tipoPersonasDAO.listarTipoPersona();
                 
-                for (int i = 0; i < listaRoles.size(); i++) {
-                    if(persona.getIdTipoPersona() == i+1){
-                        //System.out.println(listaRoles.get(i));
-                        //principal.lblUsuario.setText("Rol: "+ listaRoles.get(i));
-                    }
-                }
-                
                 //Se realiza una consulta a la base de datos para traer los permisos del tipo de persona
                 permisosDAO = new PermisosDAO(this.conexion, this.rs, this.st);
                 try {
@@ -334,7 +327,14 @@ public class Login extends javax.swing.JFrame {
                     Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
                 }               
                 
+                //Creamos la ventana principal del sistema
                 principal = new VentanaPrincipal(this.icon, this.conexion, this.rs, this.st, persona, permisos);//Pasamos a una persona por parametros
+                
+                for (int i = 0; i < listaRoles.size(); i++) {
+                    if(persona.getIdTipoPersona() == i+1){
+                        principal.lblUsuario.setText("Rol: "+ listaRoles.get(i));
+                    }
+                }
                 principal.lblNombre.setText("Nombre: "+persona.getNombre());
                 principal.setVisible(true);
                 this.dispose();
