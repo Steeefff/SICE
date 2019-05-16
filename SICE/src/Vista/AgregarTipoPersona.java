@@ -3,6 +3,8 @@ package Vista;
 import Datos.Conexion;
 import Datos.TipoPersonasDAO;
 import Modelos.TipoPersonas;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
@@ -11,9 +13,11 @@ import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 
 /*
@@ -37,6 +41,7 @@ public class AgregarTipoPersona extends javax.swing.JFrame {
     private static Conexion conexion;
     public static ResultSet rs;
     public static Statement st;
+    Vector<JCheckBox> permisos = new Vector<>();
     Image icon;
     
     public AgregarTipoPersona(Image icono,Conexion conexion,ResultSet rs,Statement st) {
@@ -52,7 +57,23 @@ public class AgregarTipoPersona extends javax.swing.JFrame {
         setIconImage(this.icon);
         setVisible(true);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        cargarPermisos();
      }
+    
+    public void cargarPermisos(){      
+       String requisito[] = {"Matricular","Agregar Curso","Agregar Grupo","Agregar Profesor","Agregar Estudiante",
+           "Mantenimiento Curso","Mantenimiento Grupo","Mantenimiento Profesor","Mantenimiento Estudiante","Mantenimiento Sistema"}; 
+
+        for (int i = 0; i < requisito.length; i++) {
+            permisos.add(new JCheckBox(requisito[i],false));
+        }
+        this.panelIdiomas.setLayout(new FlowLayout());
+        
+        for(int i=0; i<permisos.size(); i++){
+            this.panelIdiomas.add(permisos.get(i));
+            permisos.get(i).setEnabled(true);
+        }         
+    }
     
     public void Limpiar(){
         this.txtRol.setText("");
@@ -76,6 +97,8 @@ public class AgregarTipoPersona extends javax.swing.JFrame {
         txtRol = new javax.swing.JTextField();
         btnVolver = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
+        panelIdiomas = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -219,6 +242,24 @@ public class AgregarTipoPersona extends javax.swing.JFrame {
             }
         });
 
+        panelIdiomas.setPreferredSize(new Dimension(377, 60));
+        panelIdiomas.setMaximumSize(new java.awt.Dimension(377, 60));
+        panelIdiomas.setMinimumSize(new java.awt.Dimension(377, 60));
+
+        javax.swing.GroupLayout panelIdiomasLayout = new javax.swing.GroupLayout(panelIdiomas);
+        panelIdiomas.setLayout(panelIdiomasLayout);
+        panelIdiomasLayout.setHorizontalGroup(
+            panelIdiomasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 377, Short.MAX_VALUE)
+        );
+        panelIdiomasLayout.setVerticalGroup(
+            panelIdiomasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 150, Short.MAX_VALUE)
+        );
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel6.setText("Permisos:");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -228,10 +269,6 @@ public class AgregarTipoPersona extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(txtRol, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(150, 150, 150))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -241,31 +278,47 @@ public class AgregarTipoPersona extends javax.swing.JFrame {
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(21, 21, 21)
                                 .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(16, Short.MAX_VALUE))))
+                        .addContainerGap(16, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(104, 104, 104))
+                            .addComponent(txtRol, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(151, 151, 151))))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(229, 229, 229)
+                .addComponent(jLabel6)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(253, 253, 253))
+                .addComponent(panelIdiomas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(77, 77, 77))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
-                .addGap(33, 33, 33)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtRol, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(panelIdiomas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -276,7 +329,7 @@ public class AgregarTipoPersona extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -286,6 +339,14 @@ public class AgregarTipoPersona extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
+    public void habilitar(){
+        this.txtRol.setEnabled(true);
+        for(int i=0; i<this.permisos.size(); i++){
+            this.permisos.get(i).setEnabled(true);
+        }
+        this.btnGuardar.setEnabled(true);
+    }
+    
     private boolean validaciones(){
         boolean completos=false; 
         if(validarEspacios()==true){
@@ -308,7 +369,10 @@ public class AgregarTipoPersona extends javax.swing.JFrame {
         TipoPersonas tipoPersonas= new TipoPersonas();
         //Se cargan los atributos del tipoPersonas
         tipoPersonas.setRol(txtRol.getText());
-
+        
+        
+        
+        
         //Envía el idioma al método insertaRol del tipoPersonasDAO que inserta en la base de datos
         tipoPersonasDAO = new TipoPersonasDAO(this.conexion,this.rs,this.st);
         String respuestaRegistro = tipoPersonasDAO.insertaTipoPersona(tipoPersonas);
@@ -343,12 +407,14 @@ public class AgregarTipoPersona extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel panelIdiomas;
     private javax.swing.JTextField txtRol;
     // End of variables declaration//GEN-END:variables
 }

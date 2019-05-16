@@ -3,9 +3,13 @@ package Vista;
 import Datos.Conexion;
 import Datos.PersonasDAO;
 import Modelos.Personas;
+import static Vista.ModificarUsuario.rs;
+import static Vista.ModificarUsuario.st;
 import java.awt.Image;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
 /*
@@ -43,9 +47,23 @@ public class UsuarioNuevo extends javax.swing.JFrame {
         this.rs=rs;
         this.st=st;
         setIconImage(this.icon);
+        cargarRoles(this.comboRol);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
+    public void cargarRoles(JComboBox rol){        
+       String sql = "SELECT rol FROM sice.tipopersonas";
+        try{     
+            rs = st.executeQuery(sql);
+            this.comboRol.addItem("Seleccione un rol");
+            while(rs.next()){
+                this.comboRol.addItem(rs.getString("rol"));
+            }
+                    
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -199,7 +217,6 @@ public class UsuarioNuevo extends javax.swing.JFrame {
         });
 
         comboRol.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        comboRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "Administrador", "Super Usuario" }));
 
         btnGuardar.setBackground(new java.awt.Color(0, 133, 202));
         btnGuardar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -356,7 +373,7 @@ public class UsuarioNuevo extends javax.swing.JFrame {
         persona.setIdentificacion(this.txtIdentificacion.getText());
         persona.setNombre(this.txtNombre.getText());
         persona.setContraseña(this.txtContrasena.getText());
-        persona.setIdTipoPersona((comboRol.getSelectedIndex()+2));
+        persona.setIdTipoPersona((comboRol.getSelectedIndex()));
 
         //Envía la persona al método insertaPersona del personaDAO que inserta en la base de datos
         personasDAO = new PersonasDAO(this.conexion,this.rs,this.st);
@@ -374,7 +391,7 @@ public class UsuarioNuevo extends javax.swing.JFrame {
         this.txtIdentificacion.setText("");
         this.txtContrasena.setText("");
         this.comboRol.setSelectedIndex(0);
-    }
+    } 
     
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         this.dispose();

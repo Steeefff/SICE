@@ -1,8 +1,23 @@
 package Vista;
 
+import Datos.Conexion;
+import Datos.PersonasDAO;
+import Modelos.Personas;
+import static Vista.ModificarProfesor.rs;
+import static Vista.ModificarProfesor.st;
+import java.awt.FlowLayout;
 import java.awt.Image;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /*
   @author Grupo #30 Ingeniería 2018-2019 
@@ -21,16 +36,24 @@ import javax.swing.JFrame;
 public class ModificarUsuario extends javax.swing.JFrame {
 
   AdministracionUsuarios administracionUsuarios;
+  PersonasDAO personasDAO;
+  private static Conexion conexion;
+  public static ResultSet rs;
+  public static Statement st;
   Image icon;
   
-    public ModificarUsuario(Image icono) {
+    public ModificarUsuario(Image icono,Conexion conexion,ResultSet rs,Statement st) {
         initComponents();
         setLocationRelativeTo(null);
         this.setSize(580,710); 
         this.setResizable(false);
         setTitle("SICE - Modificar Usuario");
         this.icon = icono;
+        this.conexion=conexion;
+        this.rs=rs;
+        this.st=st;
         setIconImage(this.icon);
+        cargarRoles(this.comboRol);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
@@ -180,12 +203,6 @@ public class ModificarUsuario extends javax.swing.JFrame {
         txtIdentificacion.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
 
         comboRol.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        comboRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "Administrador", "Super Usuario" }));
-        comboRol.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                comboRolActionPerformed(evt);
-            }
-        });
 
         btnBuscar.setBackground(new java.awt.Color(0, 133, 202));
         btnBuscar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -332,22 +349,124 @@ public class ModificarUsuario extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public void cargarRoles(JComboBox rol){        
+       String sql = "SELECT rol FROM sice.tipopersonas";
+        try{     
+            rs = st.executeQuery(sql);
+            this.comboRol.addItem("Seleccione un rol");
+            while(rs.next()){
+                this.comboRol.addItem(rs.getString("rol"));
+            }
+                    
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+    
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        
+        String identificacion = txtIdentificacion.getText();
+        buscar(txtIdentificacion.getText());
     }//GEN-LAST:event_btnBuscarActionPerformed
 
+    public void buscar(String identificacion){
+        //Se crea un objeto de tipo Personas
+        Personas personas = new Personas();
+        try {
+            //Se llama a buscaReg en PersonasDAO que validad si existe o no la identificacion en la base de datos
+            //personasDAO es un objeto de la clase PersonaDAO
+            personasDAO = new PersonasDAO(this.conexion,this.rs,this.st);
+            personas = personasDAO.buscarRegistro(identificacion);
+            
+            if(personas.getIdTipoPersona() == 1)
+            {
+                JOptionPane.showMessageDialog(null, "Error! Esta persona no es un profesor");
+            }
+        }catch (SQLException ex) {
+            ex.printStackTrace();
+        }  
+        //Si la identificacion no existe buscarRegistro devuelve null
+        if(personas==null){
+           //Se limpian los datos de las busquedas anteriores y se habilita el formulario para agregar al Usuario
+           limpiar();
+           //Habilita el formulario
+           habilitar();
+        }
+        else{//Si la identificacion ya existe en la base de datos se carga la infomacion de ese Usuario con el
+            //formulario inabilitado para editar
+            try {
+                //muestra los datos del Usuario encontrado en los espacios del formulario
+                mostrar(personas);
+            }catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+    
+    public void mostrar(Personas persona) throws ParseException{
+        this.txtIdentificacion.setText(" ");        
+        habilitar();    
+        txtIdentificacion.setText(persona.getIdentificacion());
+        txtnombre.setText(persona.getNombre());
+        txtContrasena.setText(persona.getContraseña()); 
+        this.comboRol.setSelectedIndex(persona.getIdTipoPersona());       
+    }
+    
+    public void habilitar(){
+        this.txtIdentificacion.setEnabled(true);
+        this.txtnombre.setEnabled(true);
+        this.txtContrasena.setEnabled(true);
+        this.comboRol.setEnabled(true);
+        this.btnGuardar1.setEnabled(true);
+    }
+    
+    public void limpiar(){
+        this.txtIdentificacion.setText("");
+        this.comboRol.setSelectedIndex(0);
+        this.txtnombre.setText("");
+        this.txtContrasena.setText("");
+    }
+    
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
-    private void comboRolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboRolActionPerformed
-      
-    }//GEN-LAST:event_comboRolActionPerformed
-
     private void btnGuardar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardar1ActionPerformed
-       
+       if(validaciones()==true){
+            insertarUsuario();
+            this.dispose();
+        }
     }//GEN-LAST:event_btnGuardar1ActionPerformed
 
+    private void insertarUsuario(){
+        //Crea un objeto de tipo persona
+        Personas persona= new Personas();
+        //Se cargan los atributos de la persona profesor
+        persona.setIdentificacion(txtIdentificacion.getText());
+        persona.setNombre(this.txtnombre.getText());
+        persona.setContraseña(this.txtContrasena.getText());
+        persona.setIdTipoPersona(this.comboRol.getSelectedIndex());
+
+        //Envía la persona al método insertaPersona del personaDAO que inserta en la base de datos
+        personasDAO = new PersonasDAO(this.conexion,this.rs,this.st);
+                                                                   
+        boolean respuestaRegistro = personasDAO.modificar(persona,this.txtIdentificacion.getText());
+        //Si respuestaRegistro es diferente de null quiere decir que se ingresó el profesor correctamente
+        if(respuestaRegistro==true){
+            limpiar();
+        }else{
+         JOptionPane.showMessageDialog(null, "No se pudo modificar el registro Identificación: "+persona.getIdentificacion()+" Nombre: "+persona.getNombre());
+        }
+    }
+    
+    private boolean validaciones(){
+        boolean completos=false; 
+        if(!this.txtIdentificacion.getText().equals("") & !this.txtnombre.getText().equals("") & 
+           !this.txtContrasena.getText().equals("") & this.comboRol.getSelectedIndex()!=0)
+                completos = true;
+        else
+            JOptionPane.showMessageDialog(null, "Es necesario completar todos los espacios.");
+           return completos;
+    }
   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;

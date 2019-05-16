@@ -145,5 +145,21 @@ public class TipoPersonasDAO {
             }
         return null;
     }
-    
+    ///////////////////////////////////////////////////LISTAR IDIOMAS /////////////////////////////////////////////////////////
+    public ArrayList<TipoPersonas> listarTipoPersona(){          
+        ArrayList listarTipoPersona = new ArrayList();
+        TipoPersonas tipoPersona = null;
+        try{
+            PreparedStatement ps = accesoDB.prepareStatement("SELECT * FROM sice.tipopersonas;");
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){ //Si hay registros por leer entonces..
+
+                listarTipoPersona.add(rs.getString(2));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+
+        }
+         return listarTipoPersona;
+    }
 }

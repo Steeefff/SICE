@@ -1,6 +1,7 @@
 package Vista;
 
 import Datos.Conexion;
+import Modelos.Permisos;
 import Modelos.Personas;
 import java.awt.Image;
 import java.sql.ResultSet;
@@ -44,6 +45,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     Login login;
     Image icon;
     Personas rol;
+    Permisos permisos;
     private static Conexion conexion;
     public static ResultSet rs;
     public static Statement st;
@@ -63,7 +65,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
-    public VentanaPrincipal(Image icono,Conexion conexion,ResultSet rs,Statement st,Personas rol) {
+    public VentanaPrincipal(Image icono,Conexion conexion,ResultSet rs,Statement st,Personas rol,Permisos permisos) {
         initComponents(); 
         this.setTitle("SICE - Principal");
         this.setSize(1290,710); 
@@ -78,55 +80,60 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         
         this.rol = rol;
+        this.permisos = permisos;
         
-        if(rol.getIdTipoPersona() == 1){ //Estudiante
-            btnMatricularEstudiante.setVisible(false);
-            btnAgregarProfesor.setVisible(false);
-            btnAgregarGrupo.setVisible(false);
-            btnAgregarPago.setVisible(false);
-            btnMantenimientoEstudiantes.setVisible(false);
-            btnMantenimientoProfesores.setVisible(false);
-            btnMantenimientoGrupos.setVisible(false);
-            btnMantenimientoCursos.setVisible(false);
-            btnAdministracionUsuarios.setVisible(false);
-            btnMantenimientoSistema.setVisible(false);
-            btnCerrarSesion.setVisible(true);
-        }else if(rol.getIdTipoPersona() == 2){//2 Profesor
-            btnMatricularEstudiante.setVisible(false);
-            btnAgregarProfesor.setVisible(false);
-            btnAgregarGrupo.setVisible(false);
-            btnAgregarPago.setVisible(false);
-            btnMantenimientoEstudiantes.setVisible(false);
-            btnMantenimientoProfesores.setVisible(false);
-            btnMantenimientoGrupos.setVisible(false);
-            btnMantenimientoCursos.setVisible(false);
-            btnAdministracionUsuarios.setVisible(false);
-            btnMantenimientoSistema.setVisible(false);
-            btnCerrarSesion.setVisible(true);
-        }else if(rol.getIdTipoPersona() == 3){//3 Adminidstrativo
+        if(permisos.getMatricular().equals(true)){
             btnMatricularEstudiante.setVisible(true);
-            btnAgregarProfesor.setVisible(true);
+        }else{
+            btnAgregarCursos.setVisible(false);
+        }
+        
+        if(permisos.getAgregarCurso().equals(true)){
+            btnAgregarCursos.setVisible(true);
+        }else{
+            btnAgregarCursos.setVisible(false);
+        }
+        
+        if(permisos.getAgregarGrupo().equals(true)){
             btnAgregarGrupo.setVisible(true);
-            btnAgregarPago.setVisible(true);
-            btnMantenimientoEstudiantes.setVisible(true);
-            btnMantenimientoProfesores.setVisible(true);
-            btnMantenimientoGrupos.setVisible(true);
-            btnMantenimientoCursos.setVisible(true);
-            btnAdministracionUsuarios.setVisible(false);
-            btnMantenimientoSistema.setVisible(false);
-            btnCerrarSesion.setVisible(true);
-        }else if(rol.getIdTipoPersona() == 4){//4 Gerente
-            btnMatricularEstudiante.setVisible(true);
+        }else{
+            btnAgregarGrupo.setVisible(false);
+        }
+        
+        if(permisos.getAgregarProfesor().equals(true)){
             btnAgregarProfesor.setVisible(true);
-            btnAgregarGrupo.setVisible(true);
-            btnAgregarPago.setVisible(true);
-            btnMantenimientoEstudiantes.setVisible(true);
-            btnMantenimientoProfesores.setVisible(true);
-            btnMantenimientoGrupos.setVisible(true);
+        }else{
+            btnAgregarProfesor.setVisible(false);
+        }
+        
+        if(permisos.getMantenimientoCurso().equals(true)){
             btnMantenimientoCursos.setVisible(true);
-            btnAdministracionUsuarios.setVisible(true);
+        }else{
+            btnMantenimientoCursos.setVisible(false);
+        }
+        
+        if(permisos.getMantenimientoGrupo().equals(true)){
+            btnMantenimientoGrupos.setVisible(true);
+        }else{
+            btnMantenimientoGrupos.setVisible(false);
+        }
+        
+        if(permisos.getMantenimientoProfesor().equals(true)){
+            btnMantenimientoProfesores.setVisible(true);
+        }else{
+            btnMantenimientoProfesores.setVisible(false);
+        }
+        
+        if(permisos.getMantenimientoEstudiante().equals(true)){
+            btnMantenimientoEstudiantes.setVisible(true);
+        }else{
+            btnMantenimientoEstudiantes.setVisible(false);
+        }
+        
+        if(permisos.getMantenimientoSistema().equals(true)){
             btnMantenimientoSistema.setVisible(true);
-            btnCerrarSesion.setVisible(true);
+        }else{
+            btnMantenimientoSistema.setVisible(false);
         }
     }
 
@@ -135,7 +142,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         String fechaComoCadena = sdf.format(new Date());
         jLbFecha1.setText(fechaComoCadena);
     }
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

@@ -368,7 +368,7 @@ public class AdministracionUsuarios extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void btnMantenimientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMantenimientoActionPerformed
-        modificarUsuario = new ModificarUsuario(this.icon);
+        modificarUsuario = new ModificarUsuario(this.icon,this.conexion,this.rs,this.st);
         modificarUsuario.setVisible(true);
     }//GEN-LAST:event_btnMantenimientoActionPerformed
 
