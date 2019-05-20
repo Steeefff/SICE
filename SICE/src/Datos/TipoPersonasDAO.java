@@ -46,13 +46,15 @@ public class TipoPersonasDAO {
     }
  
     ///////////////////////////////////////////////////////////INSERTAR TIPO DE PERSONA///////////////////////////////////////////////////////////////////
-   public String insertaTipoPersona (TipoPersonas tipoPersonasAux ) throws SQLException{
+   public String insertaTipoPersona(int idPermiso ,TipoPersonas tipoPersonasAux ) throws SQLException{
        String respuestaRegistro=null;
        if(this.buscarRegistro(tipoPersonasAux.getRol())==null){
                try{
-                   ps = accesoDB.prepareStatement(
-                       "INSERT INTO `sice`.`tipopersonas` (`rol`) VALUES (?);");
+                   ps = accesoDB.prepareStatement("INSERT INTO `tipopersonas`(`rol`, `idPermiso`) VALUES (?,?);");
+                   
                    ps.setString(1, tipoPersonasAux.getRol());
+                   ps.setInt(2, idPermiso);
+                   
                    int numFAfectadas = ps.executeUpdate(); //Toma el numero de filas afectadas
                    if(numFAfectadas>0){                     
                        respuestaRegistro="¡El tipo de persona "+tipoPersonasAux.getRol()+" ha sido guardado con éxito! ";
@@ -110,12 +112,11 @@ public class TipoPersonasDAO {
     //Asigna los datos de un registro de tipo tipoPersona a una instancia de tipo tipoPersona
     public TipoPersonas asignar(){
       TipoPersonas tipoPersona = null;
-      String rol;
       try {
             if(rs.first()){
-                rol= rs.getString("rol");//Rol
                 tipoPersona= new TipoPersonas();
-                tipoPersona.setRol(rol);
+                tipoPersona.setRol(rs.getString("rol"));
+                tipoPersona.setIdPermiso(rs.getInt("idPermiso"));
             }
         }catch (Exception e) {
             e.printStackTrace();

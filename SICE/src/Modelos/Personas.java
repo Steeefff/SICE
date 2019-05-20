@@ -159,5 +159,10 @@ public class Personas {
     public void setHabilitado(int habilitado) {
         this.habilitado = habilitado;
     }
+
+    @Override
+    public String toString() {
+        return "Personas{" + "identificacion=" + identificacion + ", nombre=" + nombre + ", apellido1=" + apellido1 + ", apellido2=" + apellido2 + ", telefono=" + telefono + ", direccion=" + direccion + ", fechaNacimiento=" + fechaNacimiento + ", correo=" + correo + ", contrase\u00f1a=" + contraseña + ", genero=" + genero + ", idTipoPersona=" + idTipoPersona + ", idioma=" + idioma + ", habilitado=" + habilitado + '}';
+    }
     
 }

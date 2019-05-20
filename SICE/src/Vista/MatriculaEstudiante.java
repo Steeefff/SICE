@@ -44,6 +44,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 import static javax.swing.text.StyleConstants.FontFamily;
 
@@ -437,6 +438,12 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
         comboEstudiantes.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
 
         tablaMatriculas.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        tablaMatriculas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tablaMatriculas = new javax.swing.JTable(){
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         tablaMatriculas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -451,6 +458,11 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tablaMatriculas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaMatriculasMouseClicked(evt);
             }
         });
         jScrollPane2.setViewportView(tablaMatriculas);
@@ -640,9 +652,10 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
             if(this.validar()==true){
                 String identificacion = this.txtIdentificacion.getText();
                 matricular();
+                String nombrePDF = (String) comboEstudiantes.getSelectedItem();
+                CrearPDF(nombrePDF);
                 this.limpiar();
                 mostrarTabla(identificacion);
-
             }
         } catch (SQLException ex) {
             Logger.getLogger(MatriculaEstudiante.class.getName()).log(Level.SEVERE, null, ex);
@@ -740,6 +753,13 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_btnPDFActionPerformed
+
+    private void tablaMatriculasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaMatriculasMouseClicked
+        int fila = tablaMatriculas.rowAtPoint(evt.getPoint());
+        //comboGrupos.setSelectedIndex(Integer.parseInt(tablaMatriculas.getValueAt(fila, 1))); 
+        txtCurso.setText(tablaMatriculas.getValueAt(fila, 2).toString());
+        txtHorario.setText(tablaMatriculas.getValueAt(fila, 3).toString());
+    }//GEN-LAST:event_tablaMatriculasMouseClicked
 
     private void matricular(){
         //Crea un objeto de tipo curso

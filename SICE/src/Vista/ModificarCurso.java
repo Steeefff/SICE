@@ -23,6 +23,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -328,6 +329,7 @@ public class ModificarCurso extends javax.swing.JFrame {
                 return false;
             }
         };
+        tablaCursos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tablaCursos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 

@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -81,6 +82,7 @@ public class MantenimientoTipoPersonas extends javax.swing.JFrame {
         btnVolver = new javax.swing.JButton();
         lbSeleccionado = new javax.swing.JLabel();
         btnModificar = new javax.swing.JButton();
+        lblid = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -105,6 +107,7 @@ public class MantenimientoTipoPersonas extends javax.swing.JFrame {
         jPanel5.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204)));
 
         tablaTipoPersonas.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        tablaTipoPersonas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tablaTipoPersonas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -198,7 +201,9 @@ public class MantenimientoTipoPersonas extends javax.swing.JFrame {
                         .addContainerGap()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addGap(169, 169, 169)
+                                .addGap(20, 20, 20)
+                                .addComponent(lblid, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(70, 70, 70)
                                 .addComponent(lbSeleccionado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
@@ -217,15 +222,6 @@ public class MantenimientoTipoPersonas extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnBuscar))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel2)
-                        .addGap(21, 21, 21)
-                        .addComponent(lbSeleccionado))
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addContainerGap()
@@ -233,7 +229,21 @@ public class MantenimientoTipoPersonas extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btnModificar)
                         .addGap(19, 19, 19)
-                        .addComponent(btnVolver)))
+                        .addComponent(btnVolver))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnBuscar))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel2)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lbSeleccionado))
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblid, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE))
         );
@@ -413,7 +423,7 @@ public class MantenimientoTipoPersonas extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1290, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1290, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -467,15 +477,25 @@ public class MantenimientoTipoPersonas extends javax.swing.JFrame {
     private void tablaTipoPersonasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaTipoPersonasMouseClicked
         int fila = tablaTipoPersonas.rowAtPoint(evt.getPoint());
         lbSeleccionado.setText(tablaTipoPersonas.getValueAt(fila, 1).toString());
+        lblid.setText(tablaTipoPersonas.getValueAt(fila, 0).toString());
     }//GEN-LAST:event_tablaTipoPersonasMouseClicked
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         this.modificarTipoPersona=new ModificarTipoPersona(this.icon,this.conexion,this.rs,this.st,this.lbSeleccionado.getText());
         modificarTipoPersona.setVisible(true);
+        
         if(this.lbSeleccionado.getText().equals(""))
+        {
             modificarTipoPersona.Limpiar();
+        } 
         else
-            modificarTipoPersona.buscar(this.lbSeleccionado.getText());
+        {
+            try {
+                modificarTipoPersona.buscar(this.lbSeleccionado.getText());
+            } catch (SQLException ex) {
+                Logger.getLogger(MantenimientoTipoPersonas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }   
     }//GEN-LAST:event_btnModificarActionPerformed
 
    
@@ -503,6 +523,7 @@ public class MantenimientoTipoPersonas extends javax.swing.JFrame {
     private javax.swing.JLabel lbSeleccionado;
     public static javax.swing.JLabel lblNombre;
     public static javax.swing.JLabel lblUsuario;
+    private javax.swing.JLabel lblid;
     private javax.swing.JTable tablaTipoPersonas;
     private javax.swing.JTextField txtBuscar;
     // End of variables declaration//GEN-END:variables

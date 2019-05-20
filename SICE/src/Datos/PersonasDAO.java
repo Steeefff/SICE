@@ -113,21 +113,22 @@ public class PersonasDAO {
         }
         else if(persona.getIdTipoPersona() > 2){
             try {
+                System.out.println(persona.toString());
                 if (!identificacionBuscada.equals(persona.getIdentificacion())) {
                     try {
-                        persona = this.buscarRegistro(persona.getIdentificacion());
+                        persona = this.buscarRegistro(persona.getIdentificacion()); 
                     } catch (SQLException ex) {
                         ex.printStackTrace();
                     }
                     if (persona == null) {
-                        st.executeUpdate("UPDATE sice.personas SET identificacion='" + persona.getIdentificacion() + "', nombre='" + persona.getNombre() + "', contraseña='" + persona.getContraseña() + "', idTipoPersona='" + persona.getIdTipoPersona() + "'  WHERE identificacion='" + identificacionBuscada + "'");                        
+                        st.executeUpdate("UPDATE sice.personas SET identificacion='" + persona.getIdentificacion() + "', nombre='" + persona.getNombre() + "', contraseña='" + persona.getContraseña() + "', idTipoPersona='" + persona.getIdTipoPersona() + "'  WHERE identificacion='" + identificacionBuscada + "';");                        
                         JOptionPane.showMessageDialog(null, "Se ha actualizado el registro " + persona.getNombre());
                         modificado = true;
                     } else {
                         JOptionPane.showMessageDialog(null, "Ya existe un registro con esa identificación: " + persona.getNombre());
                     }
                 } else {
-                    st.executeUpdate("UPDATE sice.personas SET identificacion='" + persona.getIdentificacion() + "', nombre='" + persona.getNombre() + "', contraseña='" + persona.getContraseña() + "', idTipoPersona='" + persona.getIdTipoPersona() + "'  WHERE identificacion='" + identificacionBuscada + "'");
+                    st.executeUpdate("UPDATE sice.personas SET identificacion='" + persona.getIdentificacion() + "', nombre='" + persona.getNombre() + "', contraseña='" + persona.getContraseña() + "', idTipoPersona='" + persona.getIdTipoPersona() + "'  WHERE identificacion='" + identificacionBuscada + "';");
                     JOptionPane.showMessageDialog(null, "Se ha actualizado el registro " + persona.getNombre());
                     modificado = true;
                 }

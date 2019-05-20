@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -53,12 +54,13 @@ public class MantenimientoGrupos extends javax.swing.JFrame {
         this.icon = icono;
         this.conexion=conexion;
         this.rs=rs;
-        this.st=st;
+        this.st=st; 
         this.lbCod.setVisible(false);
         this.lbSeleccionado.setVisible(false);
         this.mostrar("");
         setIconImage(this.icon);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        tablaGrupos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
     
     public void fecha(){

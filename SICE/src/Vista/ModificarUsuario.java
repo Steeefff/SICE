@@ -48,6 +48,7 @@ public class ModificarUsuario extends javax.swing.JFrame {
         this.setSize(580,710); 
         this.setResizable(false);
         setTitle("SICE - Modificar Usuario");
+        
         this.icon = icono;
         this.conexion=conexion;
         this.rs=rs;
@@ -82,6 +83,8 @@ public class ModificarUsuario extends javax.swing.JFrame {
         btnGuardar1 = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         txtnombre = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        lblId = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -115,8 +118,8 @@ public class ModificarUsuario extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 561, Short.MAX_VALUE))
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 571, Short.MAX_VALUE)
+                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 561, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -250,6 +253,8 @@ public class ModificarUsuario extends javax.swing.JFrame {
 
         txtnombre.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
 
+        jLabel9.setText("Identificación Buscada:");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -262,10 +267,6 @@ public class ModificarUsuario extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(63, 63, 63))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel8)
-                .addGap(254, 254, 254))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -278,7 +279,11 @@ public class ModificarUsuario extends javax.swing.JFrame {
                                     .addComponent(jLabel2))
                                 .addGroup(jPanel1Layout.createSequentialGroup()
                                     .addGap(23, 23, 23)
-                                    .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(lblId, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(txtContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, 531, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -293,7 +298,11 @@ public class ModificarUsuario extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(271, 271, 271)
                         .addComponent(jLabel7)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel8)
+                .addGap(254, 254, 254))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -305,8 +314,12 @@ public class ModificarUsuario extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtIdentificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblId, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel9)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -354,8 +367,12 @@ public class ModificarUsuario extends javax.swing.JFrame {
         try{     
             rs = st.executeQuery(sql);
             this.comboRol.addItem("Seleccione un rol");
+            int i = 0;
             while(rs.next()){
-                this.comboRol.addItem(rs.getString("rol"));
+                if(i>=2){
+                    this.comboRol.addItem(rs.getString("rol"));
+                }
+                i++;
             }
                     
         }catch(SQLException e){
@@ -365,7 +382,8 @@ public class ModificarUsuario extends javax.swing.JFrame {
     
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         String identificacion = txtIdentificacion.getText();
-        buscar(txtIdentificacion.getText());
+        buscar(identificacion);
+        lblId.setText(txtIdentificacion.getText());
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     public void buscar(String identificacion){
@@ -408,7 +426,7 @@ public class ModificarUsuario extends javax.swing.JFrame {
         txtIdentificacion.setText(persona.getIdentificacion());
         txtnombre.setText(persona.getNombre());
         txtContrasena.setText(persona.getContraseña()); 
-        this.comboRol.setSelectedIndex(persona.getIdTipoPersona());       
+        this.comboRol.setSelectedIndex(persona.getIdTipoPersona()-2); //-2 para omitir el estudiante y profesor       
     }
     
     public void habilitar(){
@@ -441,16 +459,17 @@ public class ModificarUsuario extends javax.swing.JFrame {
         //Crea un objeto de tipo persona
         Personas persona= new Personas();
         //Se cargan los atributos de la persona profesor
-        persona.setIdentificacion(txtIdentificacion.getText());
+        persona.setIdentificacion(this.txtIdentificacion.getText()); 
         persona.setNombre(this.txtnombre.getText());
         persona.setContraseña(this.txtContrasena.getText());
-        persona.setIdTipoPersona(this.comboRol.getSelectedIndex());
-
+        persona.setIdTipoPersona(this.comboRol.getSelectedIndex()+2);//Por estudiante y profesor que son omitidos como usuarios
+  
+        String identificacionBuscada = lblId.getText();
         //Envía la persona al método insertaPersona del personaDAO que inserta en la base de datos
         personasDAO = new PersonasDAO(this.conexion,this.rs,this.st);
-                                                                   
-        boolean respuestaRegistro = personasDAO.modificar(persona,this.txtIdentificacion.getText());
-        //Si respuestaRegistro es diferente de null quiere decir que se ingresó el profesor correctamente
+                                               
+        boolean respuestaRegistro = personasDAO.modificar(persona,identificacionBuscada);
+        //Si respuestaRegistro es diferente de null quiere decir que se ingresó el usuario correctamente
         if(respuestaRegistro==true){
             limpiar();
         }else{
@@ -481,12 +500,14 @@ public class ModificarUsuario extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JLabel lblId;
     private javax.swing.JTextField txtContrasena;
     private javax.swing.JTextField txtIdentificacion;
     private javax.swing.JTextField txtnombre;

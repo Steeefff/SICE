@@ -18,6 +18,7 @@ package Modelos;
 public class TipoPersonas {
 
     private String rol;
+    private int idPermiso;
 
     public TipoPersonas() {
     }
@@ -29,4 +30,14 @@ public class TipoPersonas {
     public void setRol(String rol) {
         this.rol = rol;
     }
+
+    public int getIdPermiso() {
+        return idPermiso;
+    }
+
+    public void setIdPermiso(int idPermiso) {
+        this.idPermiso = idPermiso;
+    }
+    
+    
 }

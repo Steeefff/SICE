@@ -18,6 +18,7 @@ import java.util.Vector;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -348,6 +349,7 @@ public class ModificarGrupo extends javax.swing.JFrame {
                 return false;
             }
         };
+        tablaGrupos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tablaGrupos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 

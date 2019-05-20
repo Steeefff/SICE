@@ -1,11 +1,16 @@
 package Vista;
 
 import Datos.Conexion;
+import Datos.PermisosDAO;
 import Datos.TipoPersonasDAO;
+import Modelos.Permisos;
 import Modelos.TipoPersonas;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
 import java.awt.Image;
+import java.awt.ScrollPane;
 import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,9 +21,12 @@ import java.util.Date;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.control.ScrollBar;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 /*
   @author Grupo #30 Ingeniería 2018-2019 
@@ -38,6 +46,7 @@ import javax.swing.JOptionPane;
 public class AgregarTipoPersona extends javax.swing.JFrame {
     
     TipoPersonasDAO tipoPersonasDAO;
+    PermisosDAO permisosDAO;
     private static Conexion conexion;
     public static ResultSet rs;
     public static Statement st;
@@ -45,9 +54,9 @@ public class AgregarTipoPersona extends javax.swing.JFrame {
     Image icon;
     
     public AgregarTipoPersona(Image icono,Conexion conexion,ResultSet rs,Statement st) {
-        initComponents();
+        initComponents(); 
         setLocationRelativeTo(null);
-        this.setSize(555, 530); 
+        this.setSize(570, 640); 
         this.setResizable(false);
         this.icon = icono;
         this.conexion=conexion;
@@ -57,26 +66,13 @@ public class AgregarTipoPersona extends javax.swing.JFrame {
         setIconImage(this.icon);
         setVisible(true);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        cargarPermisos();
      }
-    
-    public void cargarPermisos(){      
-       String requisito[] = {"Matricular","Agregar Curso","Agregar Grupo","Agregar Profesor","Agregar Estudiante",
-           "Mantenimiento Curso","Mantenimiento Grupo","Mantenimiento Profesor","Mantenimiento Estudiante","Mantenimiento Sistema"}; 
-
-        for (int i = 0; i < requisito.length; i++) {
-            permisos.add(new JCheckBox(requisito[i],false));
-        }
-        this.panelIdiomas.setLayout(new FlowLayout());
-        
-        for(int i=0; i<permisos.size(); i++){
-            this.panelIdiomas.add(permisos.get(i));
-            permisos.get(i).setEnabled(true);
-        }         
-    }
+   
     
     public void Limpiar(){
         this.txtRol.setText("");
+        this.txtDescripcion.setText("");
+        
         this.btnGuardar.setEnabled(false);
     }
     @SuppressWarnings("unchecked")
@@ -97,10 +93,18 @@ public class AgregarTipoPersona extends javax.swing.JFrame {
         txtRol = new javax.swing.JTextField();
         btnVolver = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
-        panelIdiomas = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         txtDescripcion = new javax.swing.JTextField();
+        jCheckBoxMatricular = new javax.swing.JCheckBox();
+        jCheckBoxAgregarCurso = new javax.swing.JCheckBox();
+        jCheckBoxAgregarGrupo = new javax.swing.JCheckBox();
+        jCheckBoxAgregarProfesor = new javax.swing.JCheckBox();
+        jCheckBoxMantenimientoCurso = new javax.swing.JCheckBox();
+        jCheckBoxMantenimientoGrupo = new javax.swing.JCheckBox();
+        jCheckBoxMantenimientoEstudiante = new javax.swing.JCheckBox();
+        jCheckBoxMantenimientoProfesor = new javax.swing.JCheckBox();
+        jCheckBoxMantenimientoSistema = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -195,9 +199,10 @@ public class AgregarTipoPersona extends javax.swing.JFrame {
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+            .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE))
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 528, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -244,21 +249,6 @@ public class AgregarTipoPersona extends javax.swing.JFrame {
             }
         });
 
-        panelIdiomas.setPreferredSize(new Dimension(377, 60));
-        panelIdiomas.setMaximumSize(new java.awt.Dimension(377, 60));
-        panelIdiomas.setMinimumSize(new java.awt.Dimension(377, 60));
-
-        javax.swing.GroupLayout panelIdiomasLayout = new javax.swing.GroupLayout(panelIdiomas);
-        panelIdiomas.setLayout(panelIdiomasLayout);
-        panelIdiomasLayout.setHorizontalGroup(
-            panelIdiomasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 469, Short.MAX_VALUE)
-        );
-        panelIdiomasLayout.setVerticalGroup(
-            panelIdiomasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 94, Short.MAX_VALUE)
-        );
-
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setText("Permisos:");
 
@@ -272,73 +262,128 @@ public class AgregarTipoPersona extends javax.swing.JFrame {
             }
         });
 
+        jCheckBoxMatricular.setText("Matricular");
+
+        jCheckBoxAgregarCurso.setText("Agregar Curso");
+
+        jCheckBoxAgregarGrupo.setText("Agregar Grupo");
+
+        jCheckBoxAgregarProfesor.setText("Agregar Profesor");
+
+        jCheckBoxMantenimientoCurso.setText("Mantenimiento Curso");
+
+        jCheckBoxMantenimientoGrupo.setText("Mantenimiento Grupo");
+
+        jCheckBoxMantenimientoEstudiante.setText("Mantenimiento Estudiante");
+
+        jCheckBoxMantenimientoProfesor.setText("Mantenimiento Profesor");
+
+        jCheckBoxMantenimientoSistema.setText("Mantenimiento Sistema");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jCheckBoxAgregarProfesor)
+                            .addComponent(jCheckBoxMatricular))
+                        .addGap(40, 40, 40))
+                    .addComponent(btnGuardar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jCheckBoxMantenimientoEstudiante, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(26, 26, 26)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(21, 21, 21)
-                                .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(16, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 469, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                            .addComponent(jLabel2)
-                                            .addGap(104, 104, 104))
-                                        .addComponent(txtRol, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(151, 151, 151))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                    .addComponent(jLabel6)
-                                    .addGap(237, 237, 237))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                    .addComponent(panelIdiomas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(32, 32, 32)))))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel7)
-                .addGap(229, 229, 229))
+                            .addComponent(jCheckBoxMantenimientoCurso)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel6)
+                                .addComponent(jCheckBoxAgregarCurso)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jCheckBoxAgregarGrupo)
+                                    .addComponent(jCheckBoxMantenimientoGrupo)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jCheckBoxMantenimientoProfesor)
+                        .addGap(18, 18, 18)
+                        .addComponent(jCheckBoxMantenimientoSistema)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(219, 219, 219)
+                                .addComponent(jLabel7))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(140, 140, 140)
+                                .addComponent(txtRol, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(246, 246, 246)
+                                .addComponent(jLabel2)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(txtDescripcion)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtRol, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(11, 11, 11)
                 .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelIdiomas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jCheckBoxAgregarCurso)
+                    .addComponent(jCheckBoxMatricular)
+                    .addComponent(jCheckBoxAgregarGrupo))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jCheckBoxMantenimientoCurso)
+                    .addComponent(jCheckBoxAgregarProfesor)
+                    .addComponent(jCheckBoxMantenimientoGrupo))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jCheckBoxMantenimientoEstudiante)
+                    .addComponent(jCheckBoxMantenimientoProfesor)
+                    .addComponent(jCheckBoxMantenimientoSistema))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(37, 37, 37))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(36, 36, 36)))
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -347,7 +392,7 @@ public class AgregarTipoPersona extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -363,9 +408,6 @@ public class AgregarTipoPersona extends javax.swing.JFrame {
 
     public void habilitar(){
         this.txtRol.setEnabled(true);
-        for(int i=0; i<this.permisos.size(); i++){
-            this.permisos.get(i).setEnabled(true);
-        }
         this.btnGuardar.setEnabled(true);
     }
     
@@ -379,11 +421,45 @@ public class AgregarTipoPersona extends javax.swing.JFrame {
     
     private boolean validarEspacios(){
         boolean completo = false;
-        if(!this.txtRol.getText().equals(""))
-                completo = true;
-        else
+        
+        if (!this.txtRol.getText().equals("")) {
+            completo = true;
+        } else {
             JOptionPane.showMessageDialog(null, "Es necesario completar el espacio para el rol de la persona.");
-           return completo;
+        }
+        if (!this.txtDescripcion.getText().equals("")) {
+            completo = true;
+        } else {
+            JOptionPane.showMessageDialog(null, "Es necesario completar el espacio de la descripción la persona.");
+        }
+        return completo;
+    }
+    
+    private boolean insertarPermisos(){ 
+        Permisos permisos = new Permisos();
+        /*1*/permisos.setDescripcion(txtDescripcion.getText());
+        /*2*/permisos.setMatricular(jCheckBoxMatricular.isSelected());
+        /*3*/permisos.setAgregarCurso(jCheckBoxAgregarCurso.isSelected());
+        /*4*/permisos.setAgregarGrupo(jCheckBoxAgregarGrupo.isSelected());
+        /*5*/permisos.setAgregarProfesor(jCheckBoxAgregarProfesor.isSelected());
+        /*6*/permisos.setAgregarEstudiante(jCheckBoxMatricular.isSelected());//Se repite ya que agregarEstudiante sería lo mismo que matricular
+        /*7*/permisos.setMantenimientoCurso(jCheckBoxMantenimientoCurso.isSelected());
+        /*8*/permisos.setMantenimientoGrupo(jCheckBoxMantenimientoGrupo.isSelected());
+        /*9*/permisos.setMantenimientoProfesor(jCheckBoxMantenimientoProfesor.isSelected());
+        /*10*/permisos.setMantenimientoEstudiante(jCheckBoxMantenimientoEstudiante.isSelected());
+        /*11*/permisos.setMantenimientoSistema(jCheckBoxMantenimientoSistema.isSelected());
+        
+        
+        permisosDAO = new PermisosDAO(this.conexion,this.rs,this.st);
+        String respuestaRegistro = permisosDAO.insertarPermisos(permisos);
+        //Si respuestaRegistro es diferente de null quiere decir que se ingresó el tipoPersonas correctamente
+        if(respuestaRegistro!=null){
+            JOptionPane.showMessageDialog(null, respuestaRegistro);
+            return true;
+        }else{
+            JOptionPane.showMessageDialog(null, "Error al agregar los permisos.");
+            return false;
+        }
     }
     
     private void insertarTipoPersona() throws SQLException{
@@ -391,26 +467,30 @@ public class AgregarTipoPersona extends javax.swing.JFrame {
         TipoPersonas tipoPersonas= new TipoPersonas();
         //Se cargan los atributos del tipoPersonas
         tipoPersonas.setRol(txtRol.getText());
-        
-        
-        
+        permisosDAO = new PermisosDAO(this.conexion,this.rs,this.st);
+        int idPermiso = permisosDAO.maxID();
         
         //Envía el idioma al método insertaRol del tipoPersonasDAO que inserta en la base de datos
         tipoPersonasDAO = new TipoPersonasDAO(this.conexion,this.rs,this.st);
-        String respuestaRegistro = tipoPersonasDAO.insertaTipoPersona(tipoPersonas);
+        String respuestaRegistro = tipoPersonasDAO.insertaTipoPersona(idPermiso,tipoPersonas);
         //Si respuestaRegistro es diferente de null quiere decir que se ingresó el tipoPersonas correctamente
         if(respuestaRegistro!=null){
             JOptionPane.showMessageDialog(null, respuestaRegistro);
             Limpiar();
         }else{
-         JOptionPane.showMessageDialog(null, "El rol "+tipoPersonas.getRol()+" ya existe en el registro.");
+            JOptionPane.showMessageDialog(null, "Error al ingresas los permisos");
         }
     }
     
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         if(validaciones()==true){
             try {
-                insertarTipoPersona();
+                if(insertarPermisos() == true){
+                    insertarTipoPersona();
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Problema al ingresar los permisos. Consulte con un técnico");
+                }
             } catch (SQLException ex) {
                 Logger.getLogger(AgregarTipoPersona.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -428,6 +508,15 @@ public class AgregarTipoPersona extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnVolver;
+    private javax.swing.JCheckBox jCheckBoxAgregarCurso;
+    private javax.swing.JCheckBox jCheckBoxAgregarGrupo;
+    private javax.swing.JCheckBox jCheckBoxAgregarProfesor;
+    private javax.swing.JCheckBox jCheckBoxMantenimientoCurso;
+    private javax.swing.JCheckBox jCheckBoxMantenimientoEstudiante;
+    private javax.swing.JCheckBox jCheckBoxMantenimientoGrupo;
+    private javax.swing.JCheckBox jCheckBoxMantenimientoProfesor;
+    private javax.swing.JCheckBox jCheckBoxMantenimientoSistema;
+    private javax.swing.JCheckBox jCheckBoxMatricular;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -441,7 +530,6 @@ public class AgregarTipoPersona extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel panelIdiomas;
     private javax.swing.JTextField txtDescripcion;
     private javax.swing.JTextField txtRol;
     // End of variables declaration//GEN-END:variables
