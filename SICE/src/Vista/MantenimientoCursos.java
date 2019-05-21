@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -135,6 +136,7 @@ public class MantenimientoCursos extends javax.swing.JFrame {
         });
         tablaGrupos.setCellSelectionEnabled(true);
         tablaGrupos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tablaGrupos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tablaGrupos = new javax.swing.JTable(){
             public boolean isCellEditable(int rowIndex, int colIndex){
                 return false;

@@ -311,8 +311,8 @@ public class MantenimientoSistema extends javax.swing.JFrame {
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         this.ventanaPrincipal=new VentanaPrincipal(this.icon,this.conexion,this.rs,this.st);
-        this.ventanaPrincipal.lblUsuario.setText(ventanaPrincipal.lblUsuario.getText());
-        ventanaPrincipal.lblNombre.setText(lblNombre.getText());
+        this.ventanaPrincipal.lblUsuario.setText(lblUsuario.getText());
+        this.ventanaPrincipal.lblNombre.setText(lblNombre.getText());
         ventanaPrincipal.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed

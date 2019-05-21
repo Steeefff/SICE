@@ -56,14 +56,19 @@ public class UsuarioNuevo extends javax.swing.JFrame {
         try{     
             rs = st.executeQuery(sql);
             this.comboRol.addItem("Seleccione un rol");
+            int i = 0;
             while(rs.next()){
-                this.comboRol.addItem(rs.getString("rol"));
+                if(i>=2){
+                    this.comboRol.addItem(rs.getString("rol"));
+                }
+                i++;
             }
                     
         }catch(SQLException e){
             e.printStackTrace();
         }
     }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -372,8 +377,8 @@ public class UsuarioNuevo extends javax.swing.JFrame {
         //Se cargan los atributos de la persona usurio
         persona.setIdentificacion(this.txtIdentificacion.getText());
         persona.setNombre(this.txtNombre.getText());
-        persona.setContraseña(this.txtContrasena.getText());
-        persona.setIdTipoPersona((comboRol.getSelectedIndex()));
+        persona.setContraseña(this.txtContrasena.getText()); 
+        persona.setIdTipoPersona((comboRol.getSelectedIndex()+2));//Por estudiante y profesor que son omitidos como usuarios
 
         //Envía la persona al método insertaPersona del personaDAO que inserta en la base de datos
         personasDAO = new PersonasDAO(this.conexion,this.rs,this.st);
