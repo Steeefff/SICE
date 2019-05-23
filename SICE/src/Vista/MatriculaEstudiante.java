@@ -35,6 +35,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
@@ -500,13 +501,8 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
         btnPDF.setBackground(new java.awt.Color(0, 133, 202));
         btnPDF.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnPDF.setForeground(new java.awt.Color(255, 255, 255));
-        btnPDF.setText("Generar PDF");
+        btnPDF.setText("Reporte de Matricula");
         btnPDF.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnPDF.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPDFActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -670,10 +666,86 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnVolver1ActionPerformed
 
+    //REPORTE PDF ES CON LA TABLA DE ESTUDIANTE Y EL CLICK AL BOTON
+    public void ReportePDF(String nombrePDF, Vector datosPDF){
+        Date date = new Date();  
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String strDate = formatter.format(date);
+
+        try {
+            //Creamos el encabezado del PDF
+            Document doc = new Document();
+            PdfWriter.getInstance(doc, new FileOutputStream(nombrePDF+".pdf"));
+            //Image iconoPDF = new Image(ImageDataFactory.create("C:\\Users\\Lenovo\\Documents\\GitHub\\SICE\\SICE\\imagenes\\logopdf.png"))
+            doc.open();//Abrimos el archivo PDF para poder escribir
+            
+            //Afregamos el estilo del titulo del PDF
+            Paragraph tituloCentral = new Paragraph("Reporte de matrícula",FontFactory.getFont(FontFactory.TIMES_ROMAN, 18, Font.BOLD, BaseColor.BLACK));
+            tituloCentral.setAlignment(Element.ALIGN_CENTER);
+            doc.add(tituloCentral);
+            
+            doc.add(new Paragraph("\n\n"));//Espacio
+            
+            //Agregamos la fecha al PDF
+            Paragraph fecha = new Paragraph("Fecha: " + strDate); 
+            fecha.setAlignment(Element.ALIGN_RIGHT);
+            doc.add(fecha);
+            
+            doc.add(new Paragraph("\n\n"));//Espacio
+
+            //Creamos la Tabla con un titulo
+            PdfPTable tabla = new PdfPTable(2);
+            PdfPCell titulo = new PdfPCell(new Phrase("Estudiante: " + nombrePDF));
+            titulo.setColspan(4);
+            titulo.setHorizontalAlignment(Element.ALIGN_CENTER);
+            tabla.addCell(titulo);
+            
+            doc.add(tabla);//Agreganmos la tabla al documento de PDF
+            doc.add(new Paragraph("\n"));//Espacio
+            
+            //Agregamos informacion importante respectiva de la matricula
+            // creo un tabla con 2 columnas
+            PdfPTable table = new PdfPTable(2); 
+            table.setWidthPercentage(80);
+            table.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.setWidths(new int[]{40, 50});
+            
+            table.addCell("Código del Grupo: ");
+            table.addCell(datosPDF.get(0).toString());
+            
+            table.addCell("Nombre del Curso: ");
+            table.addCell(datosPDF.get(1).toString());
+            
+            table.addCell("Idioma: ");
+            table.addCell(datosPDF.get(2).toString());
+            
+            table.addCell("Nombre del Curso: ");
+            table.addCell(datosPDF.get(3).toString());
+            
+            table.addCell("Profesor del Curso: ");
+            table.addCell(datosPDF.get(4).toString());
+            
+            doc.add(table);//Agreganmos la tabla al documento de PDF
+            doc.close();//Cerramos la edicion
+            // Abrir el archivo
+            
+            if (JOptionPane.showConfirmDialog(null, "¿Desea imprimir el reporte e imprimirlo?", null,
+                    JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                File file = new File(nombrePDF+".pdf");
+                Desktop.getDesktop().open(file);
+            } else {
+            
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al generar el reporte");
+        }
+    }
+    
+    //CREAR PDF ES CUANDO SE MATRICULA UN ESTUDIANTE
     public void CrearPDF(String nombrePDF){
         //String destino = "C:\\Users\\Lenovo\\Desktop\\";
         Date date = new Date();  
-        SimpleDateFormat formatter = new SimpleDateFormat("mm/dd/yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String strDate = formatter.format(date);  
         try {
             //Creamos el encabezado del PDF
@@ -739,26 +811,30 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
             
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error al generar un reporte");
+            JOptionPane.showMessageDialog(null, "Error al generar el reporte");
         }
     }
-    private void btnPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPDFActionPerformed
-        try {
-            if(this.validar()==true){
-                String nombrePDF = (String) comboEstudiantes.getSelectedItem();
-                CrearPDF(nombrePDF);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(MatriculaEstudiante.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-    }//GEN-LAST:event_btnPDFActionPerformed
-
     private void tablaMatriculasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaMatriculasMouseClicked
         int fila = tablaMatriculas.rowAtPoint(evt.getPoint());
-        //comboGrupos.setSelectedIndex(Integer.parseInt(tablaMatriculas.getValueAt(fila, 1))); 
-        txtCurso.setText(tablaMatriculas.getValueAt(fila, 2).toString());
-        txtHorario.setText(tablaMatriculas.getValueAt(fila, 3).toString());
+
+        Vector<String> datosPDF = new Vector<>();
+        datosPDF.add(tablaMatriculas.getValueAt(fila, 0).toString());
+        datosPDF.add(tablaMatriculas.getValueAt(fila, 1).toString());
+        datosPDF.add(tablaMatriculas.getValueAt(fila, 2).toString());
+        datosPDF.add(tablaMatriculas.getValueAt(fila, 3).toString());
+        datosPDF.add(tablaMatriculas.getValueAt(fila, 4).toString());
+        
+        
+        btnPDF.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                String nombrePDF = (String) comboEstudiantes.getSelectedItem();
+                ReportePDF(nombrePDF,datosPDF);
+                //for (int i = 0; i<datosPDF.size(); i++) {
+                //    System.out.println(datosPDF.get(i).toString());
+                //}
+        }
+});
+        
     }//GEN-LAST:event_tablaMatriculasMouseClicked
 
     private void matricular(){
@@ -774,7 +850,6 @@ public class MatriculaEstudiante extends javax.swing.JFrame {
         //Si respuestaRegistro es diferente de null quiere decir que se ingresó la matricula correctamente
         if(respuestaRegistro!=null){
             JOptionPane.showMessageDialog(null, respuestaRegistro);
-            limpiar();
         }else{
          JOptionPane.showMessageDialog(null, "No se pudo matricular, intente de nuevo. Si el error persiste contacte a su equipo de TI.");
         }
